@@ -12,6 +12,9 @@ public class Booking {
     private boolean carryon;
     private boolean firstClass;
 
+    // Getters and setters
+
+
 
     public static void main(String[] args) {
 
