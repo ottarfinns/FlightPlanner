@@ -13,7 +13,7 @@ public class Booking {
     private boolean firstClass;
 
     // Getters and setters
-
+    // Comment frá mér
 
 
     public static void main(String[] args) {
