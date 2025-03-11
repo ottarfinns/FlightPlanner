@@ -15,6 +15,15 @@ public class Flight {
     private Date departureTime;
     private Date arrivalTime;
 
+    private int totalSeats;
+    private int availableSeats;
+
+    //private SeatingArrangement seating = new SeatingArrangement();
+
+    //private Seat seats = new Seat();
+
+    private Double price;
+
     // Getters and setters
 
     public static void main(String[] args) {

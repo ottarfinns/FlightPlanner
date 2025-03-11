@@ -32,9 +32,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2tYaaVsETtGhfZPRGQrED69AZvC" />
   <component name="ProjectViewState">
     <option name="abbreviatePackageNames" value="true" />
@@ -48,6 +48,9 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Seat.executor": "Run",
+    "Application.SeatNumber.executor": "Run",
+    "Application.SeatingArrangement.executor": "Run",
     "Maven.FlightPlanner [org.apache.maven.plugins:maven-compiler-plugin:3.13.0:compile].executor": "Run",
     "Maven.FlightPlanner [org.openjfx:javafx-maven-plugin:0.0.8:run].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
@@ -85,8 +88,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.189" />
-        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.189" />
+        <option value="bundled-jdk-9823dce3aa75-a94e463ab2e7-intellij.indexing.shared.core-IU-243.25659.59" />
+        <option value="bundled-js-predefined-d6986cc7102b-1632447f56bf-JavaScript-IU-243.25659.59" />
       </set>
     </attachedChunks>
   </component>
