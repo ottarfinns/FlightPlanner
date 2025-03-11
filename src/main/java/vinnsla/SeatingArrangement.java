@@ -52,19 +52,6 @@ public class SeatingArrangement {
     }
 
 
-    public boolean cancelSeat(String seatNumber) {
-
-        Seat seat = getSeat(seatNumber);
-
-        if (seat == null) {
-            return false;
-        } else {
-            seat.cancelSeat();
-            availableSeats++;
-            return true;
-        }
-    }
-
     public boolean cancelSeat(SeatNumber seatNumber) {
         Seat seat = getSeat(seatNumber);
         availableSeats++;
@@ -77,6 +64,10 @@ public class SeatingArrangement {
 
         availableSeats--;
         return seat.bookSeat();
+    }
+
+    public boolean isFull() {
+        return availableSeats == totalSeats;
     }
 
     public static void main(String[] args) {
