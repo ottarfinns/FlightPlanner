@@ -34,16 +34,6 @@ public class Seat {
         return seatClass;
     }
 
-    //public boolean bookSeat() {
-    //    if (availableSeats > 0) {
-    //        availableSeats--;
-    //        return true;
-    //    }
-    //    else {
-    //        return false;
-    //    }
-    //}
-
     public boolean cancelSeat() {
         if (isBooked) {
             isBooked = false;

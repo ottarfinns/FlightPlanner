@@ -5,7 +5,7 @@ public class SeatNumber {
     private final int row;
     private final char col;
 
-    public SeatNumber(int row, Character col) {
+    public SeatNumber(int row, char col) {
         if (row < 1) {
             throw new IllegalArgumentException("Row number must be positive.");
         }
@@ -16,12 +16,33 @@ public class SeatNumber {
         this.col = col;
     }
 
-    public int getRow() {
-        return row;
+    public static SeatNumber fromString(String seatString) {
+
+        int length = seatString.length();
+
+        if (length < 2 || length > 3) {
+            throw new IllegalArgumentException("Invalid seat number format: " + seatString);
+        }
+        int row;
+        char col;
+
+        try {
+            row = Integer.parseInt(seatString.substring(0, length - 1));
+            col = seatString.charAt(length - 1);
+        }
+        catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid seat number format: " + seatString);
+        }
+
+        return new SeatNumber(row, col);
     }
 
-    public Character getCol() {
-        return col;
+    public int getRow() {
+        return row - 1;
+    }
+
+    public int getCol() {
+        return col - 'A';
     }
 
     @Override

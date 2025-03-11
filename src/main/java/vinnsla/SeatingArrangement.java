@@ -2,8 +2,8 @@ package vinnsla;
 
 public class SeatingArrangement {
     private Seat[][] seats;
-    private int rows;
-    private int cols;
+    private final int rows;
+    private final int cols;
     private int totalSeats;
     private int availableSeats;
 
@@ -29,15 +29,17 @@ public class SeatingArrangement {
         }
     }
 
-    private Seat getSeat(String seatNumber) {
-        if (seatNumber.length() != 2) {
-            return null;
-        }
-        else{
-            int c = seatNumber.charAt(1) - 'A';
-            int r = Integer.parseInt(seatNumber.substring(0, 1)) - 1;
-            return seats[r][c];
-        }
+    private Seat getSeat(String seatNum) {
+        SeatNumber seatNumber = SeatNumber.fromString(seatNum);
+        int r = seatNumber.getRow();
+        int c = seatNumber.getCol();
+        return seats[r][c];
+    }
+
+    private Seat getSeat(SeatNumber seatNumber) {
+        int r = seatNumber.getRow();
+        int c = seatNumber.getCol();
+        return seats[r][c];
     }
 
     public void printSeating() {
@@ -50,39 +52,42 @@ public class SeatingArrangement {
     }
 
 
-
     public boolean cancelSeat(String seatNumber) {
 
         Seat seat = getSeat(seatNumber);
 
         if (seat == null) {
             return false;
-        }
-        else {
+        } else {
             seat.cancelSeat();
             availableSeats++;
             return true;
         }
     }
 
-
-    public boolean bookSeat(String seatNumber) {
+    public boolean cancelSeat(SeatNumber seatNumber) {
         Seat seat = getSeat(seatNumber);
-        if (seat == null) {
-            return false;
-        }
-        else {
-            seat.bookSeat();
-            availableSeats--;
-            return true;
-        }
+        availableSeats++;
+        return seat.cancelSeat();
+    }
 
+
+    public boolean bookSeat(SeatNumber seatNumber) {
+        Seat seat = getSeat(seatNumber);
+
+        availableSeats--;
+        return seat.bookSeat();
     }
 
     public static void main(String[] args) {
         SeatingArrangement seating = new SeatingArrangement(20, 6);
-        System.out.println(seating.bookSeat("2A"));
-        System.out.println(seating.bookSeat("20F"));
+        SeatNumber seatNumber1 = SeatNumber.fromString("20A");
+        System.out.println(seatNumber1.getCol());
+        System.out.println(seatNumber1.getRow());
+        System.out.println(seating.bookSeat(seatNumber1));
+        System.out.println(seating.bookSeat(SeatNumber.fromString("16F")));
+        seating.printSeating();
+        System.out.println(seating.cancelSeat(SeatNumber.fromString("20A")));
         seating.printSeating();
     }
 }
