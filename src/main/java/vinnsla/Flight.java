@@ -4,7 +4,8 @@ import java.util.Date;
 
 public class Flight {
 
-    private int flightNumber;
+    private String flightNumber;
+    private String airline;
 
     private String departureCountry;
     private String arrivalCountry;
@@ -24,9 +25,12 @@ public class Flight {
 
     private Double price;
 
-    public Flight(int flightNumber, String departureCountry, String arrivalCountry, String departureAirport, String arrivalAirport,
+    public Flight(String airline, String departureCountry, String arrivalCountry, String departureAirport, String arrivalAirport,
                   Date arrivalTime, Date departureTime, int totalRows, int totalCols, double price) {
-        this.flightNumber = flightNumber;
+
+        this.airline = airline;
+        flightNumber = FlightList.generateFlightNumber(airline);
+
         this.departureCountry = departureCountry;
         this.arrivalCountry = arrivalCountry;
         this.departureAirport = departureAirport;
@@ -51,6 +55,7 @@ public class Flight {
     // Getters and setters
 
     public static void main(String[] args) {
+        //Flight flight = new Flight("");
 
     }
 }

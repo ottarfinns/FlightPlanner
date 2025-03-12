@@ -48,6 +48,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.FlightList.executor": "Run",
     "Application.Seat.executor": "Run",
     "Application.SeatNumber.executor": "Run",
     "Application.SeatingArrangement.executor": "Run",
