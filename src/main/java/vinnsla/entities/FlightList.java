@@ -1,8 +1,9 @@
 package vinnsla.entities;
 
-import java.util.*;
-import java.sql.SQLException;
 import vinnsla.FlightDatabase;
+
+import java.sql.SQLException;
+import java.util.*;
 
 public class FlightList {
     private List<Flight> flights;
