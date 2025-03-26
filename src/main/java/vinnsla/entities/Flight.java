@@ -1,6 +1,7 @@
 package vinnsla.entities;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class Flight {
 
@@ -101,6 +102,21 @@ public class Flight {
 
     public Double getPrice() {
         return price;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+
+        Flight flight = (Flight) obj;
+        return Objects.equals(this.flightNumber, flight.flightNumber);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(flightNumber);
     }
 
     public static void main(String[] args) {

@@ -5,13 +5,9 @@ import vinnsla.entities.Flight;
 import java.util.List;
 
 public interface FlightService {
-    // Service layer contains the business logic
-    // Acts as an intermediary between controllers (handle requests) and repositories (handle data storage)
 
-    Flight createFlight(Flight flight);
-    boolean deleteFlight(Flight flight);
-    Flight findFlight(String flightNumber);
-    List<Flight> searchFlights(String departureCountry, String arrivalCountry);
-    List<Flight> getAllFlights();
-    boolean updateFlight(String flightNumber, double newPrice);
+    boolean addFlight(Flight flight);
+    Flight searchFlight(String flightNumber);
+    boolean removeFlight(String flightNumber);
+    List<Flight> searchFlights(String args);
 }

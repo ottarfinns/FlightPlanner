@@ -1,39 +1,36 @@
 package vinnsla.service;
 
 import vinnsla.entities.Flight;
-import vinnsla.entities.FlightList;
 
 import java.util.List;
 
 public class FlightServiceImplementation implements FlightService {
-    private FlightList flightList;
+    private FlightRepository flightRepository;
 
-    public FlightServiceImplementation() {
-        this.flightList = new FlightList();
+    public FlightServiceImplementation(FlightRepository flightRepository) {
+        this.flightRepository = flightRepository;
     }
 
-
-    public Flight createFlight(Flight flight) {
-        return null;
+    @Override
+    public boolean addFlight(Flight flight) {
+        if (flight == null || flight.getFlightNumber() == null) {
+            return false;
+        }
+        return flightRepository.addFlight(flight);
     }
 
-    public boolean deleteFlight(Flight flight) {
-        return false;
+    @Override
+    public Flight searchFlight(String flightNumber) {
+        return flightRepository.searchFlight(flightNumber);
     }
 
-    public Flight findFlight(String flightNumber) {
-        return null;
+    @Override
+    public boolean removeFlight(String flightNumber) {
+        return flightRepository.removeFlight(flightNumber);
     }
 
-    public List<Flight> searchFlights(String departureCountry, String arrivalCountry) {
-        return List.of();
-    }
-
-    public List<Flight> getAllFlights() {
-        return List.of();
-    }
-
-    public boolean updateFlight(String flightNumber, double newPrice) {
-        return false;
+    @Override
+    public List<Flight> searchFlights(String args) {
+        return flightRepository.searchFlights(args);
     }
 }
