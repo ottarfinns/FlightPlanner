@@ -1,4 +1,4 @@
-package vinnsla;
+package vinnsla.entities;
 
 import java.util.Date;
 
@@ -26,7 +26,7 @@ public class Flight {
     private Double price;
 
     public Flight(String airline, String departureCountry, String arrivalCountry,
-     String departureAirport, String arrivalAirport, Date arrivalTime, 
+     String departureAirport, String arrivalAirport, Date arrivalTime,
      Date departureTime, int totalRows, int totalCols, double price) {
 
         this.airline = airline;

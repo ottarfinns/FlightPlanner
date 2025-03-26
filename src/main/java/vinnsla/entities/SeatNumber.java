@@ -1,4 +1,4 @@
-package vinnsla;
+package vinnsla.entities;
 
 public class SeatNumber {
 

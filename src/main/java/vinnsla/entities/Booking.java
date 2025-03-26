@@ -1,4 +1,5 @@
-package vinnsla;
+package vinnsla.entities;
+
 public class Booking {
 
     private int bookingId;

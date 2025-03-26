@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
+import vinnsla.entities.Flight;
 
 public class FlightDatabase {
     private static final String DB_DIR = "data";
