@@ -4,7 +4,7 @@ public class SeatingArrangement {
     private Seat[][] seats;
     private final int rows;
     private final int cols;
-    private int totalSeats;
+    private final int totalSeats;
     private int availableSeats;
 
     public SeatingArrangement(int rows, int cols) {

@@ -2,13 +2,11 @@ package vinnsla;
 
 public class Seat {
 
-    //private String seatNumber;
     private final String seatClass;
     private final SeatNumber seatNumber;
     private boolean isBooked;
 
     public Seat(SeatNumber seatNumber, String seatClass){
-        //this.seatNumber = seatNumber;
         this.seatClass = seatClass;
         this.seatNumber = seatNumber;
         isBooked = false;
