@@ -1,14 +1,14 @@
 package vinnsla.controller;
 
 import vinnsla.entities.Flight;
-import vinnsla.service.FlightService;
+import vinnsla.service.FlightServiceInterface;
 
 import java.util.List;
 
 public class FlightController {
-    private FlightService flightService;
+    private FlightServiceInterface flightService;
 
-    public FlightController(FlightService flightService) {
+    public FlightController(FlightServiceInterface flightService) {
         this.flightService = flightService;
     }
 
