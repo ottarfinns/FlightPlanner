@@ -26,12 +26,13 @@ public class Flight {
 
     private Double price;
 
-    public Flight(String airline, String departureCountry, String arrivalCountry,
+    public Flight(String flightNumber, String airline, String departureCountry, String arrivalCountry,
      String departureAirport, String arrivalAirport, Date arrivalTime,
      Date departureTime, int totalRows, int totalCols, double price) {
 
+        this.flightNumber = flightNumber;
         this.airline = airline;
-        flightNumber = FlightList.generateFlightNumber(airline);
+        //flightNumber = FlightList.generateFlightNumber(airline);
 
         this.departureCountry = departureCountry;
         this.arrivalCountry = arrivalCountry;
@@ -59,9 +60,12 @@ public class Flight {
         this.price = price;
     }
 
-    // Getters
     public String getFlightNumber() {
         return flightNumber;
+    }
+
+    public void setFlightNumber(String flightNumber) {
+        this.flightNumber = flightNumber;
     }
 
     public String getAirline() {

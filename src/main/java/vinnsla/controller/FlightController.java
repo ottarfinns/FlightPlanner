@@ -8,12 +8,16 @@ import java.util.List;
 public class FlightController {
     private FlightService flightService;
 
+    public FlightController(FlightService flightService) {
+        this.flightService = flightService;
+    }
+
     public boolean addFlight(Flight flight) {
         return flightService.addFlight(flight);
     }
 
-    public Flight searchFlight(String flightNumber) {
-        return flightService.searchFlight(flightNumber);
+    public Flight searchFlightNumber(String flightNumber) {
+        return flightService.searchFlightNumber(flightNumber);
     }
 
     public boolean removeFlight(String flightNumber) {
