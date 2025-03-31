@@ -3,7 +3,7 @@ package vidmot.flightplanner;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 
-public class FlightController {
+public class FlightControllerUI {
     @FXML
     private Label welcomeText;
 
