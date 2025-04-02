@@ -72,7 +72,7 @@
 
                 <Button text="Search" onAction="#onSearch" />
 
-                <TableView prefHeight="200">
+                <TableView fx:id="flightTable" prefHeight="200">
                     <columns>
                         <TableColumn prefWidth="100" text="Airline" />
                         <TableColumn prefWidth="100" text="Departure" />

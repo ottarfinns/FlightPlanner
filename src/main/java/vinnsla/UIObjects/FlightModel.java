@@ -1,17 +1,12 @@
 package vinnsla.UIObjects;
 
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.*;
 
 import java.time.LocalDate;
 
 public class FlightModel {
+    //private FlightController flightController;
+
     private final SimpleStringProperty departureCountry;
     private final SimpleStringProperty arrivalCountry;
     private final SimpleObjectProperty<LocalDate> departureDate;
@@ -133,6 +128,7 @@ public class FlightModel {
 
 
     public void search() {
+
 
     }
 }

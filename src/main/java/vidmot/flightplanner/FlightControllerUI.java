@@ -47,8 +47,10 @@ public class FlightControllerUI {
 
         // Binda verðið
         flightModel.maxPriceProperty().bind(maxPriceSlider.valueProperty());
-        //priceLabel.textProperty().bind(flightModel.maxPriceProperty().asString());
         priceLabel.textProperty().bind(flightModel.maxPriceProperty().asString().concat(" kr."));
+
+        // Binda fjölda farþega
+        flightModel.numberOfPassengersProperty().bind(passengerSpinner.valueProperty());
 
     }
 
@@ -59,6 +61,7 @@ public class FlightControllerUI {
         System.out.println("Arrival date: " + flightModel.getArrivalDate());
         System.out.println("One way: " + flightModel.isOneWay());
         System.out.println("Direct: " +flightModel.isDirectFlight());
+        System.out.println("Number of passengers: " + flightModel.getNumberOfPassengers());
         flightModel.search();
     }
 
