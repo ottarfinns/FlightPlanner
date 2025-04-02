@@ -1,0 +1,140 @@
+package vinnsla.database;
+
+import vinnsla.entities.Booking;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class BookingDatabase {
+    private static final String DB_URL = "jdbc:sqlite:flightplanner.db";
+    
+    public BookingDatabase() {
+        createTableIfNotExists();
+    }
+    
+    private void createTableIfNotExists() {
+        String sql = """
+            CREATE TABLE IF NOT EXISTS bookings (
+                booking_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                flight_id INTEGER,
+                customer_id INTEGER,
+                carryon BOOLEAN,
+                first_class BOOLEAN,
+                FOREIGN KEY (flight_id) REFERENCES flights(flight_id),
+                FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
+            )
+        """;
+        
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             Statement stmt = conn.createStatement()) {
+            stmt.execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void addBooking(Booking booking) {
+        String sql = """
+            INSERT INTO bookings (flight_id, customer_id, carryon, first_class)
+            VALUES (?, ?, ?, ?)
+        """;
+        
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, booking.getFlight().getFlightId());
+            pstmt.setInt(2, booking.getCustomer().getCustomerId());
+            pstmt.setBoolean(3, booking.isCarryon());
+            pstmt.setBoolean(4, booking.isFirstClass());
+            
+            pstmt.executeUpdate();
+            System.out.println("Booking added successfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public Booking getBooking(int bookingId) {
+        String sql = "SELECT * FROM bookings WHERE booking_id = ?";
+        
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, bookingId);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                Booking booking = new Booking();
+                booking.setBookingId(rs.getInt("booking_id"));
+                // Note: You'll need to fetch the associated Flight and Customer objects
+                // using their respective database classes
+                booking.setCarryon(rs.getBoolean("carryon"));
+                booking.setFirstClass(rs.getBoolean("first_class"));
+                return booking;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public List<Booking> getAllBookings() {
+        List<Booking> bookings = new ArrayList<>();
+        String sql = "SELECT * FROM bookings";
+        
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            while (rs.next()) {
+                Booking booking = new Booking();
+                booking.setBookingId(rs.getInt("booking_id"));
+                // Note: You'll need to fetch the associated Flight and Customer objects
+                // using their respective database classes
+                booking.setCarryon(rs.getBoolean("carryon"));
+                booking.setFirstClass(rs.getBoolean("first_class"));
+                bookings.add(booking);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+    
+    public void updateBooking(Booking booking) {
+        String sql = """
+            UPDATE bookings 
+            SET flight_id = ?, customer_id = ?, carryon = ?, first_class = ?
+            WHERE booking_id = ?
+        """;
+        
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, booking.getFlight().getFlightId());
+            pstmt.setInt(2, booking.getCustomer().getCustomerId());
+            pstmt.setBoolean(3, booking.isCarryon());
+            pstmt.setBoolean(4, booking.isFirstClass());
+            pstmt.setInt(5, booking.getBookingId());
+            
+            pstmt.executeUpdate();
+            System.out.println("Booking updated successfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void deleteBooking(int bookingId) {
+        String sql = "DELETE FROM bookings WHERE booking_id = ?";
+        
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setInt(1, bookingId);
+            pstmt.executeUpdate();
+            System.out.println("Booking deleted successfully");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+} 
