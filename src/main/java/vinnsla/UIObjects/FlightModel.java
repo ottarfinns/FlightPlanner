@@ -130,4 +130,9 @@ public class FlightModel {
     public void setDirectFlight(boolean value) {
         directFlight.set(value);
     }
+
+
+    public void search() {
+
+    }
 }
