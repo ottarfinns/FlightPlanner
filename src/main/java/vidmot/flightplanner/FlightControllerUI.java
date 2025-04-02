@@ -4,9 +4,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import vinnsla.UIObjects.FlightModel;
+import vinnsla.service.FlightServiceInterface;
 
 public class FlightControllerUI {
     private FlightModel flightModel;
+    private FlightServiceInterface flightService;
+
     @FXML
     private ComboBox<String> dCountryCBox;
     @FXML
@@ -26,10 +29,13 @@ public class FlightControllerUI {
     @FXML
     private CheckBox directBox;
 
+    public void setFlightService(FlightServiceInterface flightService) {
+        this.flightService = flightService;
+        this.flightModel = new FlightModel(flightService);
+        initializeBindings();
+    }
 
-    public void initialize() {
-        flightModel = new FlightModel();
-
+    private void initializeBindings() {
         // Binda brottfara- og komustaðsetningar
         dCountryCBox.getItems().setAll("Iceland", "United States", "Canada", "United Kingdom", "France", "Germany");
         aCountryCBox.getItems().addAll("Iceland", "United States", "Canada", "United Kingdom", "France", "Germany");
@@ -51,7 +57,6 @@ public class FlightControllerUI {
 
         // Binda fjölda farþega
         flightModel.numberOfPassengersProperty().bind(passengerSpinner.valueProperty());
-
     }
 
     public void onSearch(ActionEvent actionEvent) {
@@ -60,9 +65,8 @@ public class FlightControllerUI {
         System.out.println("Departure date: " + flightModel.getDepartureDate());
         System.out.println("Arrival date: " + flightModel.getArrivalDate());
         System.out.println("One way: " + flightModel.isOneWay());
-        System.out.println("Direct: " +flightModel.isDirectFlight());
+        System.out.println("Direct: " + flightModel.isDirectFlight());
         System.out.println("Number of passengers: " + flightModel.getNumberOfPassengers());
         flightModel.search();
     }
-
 }

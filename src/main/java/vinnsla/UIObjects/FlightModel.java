@@ -1,12 +1,16 @@
 package vinnsla.UIObjects;
 
 import javafx.beans.property.*;
+import vinnsla.controller.FlightController;
+import vinnsla.entities.Flight;
+import vinnsla.service.FlightServiceInterface;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class FlightModel {
-    //private FlightController flightController;
-
+    private final FlightController flightController;
     private final SimpleStringProperty departureCountry;
     private final SimpleStringProperty arrivalCountry;
     private final SimpleObjectProperty<LocalDate> departureDate;
@@ -16,7 +20,8 @@ public class FlightModel {
     private final SimpleBooleanProperty oneWay;
     private final SimpleBooleanProperty directFlight;
 
-    public FlightModel() {
+    public FlightModel(FlightServiceInterface flightService) {
+        this.flightController = new FlightController(flightService);
         this.departureCountry = new SimpleStringProperty("");
         this.arrivalCountry = new SimpleStringProperty("");
         this.departureDate = new SimpleObjectProperty<>(LocalDate.now());
@@ -126,9 +131,23 @@ public class FlightModel {
         directFlight.set(value);
     }
 
+    public List<Flight> search() {
+        // Format dates for the search criteria
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String departureDateStr = getDepartureDate().format(formatter);
+        String arrivalDateStr = getArrivalDate().format(formatter);
 
-    public void search() {
+        // Build search criteria string from the model's properties
+        String searchCriteria = String.format("%s,%s,%s,%s,%d,%d,%b,%b",
+                getDepartureCountry(),
+                getArrivalCountry(),
+                departureDateStr,
+                arrivalDateStr,
+                getNumberOfPassengers(),
+                getMaxPrice(),
+                isOneWay(),
+                isDirectFlight());
 
-
+        return flightController.searchFlights(searchCriteria);
     }
 }

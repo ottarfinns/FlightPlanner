@@ -3,6 +3,8 @@ package vinnsla.controller;
 import vinnsla.entities.Flight;
 import vinnsla.service.FlightServiceInterface;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class FlightController {
@@ -24,8 +26,38 @@ public class FlightController {
         return flightService.removeFlight(flightNumber);
     }
 
-    public List<Flight> searchFlights(String args) {
-        return flightService.searchFlights(args);
+    public List<Flight> searchFlights(String searchCriteria) {
+        String[] criteria = searchCriteria.split(",");
+
+        // Brottfarastaður og komustaður
+        String departureCountry = criteria[0];
+        String arrivalCountry = criteria[1];
+
+        // Dagssetningar
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate departureDate = LocalDate.parse(criteria[2], formatter);
+        LocalDate arrivalDate = LocalDate.parse(criteria[3], formatter);
+
+        // Fjöldi farþega og hámarksverð
+        int numberOfPassengers = Integer.parseInt(criteria[4]);
+        int maxPrice = Integer.parseInt(criteria[5]);
+
+        // Beint og one way flug
+        boolean isOneWay = Boolean.parseBoolean(criteria[6]);
+        boolean isDirectFlight = Boolean.parseBoolean(criteria[7]);
+
+        System.out.println("Searching flights with criteria:");
+        System.out.println("From: " + departureCountry);
+        System.out.println("To: " + arrivalCountry);
+        System.out.println("Departure Date: " + departureDate);
+        System.out.println("Arrival Date: " + arrivalDate);
+        System.out.println("Passengers: " + numberOfPassengers);
+        System.out.println("Max Price: " + maxPrice);
+        System.out.println("One Way: " + isOneWay);
+        System.out.println("Direct Flight: " + isDirectFlight);
+
+        // TODO: Use these variables to search for flights
+        return flightService.searchFlights(searchCriteria);
     }
 
     public static void main(String[] args) {
