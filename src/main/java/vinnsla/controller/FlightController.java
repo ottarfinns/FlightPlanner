@@ -5,6 +5,7 @@ import vinnsla.service.FlightServiceInterface;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class FlightController {
@@ -35,8 +36,20 @@ public class FlightController {
 
         // Dagssetningar
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate departureDate = LocalDate.parse(criteria[2], formatter);
-        LocalDate arrivalDate = LocalDate.parse(criteria[3], formatter);
+        LocalDate departureDate = null;
+        LocalDate arrivalDate = null;
+
+        try {
+            if (!criteria[2].isEmpty()) {
+                departureDate = LocalDate.parse(criteria[2], formatter);
+            }
+            if (!criteria[3].isEmpty()) {
+                arrivalDate = LocalDate.parse(criteria[3], formatter);
+            }
+        } catch (DateTimeParseException e) {
+            // If date parsing fails continue with null dates
+            System.out.println("Invalid date format: " + e.getMessage());
+        }
 
         // Fjöldi farþega og hámarksverð
         int numberOfPassengers = Integer.parseInt(criteria[4]);
@@ -56,8 +69,8 @@ public class FlightController {
         System.out.println("One Way: " + isOneWay);
         System.out.println("Direct Flight: " + isDirectFlight);
 
-        // TODO: Use these variables to search for flights
-        return flightService.searchFlights(searchCriteria);
+        //return flightService.searchFlights(searchCriteria);
+        return flightService.getAllFlights();
     }
 
     public static void main(String[] args) {

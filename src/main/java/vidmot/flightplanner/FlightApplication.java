@@ -4,8 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import vinnsla.repository.FlightRepoMock;
-import vinnsla.repository.FlightRepositoryInterface;
 import vinnsla.service.FlightService;
 import vinnsla.service.FlightServiceInterface;
 
@@ -14,9 +12,8 @@ import java.io.IOException;
 public class FlightApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        // Set up the repository and service
-        FlightRepositoryInterface repository = new FlightRepoMock();
-        FlightServiceInterface flightService = new FlightService(repository);
+        // Set up the service
+        FlightServiceInterface flightService = new FlightService();
 
         // Create the FXML loader
         FXMLLoader fxmlLoader = new FXMLLoader(FlightApplication.class.getResource("FlightPlanner-View.fxml"));

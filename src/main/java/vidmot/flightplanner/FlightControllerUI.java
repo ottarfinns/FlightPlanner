@@ -1,10 +1,17 @@
 package vidmot.flightplanner;
 
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import vinnsla.UIObjects.FlightModel;
+import vinnsla.entities.Flight;
 import vinnsla.service.FlightServiceInterface;
+
+import java.util.List;
 
 public class FlightControllerUI {
     private FlightModel flightModel;
@@ -28,11 +35,25 @@ public class FlightControllerUI {
     private CheckBox oneWayBox;
     @FXML
     private CheckBox directBox;
+    @FXML
+    private TableView<Flight> flightTableView;
+
+    @FXML
+    private TableColumn<Flight, String> flightNumberColumn;
+    @FXML
+    private TableColumn<Flight, String> airlineColumn;
+    @FXML
+    private TableColumn<Flight, String> departureColumn;
+    @FXML
+    private TableColumn<Flight, String> arrivalColumn;
+    @FXML
+    private TableColumn<Flight, Double> priceColumn;
 
     public void setFlightService(FlightServiceInterface flightService) {
         this.flightService = flightService;
         this.flightModel = new FlightModel(flightService);
         initializeBindings();
+        setupTableView();
     }
 
     private void initializeBindings() {
@@ -59,6 +80,15 @@ public class FlightControllerUI {
         flightModel.numberOfPassengersProperty().bind(passengerSpinner.valueProperty());
     }
 
+    private void setupTableView() {
+        // Set up the columns
+        flightNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFlightNumber()));
+        airlineColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAirline()));
+        departureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureCountry()));
+        arrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalCountry()));
+        priceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
+    }
+
     public void onSearch(ActionEvent actionEvent) {
         System.out.println("Departure country: " + flightModel.getDepartureCountry());
         System.out.println("Arrival country: " + flightModel.getArrivalCountry());
@@ -67,6 +97,11 @@ public class FlightControllerUI {
         System.out.println("One way: " + flightModel.isOneWay());
         System.out.println("Direct: " + flightModel.isDirectFlight());
         System.out.println("Number of passengers: " + flightModel.getNumberOfPassengers());
-        flightModel.search();
+
+        List<Flight> results = flightModel.search();
+
+        // Update the TableView with the search results
+        ObservableList<Flight> flightData = FXCollections.observableArrayList(results);
+        flightTableView.setItems(flightData);
     }
 }

@@ -1,15 +1,16 @@
 package vinnsla.service;
 
 import vinnsla.entities.Flight;
+import vinnsla.repository.FlightRepository;
 import vinnsla.repository.FlightRepositoryInterface;
 
 import java.util.List;
 
 public class FlightService implements FlightServiceInterface {
-    private FlightRepositoryInterface flightRepository;
+    private final FlightRepositoryInterface flightRepository;
 
-    public FlightService(FlightRepositoryInterface flightRepository) {
-        this.flightRepository = flightRepository;
+    public FlightService() {
+        this.flightRepository = FlightRepository.getInstance();
     }
 
     @Override
@@ -34,5 +35,10 @@ public class FlightService implements FlightServiceInterface {
     public List<Flight> searchFlights(String args) {
         System.out.println("Search flights in Service " + args);
         return flightRepository.searchFlights(args);
+    }
+
+    @Override
+    public List<Flight> getAllFlights() {
+        return flightRepository.getAllFlights();
     }
 }

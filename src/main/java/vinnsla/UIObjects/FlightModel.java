@@ -132,15 +132,24 @@ public class FlightModel {
     }
 
     public List<Flight> search() {
-        // Format dates for the search criteria
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String departureDateStr = getDepartureDate().format(formatter);
-        String arrivalDateStr = getArrivalDate().format(formatter);
+        String departureDateStr = "";
+        String arrivalDateStr = "";
 
-        // Build search criteria string from the model's properties
+        try {
+            if (getDepartureDate() != null) {
+                departureDateStr = getDepartureDate().format(formatter);
+            }
+            if (getArrivalDate() != null) {
+                arrivalDateStr = getArrivalDate().format(formatter);
+            }
+        } catch (Exception e) {
+            System.out.println("Error formatting dates: " + e.getMessage());
+        }
+
         String searchCriteria = String.format("%s,%s,%s,%s,%d,%d,%b,%b",
-                getDepartureCountry(),
-                getArrivalCountry(),
+                getDepartureCountry() != null ? getDepartureCountry() : "",
+                getArrivalCountry() != null ? getArrivalCountry() : "",
                 departureDateStr,
                 arrivalDateStr,
                 getNumberOfPassengers(),
