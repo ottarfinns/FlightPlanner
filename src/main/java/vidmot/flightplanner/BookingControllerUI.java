@@ -27,6 +27,8 @@ public class BookingControllerUI {
     private Label arrivalTimeLabel;
     @FXML
     private Label priceLabel;
+    @FXML
+    private Label totalPriceLabel;
 
     // Flight Add-ons
     @FXML
@@ -62,15 +64,61 @@ public class BookingControllerUI {
     @FXML
     private Button payButton;
 
+    private double basePrice;
+    private double totalPrice;
+    private static final double LUGGAGE_PRICE = 20.0; // Price per piece of luggage
+    private static final double FIRST_CLASS_MULTIPLIER = 1.5; // 50% increase for first class
+    private static final double BUSINESS_CLASS_MULTIPLIER = 1.2; // 20% increase for business class
+
     public BookingControllerUI(Flight flight) {
         this.selectedFlight = flight;
         bookingModel = new BookingModel();
+        this.basePrice = flight.getPrice();
+        this.totalPrice = flight.getPrice();
     }
 
     @FXML
     private void initialize() {
         initializeBindings();
         initializeFlightInfo();
+        setupPriceListeners();
+        updateTotalPrice();
+    }
+
+    private void setupPriceListeners() {
+        // Listen for changes in luggage count
+        luggageSpinner.valueProperty().addListener((obs, oldVal, newVal) -> updateTotalPrice());
+
+        // Listen for changes in class selection
+        classComboBox.valueProperty().addListener((obs, oldVal, newVal) -> updateTotalPrice());
+
+        // Listen for changes in carry-on selection
+        carryOnCheckBox.selectedProperty().addListener((obs, oldVal, newVal) -> updateTotalPrice());
+    }
+
+    private void updateTotalPrice() {
+        double total = basePrice;
+        
+        // Add luggage cost
+        total += luggageSpinner.getValue() * LUGGAGE_PRICE;
+        
+        // Apply class multiplier
+        String selectedClass = classComboBox.getValue();
+        if (selectedClass != null) {
+            switch (selectedClass) {
+                case "First Class":
+                    total *= FIRST_CLASS_MULTIPLIER;
+                    break;
+                case "Business Class":
+                    total *= BUSINESS_CLASS_MULTIPLIER;
+                    break;
+                // Economy class has no multiplier
+            }
+        }
+        
+        // Update the total price and label
+        this.totalPrice = total;
+        totalPriceLabel.setText(String.format("%.2f kr.", total));
     }
 
     private void initializeBindings() {
@@ -83,7 +131,8 @@ public class BookingControllerUI {
         bookingModel.addressProperty().bind(addressField.textProperty());
 
         // Add ons
-        classComboBox.getItems().addAll("Economy", "Business", "First");
+        classComboBox.getItems().addAll("Economy Class", "Business Class", "First Class");
+        classComboBox.setValue("Economy Class"); // Set default value
         bookingModel.luggageProperty().bind(luggageSpinner.valueProperty());
         bookingModel.carryOnProperty().bind(carryOnCheckBox.selectedProperty());
         bookingModel.classTypeProperty().bind(classComboBox.valueProperty());
@@ -102,6 +151,6 @@ public class BookingControllerUI {
     }
 
     public void confirmBooking() {
-        bookingModel.confirmBooking();
+        bookingModel.confirmBooking(totalPrice);
     }
 }

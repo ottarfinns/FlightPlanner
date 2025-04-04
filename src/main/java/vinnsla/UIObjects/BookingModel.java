@@ -1,10 +1,11 @@
 package vinnsla.UIObjects;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import vinnsla.entities.Booking;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
+import vinnsla.entities.Booking;
+import vinnsla.entities.Customer;
 
 public class BookingModel {
     private Booking booking;
@@ -39,26 +40,22 @@ public class BookingModel {
         System.out.println("Booking saved");
     }
 
-    public void confirmBooking() {
+    public void confirmBooking(double totalPrice) {
         // If none of the fields are empty or null we can confirm the booking
         if (name.get().isEmpty() || nationalID.get().isEmpty() || passportNumber.get().isEmpty() || phoneNumber.get().isEmpty()
-                || country.get().isEmpty() || city.get().isEmpty() || address.get().isEmpty() || classType.get().isEmpty()) {
+                || country.get().isEmpty() || city.get().isEmpty() || address.get().isEmpty() || classType.get() == null || classType.get().isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Please fill in all fields");
             alert.setContentText("Please fill in all fields before confirming the booking");
             alert.showAndWait();
         } else {
-            System.out.println("Name: " + name.get());
-            System.out.println("National ID: " + nationalID.get());
-            System.out.println("Passport Number: " + passportNumber.get());
-            System.out.println("Phone Number: " + phoneNumber.get());
-            System.out.println("Country: " + country.get());
-            System.out.println("City: " + city.get());
-            System.out.println("Address: " + address.get());
-            System.out.println("Luggage: " + luggage.get());
-            System.out.println("Carry On: " + carryOn.get());
-            System.out.println("Class Type: " + classType.get());
+            Customer customer = new Customer();
+
+            // TODO: Bæta við eigindum í customer þegar búið er að setja upp customer klasana
+
+            booking.setCustomer(customer);
+            booking.setPrice(totalPrice);
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Booking confirmed");

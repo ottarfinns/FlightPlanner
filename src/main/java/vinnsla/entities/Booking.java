@@ -7,6 +7,8 @@ public class Booking {
     private Flight flight;
     private Customer customer;
 
+    private double price;
+
     private boolean carryon;
     private boolean firstClass;
 
@@ -49,6 +51,10 @@ public class Booking {
 
     public void setFirstClass(boolean firstClass) {
         this.firstClass = firstClass;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public static void main(String[] args) {
