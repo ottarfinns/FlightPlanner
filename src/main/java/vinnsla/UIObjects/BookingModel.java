@@ -4,6 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import vinnsla.entities.Booking;
+import javafx.scene.control.Alert;
 
 public class BookingModel {
     private Booking booking;
@@ -36,6 +37,35 @@ public class BookingModel {
 
     public void saveBooking() {
         System.out.println("Booking saved");
+    }
+
+    public void confirmBooking() {
+        // If none of the fields are empty or null we can confirm the booking
+        if (name.get().isEmpty() || nationalID.get().isEmpty() || passportNumber.get().isEmpty() || phoneNumber.get().isEmpty()
+                || country.get().isEmpty() || city.get().isEmpty() || address.get().isEmpty() || classType.get().isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Please fill in all fields");
+            alert.setContentText("Please fill in all fields before confirming the booking");
+            alert.showAndWait();
+        } else {
+            System.out.println("Name: " + name.get());
+            System.out.println("National ID: " + nationalID.get());
+            System.out.println("Passport Number: " + passportNumber.get());
+            System.out.println("Phone Number: " + phoneNumber.get());
+            System.out.println("Country: " + country.get());
+            System.out.println("City: " + city.get());
+            System.out.println("Address: " + address.get());
+            System.out.println("Luggage: " + luggage.get());
+            System.out.println("Carry On: " + carryOn.get());
+            System.out.println("Class Type: " + classType.get());
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Booking confirmed");
+            alert.setHeaderText("Booking confirmed");
+            alert.setContentText("Your booking has been confirmed");
+            alert.showAndWait();
+        }
     }
 
     public SimpleStringProperty nameProperty() {
@@ -117,5 +147,5 @@ public class BookingModel {
     public String getClassType() {
         return classType.get();
     }
-    
+
 }

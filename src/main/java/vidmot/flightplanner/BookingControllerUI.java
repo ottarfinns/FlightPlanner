@@ -4,9 +4,13 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import vinnsla.UIObjects.BookingModel;
 import vinnsla.entities.Flight;
+import java.text.SimpleDateFormat;
 
 public class BookingControllerUI {
     private BookingModel bookingModel;
+    private Flight selectedFlight;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     // Flight Information Labels
     @FXML
@@ -58,10 +62,15 @@ public class BookingControllerUI {
     @FXML
     private Button payButton;
 
-    public BookingControllerUI() {
+    public BookingControllerUI(Flight flight) {
+        this.selectedFlight = flight;
         bookingModel = new BookingModel();
+    }
 
+    @FXML
+    private void initialize() {
         initializeBindings();
+        initializeFlightInfo();
     }
 
     private void initializeBindings() {
@@ -80,7 +89,19 @@ public class BookingControllerUI {
         bookingModel.classTypeProperty().bind(classComboBox.valueProperty());
     }
 
-    private void initializeFlightInfo(Flight flight) {
+    private void initializeFlightInfo() {
+        if (selectedFlight != null) {
+            flightNumberLabel.setText(selectedFlight.getFlightNumber());
+            airlineLabel.setText(selectedFlight.getAirline());
+            departureLabel.setText(selectedFlight.getDepartureCountry());
+            arrivalLabel.setText(selectedFlight.getArrivalCountry());
+            departureTimeLabel.setText(dateFormat.format(selectedFlight.getDepartureDate()) + " " + selectedFlight.getDepartureTime());
+            arrivalTimeLabel.setText(dateFormat.format(selectedFlight.getArrivalDate()) + " " + selectedFlight.getArrivalTime());
+            priceLabel.setText(String.format("%.2f kr.", selectedFlight.getPrice()));
+        }
+    }
 
+    public void confirmBooking() {
+        bookingModel.confirmBooking();
     }
 }

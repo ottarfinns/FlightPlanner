@@ -6,11 +6,16 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import vinnsla.UIObjects.FlightModel;
 import vinnsla.entities.Flight;
 import vinnsla.service.FlightServiceInterface;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -107,7 +112,7 @@ public class FlightControllerUI {
         airlineColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAirline()));
         departureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureCountry()));
         arrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalCountry()));
-        
+
         // Format dates and times for display
         departureTimeColumn.setCellValueFactory(cellData -> {
             Date departureDate = cellData.getValue().getDepartureDate();
@@ -117,7 +122,7 @@ public class FlightControllerUI {
             }
             return new SimpleStringProperty("");
         });
-        
+
         arrivalTimeColumn.setCellValueFactory(cellData -> {
             Date arrivalDate = cellData.getValue().getArrivalDate();
             String arrivalTime = cellData.getValue().getArrivalTime();
@@ -126,7 +131,7 @@ public class FlightControllerUI {
             }
             return new SimpleStringProperty("");
         });
-        
+
         priceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
 
         // Initially disable the book button
@@ -152,13 +157,26 @@ public class FlightControllerUI {
     @FXML
     private void onBookFlight(ActionEvent event) {
         if (selectedFlight != null) {
-            System.out.println("Booking flight: " + selectedFlight.getFlightNumber());
-            // Show booking confirmation dialog
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Flight Booking");
-            alert.setHeaderText("Flight Booking Confirmation");
-            alert.setContentText("Flight " + selectedFlight.getFlightNumber() + " has been booked successfully!");
-            alert.showAndWait();
+            try {
+                // Load the booking view
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Booking-View.fxml"));
+
+                // Create the controller with the selected flight
+                BookingControllerUI bookingController = new BookingControllerUI(selectedFlight);
+                loader.setController(bookingController);
+
+                // Load the scene
+                Parent bookingRoot = loader.load();
+                Scene bookingScene = new Scene(bookingRoot);
+
+                // Get the current stage and set the new scene
+                Stage currentStage = (Stage) bookFlightButton.getScene().getWindow();
+                currentStage.setScene(bookingScene);
+                currentStage.setTitle("Flight Booking");
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

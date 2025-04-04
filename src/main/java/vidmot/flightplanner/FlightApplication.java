@@ -26,7 +26,7 @@ public class FlightApplication extends Application {
         controller.setFlightService(flightService);
 
         // Create the scene with the loaded FXML
-        Scene scene = new Scene(fxmlLoader.getRoot(), 600, 700);
+        Scene scene = new Scene(fxmlLoader.getRoot(), 600, 900);
         stage.setTitle("Flight Planner - 3F");
         stage.setScene(scene);
         stage.show();
