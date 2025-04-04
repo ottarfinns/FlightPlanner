@@ -78,11 +78,13 @@
 
                 <TableView fx:id="flightTableView" VBox.vgrow="ALWAYS">
                     <columns>
-                        <TableColumn fx:id="flightNumberColumn" text="Flight Number"/>
-                        <TableColumn fx:id="airlineColumn" text="Airline"/>
-                        <TableColumn fx:id="departureColumn" text="Departure"/>
-                        <TableColumn fx:id="arrivalColumn" text="Arrival"/>
-                        <TableColumn fx:id="priceColumn" text="Price"/>
+                        <TableColumn fx:id="flightNumberColumn" text="Flight Number" />
+                        <TableColumn fx:id="airlineColumn" text="Airline" />
+                        <TableColumn fx:id="departureColumn" text="Departure" />
+                        <TableColumn fx:id="arrivalColumn" text="Arrival" />
+                        <TableColumn fx:id="departureTimeColumn" text="Departure Time" />
+                        <TableColumn fx:id="arrivalTimeColumn" text="Arrival Time" />
+                        <TableColumn fx:id="priceColumn" text="Price" />
                     </columns>
                 </TableView>
             </children>

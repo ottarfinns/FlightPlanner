@@ -69,8 +69,8 @@ public class FlightController {
         System.out.println("One Way: " + isOneWay);
         System.out.println("Direct Flight: " + isDirectFlight);
 
-        //return flightService.searchFlights(searchCriteria);
-        return flightService.getAllFlights();
+        return flightService.searchFlights(searchCriteria);
+        //return flightService.getAllFlights();
     }
 
     public static void main(String[] args) {

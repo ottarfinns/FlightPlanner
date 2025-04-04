@@ -11,11 +11,14 @@ import vinnsla.UIObjects.FlightModel;
 import vinnsla.entities.Flight;
 import vinnsla.service.FlightServiceInterface;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class FlightControllerUI {
     private FlightModel flightModel;
     private FlightServiceInterface flightService;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     @FXML
     private ComboBox<String> dCountryCBox;
@@ -46,6 +49,10 @@ public class FlightControllerUI {
     private TableColumn<Flight, String> departureColumn;
     @FXML
     private TableColumn<Flight, String> arrivalColumn;
+    @FXML
+    private TableColumn<Flight, String> departureTimeColumn;
+    @FXML
+    private TableColumn<Flight, String> arrivalTimeColumn;
     @FXML
     private TableColumn<Flight, Double> priceColumn;
 
@@ -86,6 +93,18 @@ public class FlightControllerUI {
         airlineColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAirline()));
         departureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureCountry()));
         arrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalCountry()));
+        
+        // Format dates for display
+        departureTimeColumn.setCellValueFactory(cellData -> {
+            Date departureTime = cellData.getValue().getDepartureTime();
+            return new SimpleStringProperty(departureTime != null ? dateFormat.format(departureTime) : "");
+        });
+        
+        arrivalTimeColumn.setCellValueFactory(cellData -> {
+            Date arrivalTime = cellData.getValue().getArrivalTime();
+            return new SimpleStringProperty(arrivalTime != null ? dateFormat.format(arrivalTime) : "");
+        });
+        
         priceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
     }
 

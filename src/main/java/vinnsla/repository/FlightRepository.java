@@ -57,6 +57,66 @@ public class FlightRepository implements FlightRepositoryInterface {
 
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(createFlightsTable);
+            populateSampleData();
+        }
+    }
+
+    private void populateSampleData() {
+        try {
+            // Check if the table is empty
+            String checkEmpty = "SELECT COUNT(*) FROM flights";
+            try (Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery(checkEmpty)) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return; // Table already has data
+                }
+            }
+
+            // Sample flights
+            String[] airlines = {"Icelandair", "WOW Air", "Delta", "British Airways", "Lufthansa"};
+            String[] departureCountries = {"Iceland", "United States", "United Kingdom", "Germany", "France"};
+            String[] arrivalCountries = {"United States", "Iceland", "Germany", "France", "United Kingdom"};
+            String[] departureAirports = {"KEF", "JFK", "LHR", "FRA", "CDG"};
+            String[] arrivalAirports = {"JFK", "KEF", "FRA", "CDG", "LHR"};
+
+            // Current time for base calculations
+            long currentTime = System.currentTimeMillis();
+
+            // Insert sample flights
+            for (int i = 0; i < 10; i++) {
+                String airline = airlines[i % airlines.length];
+                String flightNumber = airline.substring(0, 2).toUpperCase() + (100 + i);
+
+                // Create departure and arrival times (spaced 4-8 hours apart)
+                long departureTime = currentTime + (i * 86400000L); // One day apart
+                long arrivalTime = departureTime + (4 + (i % 4)) * 3600000L; // 4-7 hours later
+
+                String insertFlight = """
+                    INSERT INTO flights (
+                        flight_number, airline, departure_country, arrival_country,
+                        departure_airport, arrival_airport, departure_time, arrival_time,
+                        total_rows, total_cols, price
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """;
+
+                try (PreparedStatement pstmt = connection.prepareStatement(insertFlight)) {
+                    pstmt.setString(1, flightNumber);
+                    pstmt.setString(2, airline);
+                    pstmt.setString(3, departureCountries[i % departureCountries.length]);
+                    pstmt.setString(4, arrivalCountries[i % arrivalCountries.length]);
+                    pstmt.setString(5, departureAirports[i % departureAirports.length]);
+                    pstmt.setString(6, arrivalAirports[i % arrivalAirports.length]);
+                    pstmt.setTimestamp(7, new Timestamp(departureTime));
+                    pstmt.setTimestamp(8, new Timestamp(arrivalTime));
+                    pstmt.setInt(9, 20); // total_rows
+                    pstmt.setInt(10, 6); // total_cols
+                    pstmt.setDouble(11, 500 + (i * 100)); // price from 500 to 1400
+
+                    pstmt.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -100,7 +160,7 @@ public class FlightRepository implements FlightRepositoryInterface {
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, flightNumber);
-            
+
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     return createFlightFromResultSet(rs);
@@ -169,6 +229,8 @@ public class FlightRepository implements FlightRepositoryInterface {
             params.add(maxPrice);
         }
 
+        System.out.println("SQL: " + sql.toString());
+
         List<Flight> flights = new ArrayList<>();
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql.toString())) {
@@ -195,7 +257,7 @@ public class FlightRepository implements FlightRepositoryInterface {
 
         try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
-            
+
             while (rs.next()) {
                 flights.add(createFlightFromResultSet(rs));
             }
