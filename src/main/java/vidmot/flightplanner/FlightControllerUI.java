@@ -57,11 +57,17 @@ public class FlightControllerUI {
     @FXML
     private TableColumn<Flight, Double> priceColumn;
 
+    @FXML
+    private Button bookFlightButton;
+
+    private Flight selectedFlight;
+
     public void setFlightService(FlightServiceInterface flightService) {
         this.flightService = flightService;
         this.flightModel = new FlightModel(flightService);
         initializeBindings();
         setupTableView();
+        setupSelectionListener();
     }
 
     private void initializeBindings() {
@@ -86,6 +92,13 @@ public class FlightControllerUI {
 
         // Binda fjölda farþega
         flightModel.numberOfPassengersProperty().bind(passengerSpinner.valueProperty());
+    }
+
+    private void setupSelectionListener() {
+        flightTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            selectedFlight = newSelection;
+            bookFlightButton.setDisable(newSelection == null);
+        });
     }
 
     private void setupTableView() {
@@ -115,6 +128,9 @@ public class FlightControllerUI {
         });
         
         priceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
+
+        // Initially disable the book button
+        bookFlightButton.setDisable(true);
     }
 
     public void onSearch(ActionEvent actionEvent) {
@@ -131,5 +147,19 @@ public class FlightControllerUI {
         // Update the TableView with the search results
         ObservableList<Flight> flightData = FXCollections.observableArrayList(results);
         flightTableView.setItems(flightData);
+    }
+
+    @FXML
+    private void onBookFlight(ActionEvent event) {
+        if (selectedFlight != null) {
+            // TODO: Implement booking logic
+            System.out.println("Booking flight: " + selectedFlight.getFlightNumber());
+            // Show booking confirmation dialog
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Flight Booking");
+            alert.setHeaderText("Flight Booking Confirmation");
+            alert.setContentText("Flight " + selectedFlight.getFlightNumber() + " has been booked successfully!");
+            alert.showAndWait();
+        }
     }
 }

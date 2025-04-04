@@ -87,6 +87,10 @@
                         <TableColumn fx:id="priceColumn" text="Price" />
                     </columns>
                 </TableView>
+
+                <HBox alignment="CENTER_RIGHT" spacing="10" VBox.vgrow="NEVER">
+                    <Button fx:id="bookFlightButton" text="Book Flight" onAction="#onBookFlight" disable="true"/>
+                </HBox>
             </children>
         </VBox>
     </children>
