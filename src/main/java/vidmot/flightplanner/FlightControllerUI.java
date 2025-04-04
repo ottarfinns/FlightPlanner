@@ -152,7 +152,6 @@ public class FlightControllerUI {
     @FXML
     private void onBookFlight(ActionEvent event) {
         if (selectedFlight != null) {
-            // TODO: Implement booking logic
             System.out.println("Booking flight: " + selectedFlight.getFlightNumber());
             // Show booking confirmation dialog
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
