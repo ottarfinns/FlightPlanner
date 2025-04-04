@@ -18,7 +18,8 @@ import java.util.List;
 public class FlightControllerUI {
     private FlightModel flightModel;
     private FlightServiceInterface flightService;
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     @FXML
     private ComboBox<String> dCountryCBox;
@@ -94,15 +95,23 @@ public class FlightControllerUI {
         departureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureCountry()));
         arrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalCountry()));
         
-        // Format dates for display
+        // Format dates and times for display
         departureTimeColumn.setCellValueFactory(cellData -> {
-            Date departureTime = cellData.getValue().getDepartureTime();
-            return new SimpleStringProperty(departureTime != null ? dateFormat.format(departureTime) : "");
+            Date departureDate = cellData.getValue().getDepartureDate();
+            String departureTime = cellData.getValue().getDepartureTime();
+            if (departureDate != null && departureTime != null) {
+                return new SimpleStringProperty(dateFormat.format(departureDate) + " " + departureTime);
+            }
+            return new SimpleStringProperty("");
         });
         
         arrivalTimeColumn.setCellValueFactory(cellData -> {
-            Date arrivalTime = cellData.getValue().getArrivalTime();
-            return new SimpleStringProperty(arrivalTime != null ? dateFormat.format(arrivalTime) : "");
+            Date arrivalDate = cellData.getValue().getArrivalDate();
+            String arrivalTime = cellData.getValue().getArrivalTime();
+            if (arrivalDate != null && arrivalTime != null) {
+                return new SimpleStringProperty(dateFormat.format(arrivalDate) + " " + arrivalTime);
+            }
+            return new SimpleStringProperty("");
         });
         
         priceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());

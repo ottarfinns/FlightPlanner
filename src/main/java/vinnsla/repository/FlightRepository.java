@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
+import java.text.SimpleDateFormat;
 
 public class FlightRepository implements FlightRepositoryInterface {
     private static final String DB_DIR = "data";
@@ -47,8 +48,10 @@ public class FlightRepository implements FlightRepositoryInterface {
                 arrival_country TEXT NOT NULL,
                 departure_airport TEXT NOT NULL,
                 arrival_airport TEXT NOT NULL,
-                departure_time TIMESTAMP NOT NULL,
-                arrival_time TIMESTAMP NOT NULL,
+                departure_date DATE NOT NULL,
+                arrival_date DATE NOT NULL,
+                departure_time TEXT NOT NULL,
+                arrival_time TEXT NOT NULL,
                 total_rows INTEGER NOT NULL,
                 total_cols INTEGER NOT NULL,
                 price REAL NOT NULL
@@ -78,25 +81,30 @@ public class FlightRepository implements FlightRepositoryInterface {
             String[] arrivalCountries = {"United States", "Iceland", "Germany", "France", "United Kingdom"};
             String[] departureAirports = {"KEF", "JFK", "LHR", "FRA", "CDG"};
             String[] arrivalAirports = {"JFK", "KEF", "FRA", "CDG", "LHR"};
+            String[] times = {"08:00", "12:00", "15:00", "18:00", "21:00"};
 
-            // Current time for base calculations
-            long currentTime = System.currentTimeMillis();
+            // Current date for base calculations
+            long currentDate = System.currentTimeMillis();
 
             // Insert sample flights
             for (int i = 0; i < 10; i++) {
                 String airline = airlines[i % airlines.length];
                 String flightNumber = airline.substring(0, 2).toUpperCase() + (100 + i);
 
-                // Create departure and arrival times (spaced 4-8 hours apart)
-                long departureTime = currentTime + (i * 86400000L); // One day apart
-                long arrivalTime = departureTime + (4 + (i % 4)) * 3600000L; // 4-7 hours later
+                // Create dates (one day apart)
+                Date departureDate = new Date(currentDate + (i * 86400000L));
+                Date arrivalDate = new Date(currentDate + (i * 86400000L));
+
+                // Select times
+                String departureTime = times[i % times.length];
+                String arrivalTime = times[(i + 2) % times.length]; // 2 time slots later
 
                 String insertFlight = """
                     INSERT INTO flights (
                         flight_number, airline, departure_country, arrival_country,
-                        departure_airport, arrival_airport, departure_time, arrival_time,
-                        total_rows, total_cols, price
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        departure_airport, arrival_airport, departure_date, arrival_date,
+                        departure_time, arrival_time, total_rows, total_cols, price
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """;
 
                 try (PreparedStatement pstmt = connection.prepareStatement(insertFlight)) {
@@ -106,11 +114,13 @@ public class FlightRepository implements FlightRepositoryInterface {
                     pstmt.setString(4, arrivalCountries[i % arrivalCountries.length]);
                     pstmt.setString(5, departureAirports[i % departureAirports.length]);
                     pstmt.setString(6, arrivalAirports[i % arrivalAirports.length]);
-                    pstmt.setTimestamp(7, new Timestamp(departureTime));
-                    pstmt.setTimestamp(8, new Timestamp(arrivalTime));
-                    pstmt.setInt(9, 20); // total_rows
-                    pstmt.setInt(10, 6); // total_cols
-                    pstmt.setDouble(11, 500 + (i * 100)); // price from 500 to 1400
+                    pstmt.setDate(7, new java.sql.Date(departureDate.getTime()));
+                    pstmt.setDate(8, new java.sql.Date(arrivalDate.getTime()));
+                    pstmt.setString(9, departureTime);
+                    pstmt.setString(10, arrivalTime);
+                    pstmt.setInt(11, 20); // total_rows
+                    pstmt.setInt(12, 6); // total_cols
+                    pstmt.setDouble(13, 500 + (i * 100)); // price from 500 to 1400
 
                     pstmt.executeUpdate();
                 }
@@ -129,9 +139,9 @@ public class FlightRepository implements FlightRepositoryInterface {
         String sql = """
             INSERT INTO flights (
                 flight_number, airline, departure_country, arrival_country,
-                departure_airport, arrival_airport, departure_time, arrival_time,
-                total_rows, total_cols, price
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                departure_airport, arrival_airport, departure_date, arrival_date,
+                departure_time, arrival_time, total_rows, total_cols, price
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """;
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -141,11 +151,13 @@ public class FlightRepository implements FlightRepositoryInterface {
             pstmt.setString(4, flight.getArrivalCountry());
             pstmt.setString(5, flight.getDepartureAirport());
             pstmt.setString(6, flight.getArrivalAirport());
-            pstmt.setTimestamp(7, new Timestamp(flight.getDepartureTime().getTime()));
-            pstmt.setTimestamp(8, new Timestamp(flight.getArrivalTime().getTime()));
-            pstmt.setInt(9, flight.getTotalRows());
-            pstmt.setInt(10, flight.getTotalCols());
-            pstmt.setDouble(11, flight.getPrice());
+            pstmt.setDate(7, new java.sql.Date(flight.getDepartureDate().getTime()));
+            pstmt.setDate(8, new java.sql.Date(flight.getArrivalDate().getTime()));
+            pstmt.setString(9, flight.getDepartureTime());
+            pstmt.setString(10, flight.getArrivalTime());
+            pstmt.setInt(11, flight.getTotalRows());
+            pstmt.setInt(12, flight.getTotalCols());
+            pstmt.setDouble(13, flight.getPrice());
 
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -215,13 +227,29 @@ public class FlightRepository implements FlightRepositoryInterface {
         }
 
         if (departureDate != null && !departureDate.isEmpty()) {
-            sql.append(" AND DATE(departure_time) = ?");
-            params.add(departureDate);
+            try {
+                // Convert the date string to a timestamp at the start of the day
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date utilDate = sdf.parse(departureDate);
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                sql.append(" AND departure_date >= ?");
+                params.add(sqlDate);
+            } catch (Exception e) {
+                System.out.println("Error parsing departure date: " + e.getMessage());
+            }
         }
 
         if (arrivalDate != null && !arrivalDate.isEmpty()) {
-            sql.append(" AND DATE(arrival_time) = ?");
-            params.add(arrivalDate);
+            try {
+                // Convert the date string to a timestamp at the start of the day
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date utilDate = sdf.parse(arrivalDate);
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                sql.append(" AND arrival_date >= ?");
+                params.add(sqlDate);
+            } catch (Exception e) {
+                System.out.println("Error parsing arrival date: " + e.getMessage());
+            }
         }
 
         if (maxPrice > 0) {
@@ -229,7 +257,12 @@ public class FlightRepository implements FlightRepositoryInterface {
             params.add(maxPrice);
         }
 
-        System.out.println("SQL: " + sql.toString());
+        // Print the complete SQL query with parameter values
+        String completeQuery = sql.toString();
+        for (Object param : params) {
+            completeQuery = completeQuery.replaceFirst("\\?", "'" + param.toString() + "'");
+        }
+        System.out.println("Complete SQL Query: " + completeQuery);
 
         List<Flight> flights = new ArrayList<>();
 
@@ -276,8 +309,10 @@ public class FlightRepository implements FlightRepositoryInterface {
             rs.getString("arrival_country"),
             rs.getString("departure_airport"),
             rs.getString("arrival_airport"),
-            rs.getTimestamp("arrival_time"),
-            rs.getTimestamp("departure_time"),
+            rs.getDate("departure_date"),
+            rs.getDate("arrival_date"),
+            rs.getString("departure_time"),
+            rs.getString("arrival_time"),
             rs.getInt("total_rows"),
             rs.getInt("total_cols"),
             rs.getDouble("price")
