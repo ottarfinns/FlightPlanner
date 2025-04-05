@@ -4,7 +4,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import vinnsla.UIObjects.BookingModel;
 import vinnsla.entities.Flight;
+
 import java.text.SimpleDateFormat;
+import java.util.Optional;
 
 public class BookingControllerUI {
     private BookingModel bookingModel;
@@ -66,9 +68,9 @@ public class BookingControllerUI {
 
     private double basePrice;
     private double totalPrice;
-    private static final double LUGGAGE_PRICE = 20.0; // Price per piece of luggage
-    private static final double FIRST_CLASS_MULTIPLIER = 1.5; // 50% increase for first class
-    private static final double BUSINESS_CLASS_MULTIPLIER = 1.2; // 20% increase for business class
+    private static final double LUGGAGE_PRICE = 20.0;
+    private static final double FIRST_CLASS_MULTIPLIER = 1.5;
+    private static final double BUSINESS_CLASS_MULTIPLIER = 1.2;
 
     public BookingControllerUI(Flight flight) {
         this.selectedFlight = flight;
@@ -98,10 +100,10 @@ public class BookingControllerUI {
 
     private void updateTotalPrice() {
         double total = basePrice;
-        
+
         // Add luggage cost
         total += luggageSpinner.getValue() * LUGGAGE_PRICE;
-        
+
         // Apply class multiplier
         String selectedClass = classComboBox.getValue();
         if (selectedClass != null) {
@@ -115,7 +117,7 @@ public class BookingControllerUI {
                 // Economy class has no multiplier
             }
         }
-        
+
         // Update the total price and label
         this.totalPrice = total;
         totalPriceLabel.setText(String.format("%.2f kr.", total));
@@ -152,5 +154,16 @@ public class BookingControllerUI {
 
     public void confirmBooking() {
         bookingModel.confirmBooking(totalPrice);
+    }
+
+    public void onPickSeats() {
+        SeatSelectionControllerUI dialog = new SeatSelectionControllerUI(selectedFlight);
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(seatNumber -> {
+            // Here you can update the booking with the selected seat
+            System.out.println("Selected seat: " + seatNumber);
+            // TODO: Update the booking model with the selected seat
+        });
     }
 }

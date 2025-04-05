@@ -80,7 +80,7 @@
 
                     <CheckBox fx:id="carryOnCheckBox" text="Carry-on Baggage" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
 
-                    <Button fx:id="pickSeatsButton" prefWidth="200" text="Pick Seats" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+                    <Button fx:id="pickSeatsButton" prefWidth="200" text="Pick Seats" onAction="#onPickSeats" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="3" />
                <columnConstraints>
                   <ColumnConstraints />
                   <ColumnConstraints />

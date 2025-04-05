@@ -179,4 +179,8 @@ public class FlightControllerUI {
             }
         }
     }
+
+    public void onSelectSeat() {
+
+    }
 }
