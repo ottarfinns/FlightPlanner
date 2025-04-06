@@ -9,6 +9,7 @@ import vinnsla.controller.BookingController;
 import vinnsla.entities.Booking;
 import vinnsla.entities.Flight;
 import vinnsla.entities.Passenger;
+import vinnsla.entities.SeatingArrangement;
 
 public class BookingModel {
     private BookingController bookingController;
@@ -89,6 +90,10 @@ public class BookingModel {
             }
 
         }
+    }
+
+    public SeatingArrangement getBookedSeats() {
+        return bookingController.getBookedSeats(flight.getFlightNumber());
     }
 
     public SimpleStringProperty nameProperty() {

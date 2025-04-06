@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import vinnsla.UIObjects.FlightModel;
 import vinnsla.entities.Flight;
+import vinnsla.repository.BookingRepository;
 import vinnsla.service.FlightServiceInterface;
 
 import java.io.IOException;
@@ -191,7 +192,9 @@ public class FlightControllerUI {
                 // Load the booking view
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Booking-View.fxml"));
 
+                // TODO: Klára þetta
                 // Create the controller with the selected flight
+                selectedFlight.setSeatingArrangement(BookingRepository.getInstance().getBookedSeats(selectedFlight.getFlightNumber()));
                 BookingControllerUI bookingController = new BookingControllerUI(selectedFlight);
                 loader.setController(bookingController);
 

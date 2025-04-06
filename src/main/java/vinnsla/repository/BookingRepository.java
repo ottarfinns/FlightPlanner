@@ -2,6 +2,8 @@ package vinnsla.repository;
 
 import vinnsla.entities.Booking;
 import vinnsla.entities.SeatingArrangement;
+import vinnsla.entities.Flight;
+import vinnsla.entities.SeatNumber;
 
 import java.io.File;
 import java.sql.*;
@@ -135,7 +137,41 @@ public class BookingRepository implements BookingRepositoryInterface {
 
     @Override
     public SeatingArrangement getBookedSeats(String flightNumber) {
-        return null;
+        if (flightNumber == null) {
+            return null;
+        }
+
+        // First get the flight to get its dimensions
+        Flight flight = FlightRepository.getInstance().searchFlightNumber(flightNumber);
+        if (flight == null) {
+            return null;
+        }
+
+        // Create a new seating arrangement with the flight's dimensions
+        SeatingArrangement seating = new SeatingArrangement(flight.getTotalRows(), flight.getTotalCols());
+
+        String sql = """
+                SELECT seat_number FROM bookedSeats WHERE flight_number = ?
+                """;
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, flightNumber);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    String seatNumber = rs.getString("seat_number");
+                    try {
+                        SeatNumber seatNum = SeatNumber.fromString(seatNumber);
+                        seating.bookSeat(seatNum);
+                    } catch (IllegalArgumentException e) {
+                        System.err.println("Invalid seat number format: " + seatNumber);
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return seating;
     }
 
 

@@ -1,6 +1,7 @@
 package vinnsla.controller;
 
 import vinnsla.entities.Booking;
+import vinnsla.entities.SeatingArrangement;
 import vinnsla.service.BookingServiceInterface;
 
 public class BookingController {
@@ -16,6 +17,10 @@ public class BookingController {
 
     public boolean bookSeat(String flightNumber, String seatNumber) {
         return bookingService.bookSeat(flightNumber, seatNumber);
+    }
+
+    public SeatingArrangement getBookedSeats(String flightNumber) {
+        return bookingService.getBookedSeats(flightNumber);
     }
 
 /*

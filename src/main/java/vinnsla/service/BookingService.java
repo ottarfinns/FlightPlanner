@@ -1,7 +1,7 @@
 package vinnsla.service;
 
 import vinnsla.entities.Booking;
-import vinnsla.entities.Seat;
+import vinnsla.entities.SeatingArrangement;
 import vinnsla.repository.BookingRepository;
 import vinnsla.repository.BookingRepositoryInterface;
 
@@ -21,6 +21,11 @@ public class BookingService implements BookingServiceInterface {
     @Override
     public boolean bookSeat(String flightNumber, String seatNumber) {
        return bookingRepository.bookSeat(flightNumber, seatNumber);
+    }
+
+    @Override
+    public SeatingArrangement getBookedSeats(String flightNumber) {
+        return bookingRepository.getBookedSeats(flightNumber);
     }
 
     /*@Override
