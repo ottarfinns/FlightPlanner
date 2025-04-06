@@ -180,12 +180,11 @@ public class BookingControllerUI {
 
             Optional<ButtonType> result = confirmDialog.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                // Cancel the old seat
                 SeatNumber oldSeatNumber = SeatNumber.fromString(selectedSeat);
                 seating.cancelSeat(oldSeatNumber);
                 selectedFlight.setSeatingArrangement(seating);
             } else {
-                return; // User chose not to change seat
+                return;
             }
         }
 
@@ -197,7 +196,6 @@ public class BookingControllerUI {
             // Update the selected seat
             selectedSeat = seatNumber;
             System.out.println("Selected seat: " + seatNumber);
-            // TODO: Update the booking model with the selected seat
         });
     }
 

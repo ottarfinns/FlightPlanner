@@ -45,6 +45,8 @@ public class FlightControllerUI {
     @FXML
     private CheckBox directBox;
     @FXML
+    private CheckBox maxPriceBox;
+    @FXML
     private TableView<Flight> flightTableView;
 
     @FXML
@@ -73,6 +75,7 @@ public class FlightControllerUI {
         initializeBindings();
         setupTableView();
         setupSelectionListener();
+        setupBoxListeners();
     }
 
     private void initializeBindings() {
@@ -91,10 +94,6 @@ public class FlightControllerUI {
         flightModel.oneWayProperty().bind(oneWayBox.selectedProperty());
         flightModel.directFlightProperty().bind(directBox.selectedProperty());
 
-        // Binda verðið
-        flightModel.maxPriceProperty().bind(maxPriceSlider.valueProperty());
-        priceLabel.textProperty().bind(flightModel.maxPriceProperty().asString().concat(" kr."));
-
         // Binda fjölda farþega
         flightModel.numberOfPassengersProperty().bind(passengerSpinner.valueProperty());
     }
@@ -103,6 +102,35 @@ public class FlightControllerUI {
         flightTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             selectedFlight = newSelection;
             bookFlightButton.setDisable(newSelection == null);
+        });
+
+
+    }
+
+    private void setupBoxListeners() {
+        oneWayBox.selectedProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection) {
+                rDatePicker.setDisable(true);
+            }
+            else {
+                rDatePicker.setDisable(false);
+            }
+        });
+
+        maxPriceBox.selectedProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection) {
+                maxPriceSlider.setDisable(false);
+                // Initialize the binding when slider is enabled
+                flightModel.maxPriceProperty().bind(maxPriceSlider.valueProperty());
+                priceLabel.textProperty().bind(flightModel.maxPriceProperty().asString().concat(" kr."));
+            }
+            else {
+                maxPriceSlider.setDisable(true);
+                // Unbind when slider is disabled
+                flightModel.maxPriceProperty().unbind();
+                priceLabel.textProperty().unbind();
+                priceLabel.setText("0 kr."); // Reset price label
+            }
         });
     }
 
