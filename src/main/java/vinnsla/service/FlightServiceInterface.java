@@ -10,4 +10,5 @@ public interface FlightServiceInterface {
     Flight searchFlightNumber(String flightNumber);
     boolean removeFlight(String flightNumber);
     List<Flight> searchFlights(String args);
+    List<Flight> getAllFlights();
 }

@@ -5,4 +5,9 @@ module vidmot.flightplanner {
 
     opens vidmot.flightplanner to javafx.fxml;
     exports vidmot.flightplanner;
+    exports vinnsla.controller;
+    exports vinnsla.entities;
+    exports vinnsla.repository;
+    exports vinnsla.service;
+    exports vinnsla.UIObjects;
 }

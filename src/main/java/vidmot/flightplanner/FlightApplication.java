@@ -4,17 +4,37 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import vinnsla.service.FlightService;
+import vinnsla.service.FlightServiceInterface;
 
 import java.io.IOException;
 
 public class FlightApplication extends Application {
+    private static FlightServiceInterface flightService;
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(FlightApplication.class.getResource("hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Hello!");
+        // Set up the service
+        flightService = new FlightService();
+
+        // Create the FXML loader
+        FXMLLoader fxmlLoader = new FXMLLoader(FlightApplication.class.getResource("FlightPlanner-View.fxml"));
+
+        // Load the FXML first
+        fxmlLoader.load();
+
+        // Then get the controller and set the service
+        FlightControllerUI controller = fxmlLoader.getController();
+        controller.setFlightService(flightService);
+
+        // Create the scene with the loaded FXML
+        Scene scene = new Scene(fxmlLoader.getRoot(), 600, 900);
+        stage.setTitle("Flight Planner - 3F");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static FlightServiceInterface getFlightService() {
+        return flightService;
     }
 
     public static void main(String[] args) {
