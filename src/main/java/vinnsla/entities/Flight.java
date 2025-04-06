@@ -137,6 +137,14 @@ public class Flight {
         return price;
     }
 
+    public SeatingArrangement getSeatingArrangement() {
+        return seating;
+    }
+
+    public void setSeatingArrangement(SeatingArrangement seatingArrangement) {
+        this.seating = seatingArrangement;
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

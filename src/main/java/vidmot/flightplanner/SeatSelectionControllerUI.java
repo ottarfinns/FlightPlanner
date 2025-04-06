@@ -5,10 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import vinnsla.entities.Flight;
+import vinnsla.entities.Seat;
+import vinnsla.entities.SeatNumber;
+import vinnsla.entities.SeatingArrangement;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class SeatSelectionControllerUI extends Dialog<String> {
     @FXML
@@ -16,16 +17,11 @@ public class SeatSelectionControllerUI extends Dialog<String> {
 
     private CheckBox selectedSeat;
     private Flight flight;
-    private List<String> occupiedSeats;
+    private SeatingArrangement seating;
 
     public SeatSelectionControllerUI(Flight flight) {
         this.flight = flight;
-        this.occupiedSeats = new ArrayList<>();
-        // Add some sample occupied seats
-        // TODO: Get occupied seats from database. Need to have all occupied seats connected to a flight
-        occupiedSeats.add("1A");
-        occupiedSeats.add("2B");
-        occupiedSeats.add("3C");
+        this.seating = flight.getSeatingArrangement();
 
         setTitle("Select Your Seat");
         setHeaderText("Please select your preferred seat");
@@ -42,7 +38,10 @@ public class SeatSelectionControllerUI extends Dialog<String> {
 
             // Handle the confirm and cancel
             setResultConverter(b -> {
-                if (b.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
+                if (b.getButtonData() == ButtonBar.ButtonData.OK_DONE && selectedSeat != null) {
+                    SeatNumber seatNumber = SeatNumber.fromString(selectedSeat.getUserData().toString());
+                    seating.bookSeat(seatNumber);
+                    seating.printSeating();
                     return (String) selectedSeat.getUserData();
                 }
                 return null;
@@ -57,39 +56,49 @@ public class SeatSelectionControllerUI extends Dialog<String> {
         int rows = flight.getTotalRows();
         int cols = flight.getTotalCols();
 
-        // Row numbers added
-        for (int row = 1; row <= rows; row++) {
-            Label rowLabel = new Label(String.valueOf(row));
-            seatGrid.add(rowLabel, 0, row);
+        // Add column headers (A, B, C, etc.)
+        for (int col = 1; col <= cols; col++) {
+            Label colLabel = new Label(String.valueOf((char) ('A' + col - 1)));
+            seatGrid.add(colLabel, col, 0);
         }
 
         // Add seat checkboxes
         for (int row = 1; row <= rows; row++) {
+            // Add row number
+            Label rowLabel = new Label(String.valueOf(row));
+            seatGrid.add(rowLabel, 0, row);
+
             for (int col = 1; col <= cols; col++) {
                 String seatNumber = row + String.valueOf((char) ('A' + col - 1));
                 CheckBox seat = new CheckBox();
                 seat.setUserData(seatNumber);
 
-                // Check occupied seats
-                if (occupiedSeats.contains(seatNumber)) {
+                // Get the seat from the seating arrangement
+                SeatNumber seatNum = SeatNumber.fromString(seatNumber);
+                Seat actualSeat = seating.getSeat(seatNum);
+
+                // Set seat properties based on availability
+                if (!actualSeat.isAvailable()) {
                     seat.setDisable(true);
                     seat.setSelected(true);
+                    seat.setStyle("-fx-background-color: #ffcccc;"); // Red for occupied
+                } else {
+                    // Add listener to handle seat selection
+                    seat.selectedProperty().addListener((obs, oldVal, newVal) -> {
+                        if (newVal) {
+                            if (selectedSeat != null && selectedSeat != seat) {
+                                selectedSeat.setSelected(false);
+                            }
+                            selectedSeat = seat;
+                            seat.setStyle("-fx-background-color: #ccffcc;"); // Green for selected
+                        } else {
+                            if (selectedSeat == seat) {
+                                selectedSeat = null;
+                            }
+                            seat.setStyle("");
+                        }
+                    });
                 }
-
-                // Add listener to handle seat selection
-                seat.selectedProperty().addListener((obs, oldVal, newVal) -> {
-                    if (newVal) {
-                        if (selectedSeat != null && selectedSeat != seat) {
-                            selectedSeat.setSelected(false);
-                        }
-                        selectedSeat = seat;
-                    } else {
-                        if (selectedSeat == seat) {
-                            selectedSeat = null;
-                        }
-                        seat.setStyle("");
-                    }
-                });
 
                 seatGrid.add(seat, col, row);
             }

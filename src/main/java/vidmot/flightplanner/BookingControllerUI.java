@@ -8,16 +8,20 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import vinnsla.UIObjects.BookingModel;
 import vinnsla.entities.Flight;
+import vinnsla.entities.SeatNumber;
+import vinnsla.entities.SeatingArrangement;
 import vinnsla.service.FlightServiceInterface;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Optional;
-import java.io.IOException;
 
 public class BookingControllerUI {
     private BookingModel bookingModel;
     private Flight selectedFlight;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+    private String selectedSeat;
+    private SeatingArrangement seating;
     //private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     // Flight Information Labels
@@ -85,6 +89,8 @@ public class BookingControllerUI {
         bookingModel = new BookingModel();
         this.basePrice = flight.getPrice();
         this.totalPrice = flight.getPrice();
+        this.selectedSeat = "";
+        this.seating = flight.getSeatingArrangement();
     }
 
     @FXML
@@ -165,11 +171,31 @@ public class BookingControllerUI {
     }
 
     public void onPickSeats() {
+        if (!selectedSeat.isEmpty()) {
+            // Seat already selected, alert
+            Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDialog.setTitle("Change Seat");
+            confirmDialog.setHeaderText("You have already selected a seat");
+            confirmDialog.setContentText("Do you want to change your seat from " + selectedSeat + "?");
+
+            Optional<ButtonType> result = confirmDialog.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                // Cancel the old seat
+                SeatNumber oldSeatNumber = SeatNumber.fromString(selectedSeat);
+                seating.cancelSeat(oldSeatNumber);
+                selectedFlight.setSeatingArrangement(seating);
+            } else {
+                return; // User chose not to change seat
+            }
+        }
+
+        // Open seat selection dialog
         SeatSelectionControllerUI dialog = new SeatSelectionControllerUI(selectedFlight);
         Optional<String> result = dialog.showAndWait();
 
         result.ifPresent(seatNumber -> {
-            // Here you can update the booking with the selected seat
+            // Update the selected seat
+            selectedSeat = seatNumber;
             System.out.println("Selected seat: " + seatNumber);
             // TODO: Update the booking model with the selected seat
         });
@@ -200,6 +226,10 @@ public class BookingControllerUI {
             alert.setContentText("Could not return to flight search page.");
             alert.showAndWait();
         }
+    }
+
+    public void onConfirmBooking() {
+        // TODO: Update the seating in the database such that the selected seat is now booked
     }
 
     public void setFlightService(FlightServiceInterface flightService) {
