@@ -1,9 +1,10 @@
 package vinnsla.service;
 
 import vinnsla.entities.Booking;
-import java.util.List;
 
 public interface BookingServiceInterface {
+    boolean addBooking(Booking booking);
+/*
     boolean createBooking(Booking booking);
     List<Booking> getAllBookings();
     Booking getBooking(int bookingId);
@@ -11,4 +12,5 @@ public interface BookingServiceInterface {
     boolean deleteBooking(int bookingId);
     boolean processPayment(int bookingId, double amount);
     double calculateTotalPrice(Booking booking);
+*/
 }

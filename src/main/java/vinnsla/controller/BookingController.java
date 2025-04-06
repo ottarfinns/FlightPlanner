@@ -2,7 +2,6 @@ package vinnsla.controller;
 
 import vinnsla.entities.Booking;
 import vinnsla.service.BookingServiceInterface;
-import java.util.List;
 
 public class BookingController {
     private final BookingServiceInterface bookingService;
@@ -11,6 +10,11 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
+    public boolean addBooking(Booking booking) {
+        return bookingService.addBooking(booking);
+    }
+
+/*
     public boolean createBooking(Booking booking) {
         return bookingService.createBooking(booking);
     }
@@ -38,4 +42,5 @@ public class BookingController {
     public double calculateTotalPrice(Booking booking) {
         return bookingService.calculateTotalPrice(booking);
     }
+*/
 }

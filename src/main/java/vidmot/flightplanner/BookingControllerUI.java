@@ -10,6 +10,7 @@ import vinnsla.UIObjects.BookingModel;
 import vinnsla.entities.Flight;
 import vinnsla.entities.SeatNumber;
 import vinnsla.entities.SeatingArrangement;
+import vinnsla.service.BookingServiceInterface;
 import vinnsla.service.FlightServiceInterface;
 
 import java.io.IOException;
@@ -18,11 +19,11 @@ import java.util.Optional;
 
 public class BookingControllerUI {
     private BookingModel bookingModel;
+    private BookingServiceInterface bookingService;
     private Flight selectedFlight;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private String selectedSeat;
     private SeatingArrangement seating;
-    //private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     // Flight Information Labels
     @FXML
@@ -86,7 +87,9 @@ public class BookingControllerUI {
 
     public BookingControllerUI(Flight flight) {
         this.selectedFlight = flight;
-        bookingModel = new BookingModel();
+        //BookingRepositoryInterface bookingRepository = new BookingRepository();
+        //bookingService = new BookingService(bookingRepository);
+        bookingModel = new BookingModel(selectedFlight);
         this.basePrice = flight.getPrice();
         this.totalPrice = flight.getPrice();
         this.selectedSeat = "";
@@ -167,7 +170,7 @@ public class BookingControllerUI {
     }
 
     public void confirmBooking() {
-        bookingModel.confirmBooking(totalPrice);
+        bookingModel.confirmBooking(totalPrice, selectedSeat);
     }
 
     public void onPickSeats() {

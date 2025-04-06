@@ -1,6 +1,7 @@
 package vinnsla.repository;
 
 import vinnsla.entities.Flight;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,22 +42,22 @@ public class FlightRepository implements FlightRepositoryInterface {
 
     private void createTables() throws SQLException {
         String createFlightsTable = """
-            CREATE TABLE IF NOT EXISTS flights (
-                flight_number TEXT PRIMARY KEY,
-                airline TEXT NOT NULL,
-                departure_country TEXT NOT NULL,
-                arrival_country TEXT NOT NULL,
-                departure_airport TEXT NOT NULL,
-                arrival_airport TEXT NOT NULL,
-                departure_date DATE NOT NULL,
-                arrival_date DATE NOT NULL,
-                departure_time TEXT NOT NULL,
-                arrival_time TEXT NOT NULL,
-                total_rows INTEGER NOT NULL,
-                total_cols INTEGER NOT NULL,
-                price REAL NOT NULL
-            )
-        """;
+                    CREATE TABLE IF NOT EXISTS flights (
+                        flight_number TEXT PRIMARY KEY,
+                        airline TEXT NOT NULL,
+                        departure_country TEXT NOT NULL,
+                        arrival_country TEXT NOT NULL,
+                        departure_airport TEXT NOT NULL,
+                        arrival_airport TEXT NOT NULL,
+                        departure_date DATE NOT NULL,
+                        arrival_date DATE NOT NULL,
+                        departure_time TEXT NOT NULL,
+                        arrival_time TEXT NOT NULL,
+                        total_rows INTEGER NOT NULL,
+                        total_cols INTEGER NOT NULL,
+                        price REAL NOT NULL
+                    )
+                """;
 
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(createFlightsTable);
@@ -100,12 +101,12 @@ public class FlightRepository implements FlightRepositoryInterface {
                 String arrivalTime = times[(i + 2) % times.length]; // 2 time slots later
 
                 String insertFlight = """
-                    INSERT INTO flights (
-                        flight_number, airline, departure_country, arrival_country,
-                        departure_airport, arrival_airport, departure_date, arrival_date,
-                        departure_time, arrival_time, total_rows, total_cols, price
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """;
+                            INSERT INTO flights (
+                                flight_number, airline, departure_country, arrival_country,
+                                departure_airport, arrival_airport, departure_date, arrival_date,
+                                departure_time, arrival_time, total_rows, total_cols, price
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        """;
 
                 try (PreparedStatement pstmt = connection.prepareStatement(insertFlight)) {
                     pstmt.setString(1, flightNumber);
@@ -137,12 +138,12 @@ public class FlightRepository implements FlightRepositoryInterface {
         }
 
         String sql = """
-            INSERT INTO flights (
-                flight_number, airline, departure_country, arrival_country,
-                departure_airport, arrival_airport, departure_date, arrival_date,
-                departure_time, arrival_time, total_rows, total_cols, price
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """;
+                    INSERT INTO flights (
+                        flight_number, airline, departure_country, arrival_country,
+                        departure_airport, arrival_airport, departure_date, arrival_date,
+                        departure_time, arrival_time, total_rows, total_cols, price
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                """;
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
             pstmt.setString(1, flight.getFlightNumber());
@@ -303,19 +304,19 @@ public class FlightRepository implements FlightRepositoryInterface {
 
     private Flight createFlightFromResultSet(ResultSet rs) throws SQLException {
         return new Flight(
-            rs.getString("flight_number"),
-            rs.getString("airline"),
-            rs.getString("departure_country"),
-            rs.getString("arrival_country"),
-            rs.getString("departure_airport"),
-            rs.getString("arrival_airport"),
-            rs.getDate("departure_date"),
-            rs.getDate("arrival_date"),
-            rs.getString("departure_time"),
-            rs.getString("arrival_time"),
-            rs.getInt("total_rows"),
-            rs.getInt("total_cols"),
-            rs.getDouble("price")
+                rs.getString("flight_number"),
+                rs.getString("airline"),
+                rs.getString("departure_country"),
+                rs.getString("arrival_country"),
+                rs.getString("departure_airport"),
+                rs.getString("arrival_airport"),
+                rs.getDate("departure_date"),
+                rs.getDate("arrival_date"),
+                rs.getString("departure_time"),
+                rs.getString("arrival_time"),
+                rs.getInt("total_rows"),
+                rs.getInt("total_cols"),
+                rs.getDouble("price")
         );
     }
 
