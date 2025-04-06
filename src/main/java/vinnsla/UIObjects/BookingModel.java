@@ -70,9 +70,10 @@ public class BookingModel {
             booking.setClassName(classType.get());
             booking.setBaggage(luggage.get());
 
-            boolean result = bookingController.addBooking(booking);
+            boolean result1 = bookingController.addBooking(booking);
+            boolean result2 = bookingController.bookSeat(flight.getFlightNumber(), seat);
 
-            if (result) {
+            if (result1 && result2) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Booking confirmed");
                 alert.setHeaderText("Booking confirmed");

@@ -14,6 +14,10 @@ public class BookingController {
         return bookingService.addBooking(booking);
     }
 
+    public boolean bookSeat(String flightNumber, String seatNumber) {
+        return bookingService.bookSeat(flightNumber, seatNumber);
+    }
+
 /*
     public boolean createBooking(Booking booking) {
         return bookingService.createBooking(booking);

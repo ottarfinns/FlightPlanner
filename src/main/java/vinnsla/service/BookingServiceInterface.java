@@ -4,6 +4,7 @@ import vinnsla.entities.Booking;
 
 public interface BookingServiceInterface {
     boolean addBooking(Booking booking);
+    boolean bookSeat(String flightNumber, String seatNumber);
 /*
     boolean createBooking(Booking booking);
     List<Booking> getAllBookings();
