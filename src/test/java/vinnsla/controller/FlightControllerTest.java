@@ -4,8 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import vinnsla.entities.Flight;
+import vinnsla.service.FlightServiceInterface;
 import vinnsla.service.FlightService;
-import vinnsla.service.FlightServiceImplementation;
 import vinnsla.repository.FlightRepositoryInterface;
 import vinnsla.repository.FlightRepoMock;
 
@@ -16,14 +16,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FlightControllerTest {
     private FlightController flightController;
-    private FlightService flightService;
+    private FlightServiceInterface flightService;
     private FlightRepositoryInterface flightRepository;
     private Flight testFlight;
 
     @BeforeEach
     void setUp() {
         flightRepository = new FlightRepoMock();
-        flightService = new FlightServiceImplementation(flightRepository);
+        flightService = new FlightService(flightRepository);
         flightController = new FlightController(flightService);
 
         // Valid test flight
