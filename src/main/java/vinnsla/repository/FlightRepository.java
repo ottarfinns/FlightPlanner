@@ -55,7 +55,8 @@ public class FlightRepository implements FlightRepositoryInterface {
                         arrival_time TEXT NOT NULL,
                         total_rows INTEGER NOT NULL,
                         total_cols INTEGER NOT NULL,
-                        price REAL NOT NULL
+                        price REAL NOT NULL,
+                        is_full boolean NOT NULL
                     )
                 """;
 
@@ -104,8 +105,8 @@ public class FlightRepository implements FlightRepositoryInterface {
                             INSERT INTO flights (
                                 flight_number, airline, departure_country, arrival_country,
                                 departure_airport, arrival_airport, departure_date, arrival_date,
-                                departure_time, arrival_time, total_rows, total_cols, price
-                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                                departure_time, arrival_time, total_rows, total_cols, price, is_full
+                            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, false)
                         """;
 
                 try (PreparedStatement pstmt = connection.prepareStatement(insertFlight)) {
@@ -141,8 +142,8 @@ public class FlightRepository implements FlightRepositoryInterface {
                     INSERT INTO flights (
                         flight_number, airline, departure_country, arrival_country,
                         departure_airport, arrival_airport, departure_date, arrival_date,
-                        departure_time, arrival_time, total_rows, total_cols, price
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                        departure_time, arrival_time, total_rows, total_cols, price, is_full
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, false)
                 """;
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -214,7 +215,7 @@ public class FlightRepository implements FlightRepositoryInterface {
         boolean isOneWay = Boolean.parseBoolean(criteria[6]);
         boolean isDirectFlight = Boolean.parseBoolean(criteria[7]);
 
-        StringBuilder sql = new StringBuilder("SELECT * FROM flights WHERE 1=1");
+        StringBuilder sql = new StringBuilder("SELECT * FROM flights WHERE 1=1 AND is_full = false");
         List<Object> params = new ArrayList<>();
 
         if (departureCountry != null && !departureCountry.isEmpty()) {

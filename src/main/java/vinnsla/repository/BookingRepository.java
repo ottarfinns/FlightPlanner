@@ -1,6 +1,7 @@
 package vinnsla.repository;
 
 import vinnsla.entities.Booking;
+import vinnsla.entities.SeatingArrangement;
 
 import java.io.File;
 import java.sql.*;
@@ -32,7 +33,8 @@ public class BookingRepository implements BookingRepositoryInterface {
             connection = DriverManager.getConnection(DB_URL);
             createTables();
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Failed to initialize database: " + e.getMessage());
+            throw new RuntimeException("Failed to initialize database", e);
         }
     }
 
@@ -51,12 +53,24 @@ public class BookingRepository implements BookingRepositoryInterface {
                 carryOn boolean NOT NULL,
                 class TEXT NOT NULL,
                 baggage INTEGER NOT NULL,
-                totalPrice INTEGER NOT NULL
+                totalPrice INTEGER NOT NULL,
+                PRIMARY KEY (flight_number, nationalId),
+                FOREIGN KEY (flight_number) REFERENCES flights(flight_number)
                 )
-                """;
+                """; // flight_number + nationalid er lykillinn
+
+        String createBookedSeatsTable = """
+                CREATE TABLE IF NOT EXISTS bookedSeats (
+                flight_number TEXT NOT NULL,
+                seat_number TEXT NOT NULL,
+                PRIMARY KEY (flight_number, seat_number),
+                FOREIGN KEY (flight_number) REFERENCES flights(flight_number)
+                )
+                """; // flight_number + seat_number er lykillinn
 
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(createBookingsTable);
+            stmt.execute(createBookedSeatsTable);
         }
     }
 
@@ -83,7 +97,7 @@ public class BookingRepository implements BookingRepositoryInterface {
             pstmt.setString(6, booking.getPassenger().getCountry());
             pstmt.setString(7, booking.getPassenger().getCity());
             pstmt.setString(8, booking.getPassenger().getAddress());
-            pstmt.setString(9, booking.getSeat().toString());
+            pstmt.setString(9, booking.getSeat());
             pstmt.setBoolean(10, booking.getCarryOn());
             pstmt.setString(11, booking.getClassName());
             pstmt.setInt(12, booking.getBaggage());
@@ -94,4 +108,35 @@ public class BookingRepository implements BookingRepositoryInterface {
            return false;
         }
     }
+
+    @Override
+    public boolean bookSeat(String flightNumber, String seatNumber) {
+        if (flightNumber == null || seatNumber == null) {
+            return false;
+        }
+        else {
+            String sql = """
+                    INSERT INTO bookedSeats (
+                    flight_number, seat_number
+                    ) VALUES (?, ?)
+                    """;
+
+            try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+                pstmt.setString(1, flightNumber);
+                pstmt.setString(2, seatNumber);
+                return pstmt.executeUpdate() > 0;
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+    }
+
+    @Override
+    public SeatingArrangement getBookedSeats(String flightNumber) {
+        return null;
+    }
+
+
 }

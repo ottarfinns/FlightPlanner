@@ -167,6 +167,7 @@ public class FlightControllerUI {
     }
 
     public void onSearch(ActionEvent actionEvent) {
+/*
         System.out.println("Departure country: " + flightModel.getDepartureCountry());
         System.out.println("Arrival country: " + flightModel.getArrivalCountry());
         System.out.println("Departure date: " + flightModel.getDepartureDate());
@@ -174,6 +175,7 @@ public class FlightControllerUI {
         System.out.println("One way: " + flightModel.isOneWay());
         System.out.println("Direct: " + flightModel.isDirectFlight());
         System.out.println("Number of passengers: " + flightModel.getNumberOfPassengers());
+*/
 
         List<Flight> results = flightModel.search();
 
@@ -206,9 +208,5 @@ public class FlightControllerUI {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void onSelectSeat() {
-
     }
 }
