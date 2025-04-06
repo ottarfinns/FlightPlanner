@@ -1,18 +1,24 @@
 package vidmot.flightplanner;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 import vinnsla.UIObjects.BookingModel;
 import vinnsla.entities.Flight;
+import vinnsla.service.FlightServiceInterface;
 
 import java.text.SimpleDateFormat;
 import java.util.Optional;
+import java.io.IOException;
 
 public class BookingControllerUI {
     private BookingModel bookingModel;
     private Flight selectedFlight;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+    //private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     // Flight Information Labels
     @FXML
@@ -71,6 +77,8 @@ public class BookingControllerUI {
     private static final double LUGGAGE_PRICE = 20.0;
     private static final double FIRST_CLASS_MULTIPLIER = 1.5;
     private static final double BUSINESS_CLASS_MULTIPLIER = 1.2;
+
+    private FlightServiceInterface flightService;
 
     public BookingControllerUI(Flight flight) {
         this.selectedFlight = flight;
@@ -165,5 +173,36 @@ public class BookingControllerUI {
             System.out.println("Selected seat: " + seatNumber);
             // TODO: Update the booking model with the selected seat
         });
+    }
+
+    public void onBack() {
+        try {
+            // Load the flight search view
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("FlightPlanner-View.fxml"));
+            Parent root = loader.load();
+
+            // Get the controller and set the flight service
+            FlightControllerUI controller = loader.getController();
+            controller.setFlightService(FlightApplication.getFlightService());
+
+            // Get the current stage and set the new scene
+            Stage currentStage = (Stage) backButton.getScene().getWindow();
+            Scene scene = new Scene(root);
+            currentStage.setScene(scene);
+            currentStage.setTitle("Flight Search");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Show error alert
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Navigation Error");
+            alert.setContentText("Could not return to flight search page.");
+            alert.showAndWait();
+        }
+    }
+
+    public void setFlightService(FlightServiceInterface flightService) {
+        this.flightService = flightService;
     }
 }

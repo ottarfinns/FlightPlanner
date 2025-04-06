@@ -139,7 +139,7 @@
 
     <!-- Buttons Section -->
     <HBox alignment="CENTER_RIGHT" spacing="10">
-        <Button fx:id="backButton" text="Back" />
+        <Button fx:id="backButton" text="Back" onAction="#onBack" />
         <Button fx:id="confirmButton" text="Confirm Booking" onAction="#confirmBooking" />
         <Button fx:id="payButton" text="Pay Booking" />
     </HBox>

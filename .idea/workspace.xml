@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="89d104fe-a4ca-4a59-afa6-288d6d54b565" name="Changes" comment="" />
+    <list default="true" id="89d104fe-a4ca-4a59-afa6-288d6d54b565" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/BookingControllerUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/BookingControllerUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/FlightApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/FlightApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/vidmot/flightplanner/Booking-View.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vidmot/flightplanner/Booking-View.fxml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -24,6 +29,9 @@
   <component name="FindBugs-IDEA-Workspace">
     <analyzeAfterCompile>true</analyzeAfterCompile>
     <toolWindowToFront>false</toolWindowToFront>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MavenImportPreferences">
     <option name="generalSettings">
@@ -57,6 +65,8 @@
     &quot;Maven.FlightPlanner [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
     &quot;Maven.FlightPlanner [test].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;ottar&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,

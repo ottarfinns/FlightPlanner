@@ -10,10 +10,11 @@ import vinnsla.service.FlightServiceInterface;
 import java.io.IOException;
 
 public class FlightApplication extends Application {
+    private static FlightServiceInterface flightService;
     @Override
     public void start(Stage stage) throws IOException {
         // Set up the service
-        FlightServiceInterface flightService = new FlightService();
+        flightService = new FlightService();
 
         // Create the FXML loader
         FXMLLoader fxmlLoader = new FXMLLoader(FlightApplication.class.getResource("FlightPlanner-View.fxml"));
@@ -30,6 +31,10 @@ public class FlightApplication extends Application {
         stage.setTitle("Flight Planner - 3F");
         stage.setScene(scene);
         stage.show();
+    }
+
+    public static FlightServiceInterface getFlightService() {
+        return flightService;
     }
 
     public static void main(String[] args) {
