@@ -218,6 +218,7 @@ public class FlightRepository implements FlightRepositoryInterface {
         StringBuilder sql = new StringBuilder("SELECT * FROM flights WHERE 1=1 AND is_full = false");
         List<Object> params = new ArrayList<>();
 
+        // Departure flight criteria
         if (departureCountry != null && !departureCountry.isEmpty()) {
             sql.append(" AND departure_country = ?");
             params.add(departureCountry);
@@ -230,7 +231,6 @@ public class FlightRepository implements FlightRepositoryInterface {
 
         if (departureDate != null && !departureDate.isEmpty()) {
             try {
-                // Convert the date string to a timestamp at the start of the day
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 java.util.Date utilDate = sdf.parse(departureDate);
                 java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
@@ -241,30 +241,10 @@ public class FlightRepository implements FlightRepositoryInterface {
             }
         }
 
-        if (arrivalDate != null && !arrivalDate.isEmpty()) {
-            try {
-                // Convert the date string to a timestamp at the start of the day
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                java.util.Date utilDate = sdf.parse(arrivalDate);
-                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
-                sql.append(" AND arrival_date >= ?");
-                params.add(sqlDate);
-            } catch (Exception e) {
-                System.out.println("Error parsing arrival date: " + e.getMessage());
-            }
-        }
-
         if (maxPrice > 0) {
             sql.append(" AND price <= ?");
             params.add(maxPrice);
         }
-
-        // Print the complete SQL query with parameter values
-        String completeQuery = sql.toString();
-        for (Object param : params) {
-            completeQuery = completeQuery.replaceFirst("\\?", "'" + param.toString() + "'");
-        }
-        System.out.println("Complete SQL Query: " + completeQuery);
 
         List<Flight> flights = new ArrayList<>();
 
@@ -283,6 +263,76 @@ public class FlightRepository implements FlightRepositoryInterface {
         }
 
         return flights;
+    }
+
+    public List<Flight> searchReturnFlights(String searchCriteria) {
+        if (searchCriteria == null || searchCriteria.trim().isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        String[] criteria = searchCriteria.split(",");
+        String departureCountry = criteria[0];
+        String arrivalCountry = criteria[1];
+        String departureDate = criteria[2];
+        String arrivalDate = criteria[3];
+        int numberOfPassengers = Integer.parseInt(criteria[4]);
+        int maxPrice = Integer.parseInt(criteria[5]);
+        boolean isOneWay = Boolean.parseBoolean(criteria[6]);
+        boolean isDirectFlight = Boolean.parseBoolean(criteria[7]);
+
+        // If it's a one-way trip, return empty list
+        if (isOneWay) {
+            return new ArrayList<>();
+        }
+
+        StringBuilder sql = new StringBuilder("SELECT * FROM flights WHERE 1=1 AND is_full = false");
+        List<Object> params = new ArrayList<>();
+
+        // Return flight criteria (reverse the countries)
+        if (arrivalCountry != null && !arrivalCountry.isEmpty()) {
+            sql.append(" AND departure_country = ?");
+            params.add(arrivalCountry);
+        }
+
+        if (departureCountry != null && !departureCountry.isEmpty()) {
+            sql.append(" AND arrival_country = ?");
+            params.add(departureCountry);
+        }
+
+        if (arrivalDate != null && !arrivalDate.isEmpty()) {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                java.util.Date utilDate = sdf.parse(arrivalDate);
+                java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+                sql.append(" AND departure_date <= ?");
+                params.add(sqlDate);
+            } catch (Exception e) {
+                System.out.println("Error parsing return date: " + e.getMessage());
+            }
+        }
+
+        if (maxPrice > 0) {
+            sql.append(" AND price <= ?");
+            params.add(maxPrice);
+        }
+
+        List<Flight> returnFlights = new ArrayList<>();
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                pstmt.setObject(i + 1, params.get(i));
+            }
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    returnFlights.add(createFlightFromResultSet(rs));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return returnFlights;
     }
 
     @Override
