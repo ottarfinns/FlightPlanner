@@ -214,7 +214,7 @@ public class BookingControllerUI {
 
             // Get the current stage and set the new scene
             Stage currentStage = (Stage) backButton.getScene().getWindow();
-            Scene scene = new Scene(root);
+            Scene scene = new Scene(root, 900, 900);
             currentStage.setScene(scene);
             currentStage.setTitle("Flight Search");
 
