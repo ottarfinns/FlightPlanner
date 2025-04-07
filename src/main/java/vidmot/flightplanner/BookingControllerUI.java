@@ -11,6 +11,7 @@ import vinnsla.UIObjects.BookingModel;
 import vinnsla.entities.Flight;
 import vinnsla.entities.SeatNumber;
 import vinnsla.entities.SeatingArrangement;
+import vinnsla.repository.BookingRepository;
 import vinnsla.service.BookingServiceInterface;
 import vinnsla.service.FlightServiceInterface;
 
@@ -75,6 +76,10 @@ public class BookingControllerUI {
     private Button pickSeatsButton;
     @FXML
     private Button pickReturnSeatsButton;
+    @FXML
+    private TextField promoCodeField;
+    @FXML
+    private Button applyPromoButton;
 
     // Customer Information
     @FXML
@@ -105,6 +110,8 @@ public class BookingControllerUI {
     private static final double LUGGAGE_PRICE = 20.0;
     private static final double FIRST_CLASS_MULTIPLIER = 1.5;
     private static final double BUSINESS_CLASS_MULTIPLIER = 1.2;
+    private static final double PROMO_CODE_DISCOUNT = 0.3;
+    private boolean promoApplied = false;
 
     private FlightServiceInterface flightService;
 
@@ -170,7 +177,7 @@ public class BookingControllerUI {
 
         // Update the total price and label
         this.totalPrice = total;
-        totalPriceLabel.setText(String.format("%.2f kr.", total));
+        updateTotalPriceLabel();
     }
 
     private void initializeBindings() {
@@ -308,5 +315,39 @@ public class BookingControllerUI {
 
     public void setFlightService(FlightServiceInterface flightService) {
         this.flightService = flightService;
+    }
+
+    public void onApplyPromo() {
+        String promoCode = promoCodeField.getText().trim();
+        if (promoCode.isEmpty()) {
+            showAlert("Error", "Please enter a promo code");
+            return;
+        }
+
+        if (BookingRepository.getInstance().inPromoCodes(promoCode)) {
+            if (!promoApplied) {
+                totalPrice *= (1 - PROMO_CODE_DISCOUNT);
+                promoApplied = true;
+                updateTotalPriceLabel();
+                applyPromoButton.setDisable(true);
+                promoCodeField.setDisable(true);
+            } else {
+                showAlert("Info", "A promo code has already been applied");
+            }
+        } else {
+            showAlert("Error", "Invalid promo code");
+        }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void updateTotalPriceLabel() {
+        totalPriceLabel.setText(String.format("%.2f kr.", totalPrice));
     }
 }

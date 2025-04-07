@@ -7,6 +7,8 @@ public interface BookingRepositoryInterface {
     boolean addBooking(Booking booking);
     boolean bookSeat(String flightNumber, String seatNumber);
     SeatingArrangement getBookedSeats(String flightNumber);
+    boolean inPromoCodes(String promoCode);
+
 /*
     boolean addBooking(Booking booking);
     boolean updateBooking(Booking booking);

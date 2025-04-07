@@ -21,7 +21,7 @@
                 <Insets bottom="20" left="20" right="20" top="20"/>
             </padding>
 
-            <ScrollPane fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+            <ScrollPane fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER">
                 <content>
                     <VBox spacing="20">
                         <padding>

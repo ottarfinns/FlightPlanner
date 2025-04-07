@@ -72,9 +72,57 @@ public class BookingRepository implements BookingRepositoryInterface {
                 )
                 """; // flight_number + seat_number er lykillinn
 
+        String createPromoCodeTable = """
+                CREATE TABLE IF NOT EXISTS promo_codes (
+                promo_code TEXT NOT NULL PRIMARY KEY
+                )
+                """;
+
+
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(createBookingsTable);
             stmt.execute(createBookedSeatsTable);
+            stmt.execute(createPromoCodeTable);
+            populatePromoCodes();
+        }
+    }
+
+    private void populatePromoCodes () {
+        try {
+            String checkEmpty = "SELECT COUNT(*) FROM promo_codes";
+            try (Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery(checkEmpty)) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return;
+                }
+            }
+
+            String[] promoCodes = {"promo1", "promo2", "promo3", "promo4", "promo5"};
+            String insertPromo = "INSERT INTO promo_codes (promo_code) VALUES (?)";
+
+            try (PreparedStatement pstmt = connection.prepareStatement(insertPromo)) {
+                for (String promoCode : promoCodes) {
+                    pstmt.setString(1, promoCode);
+                    pstmt.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to populate promo codes: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean inPromoCodes(String promoCode) {
+        String sql = "SELECT promo_code FROM promo_codes WHERE promo_code = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, promoCode);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
