@@ -81,8 +81,8 @@ public class FlightRepository implements FlightRepositoryInterface {
             String[] airlines = {"Icelandair", "WOW Air", "Delta", "British Airways", "Lufthansa"};
             String[] departureCountries = {"Iceland", "United States", "United Kingdom", "Germany", "France"};
             String[] arrivalCountries = {"United States", "Iceland", "Germany", "France", "United Kingdom"};
-            String[] departureAirports = {"KEF", "JFK", "LHR", "FRA", "CDG"};
-            String[] arrivalAirports = {"JFK", "KEF", "FRA", "CDG", "LHR"};
+            String[] departureAirports = {"KEF - Reykjavik", "JFK - New York", "LHR - London", "FRA - Frankfurt", "CDG - Paris"};
+            String[] arrivalAirports = {"JFK - New York", "KEF - Reykjavik", "FRA - Frankfurt", "CDG - Paris", "LHR - London"};
             String[] times = {"08:00", "12:00", "15:00", "18:00", "21:00"};
 
             // Current date for base calculations

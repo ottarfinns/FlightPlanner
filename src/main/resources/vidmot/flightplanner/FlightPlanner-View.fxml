@@ -50,14 +50,13 @@
                             <Label text="Max Price:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                             <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                 <children>
-                                    <Slider fx:id="maxPriceSlider" disable="true" majorTickUnit="1000" max="5000" min="0" prefWidth="200" showTickLabels="true" showTickMarks="true" />
-                                    <Label fx:id="priceLabel" text="\$2500" />
+                                    <Slider fx:id="maxPriceSlider" disable="true" majorTickUnit="1000" max="5000" prefWidth="200" showTickLabels="true" showTickMarks="true" />
+                                    <Label fx:id="priceLabel" text="0 kr." />
                                 </children>
                             </HBox>
 
                             <CheckBox fx:id="oneWayBox" text="One-way flight" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                            <CheckBox fx:id="directBox" text="Direct flights only" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                            <CheckBox fx:id="maxPriceBox" text="Set max price" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                            <CheckBox fx:id="maxPriceBox" text="Set max price" GridPane.columnIndex="2" GridPane.rowIndex="3" />
 
                             <columnConstraints>
                                 <ColumnConstraints />
@@ -83,7 +82,9 @@
                                     <TableColumn fx:id="flightNumberColumn" prefWidth="100" text="Flight Number" />
                                     <TableColumn fx:id="airlineColumn" prefWidth="100" text="Airline" />
                                     <TableColumn fx:id="departureColumn" prefWidth="100" text="From" />
+                                    <TableColumn fx:id="departureAirportColumn" prefWidth="100" text="Departure Airport" />
                                     <TableColumn fx:id="arrivalColumn" prefWidth="100" text="To" />
+                                    <TableColumn fx:id="arrivalAirportColumn" prefWidth="100" text="Arrival Airport" />
                                     <TableColumn fx:id="departureTimeColumn" prefWidth="150" text="Departure Time" />
                                     <TableColumn fx:id="arrivalTimeColumn" prefWidth="150" text="Arrival Time" />
                                     <TableColumn fx:id="priceColumn" prefWidth="100" text="Price" />
@@ -97,7 +98,9 @@
                                     <TableColumn fx:id="returnFlightNumberColumn" prefWidth="100" text="Flight Number" />
                                     <TableColumn fx:id="returnAirlineColumn" prefWidth="100" text="Airline" />
                                     <TableColumn fx:id="returnDepartureColumn" prefWidth="100" text="From" />
+                                    <TableColumn fx:id="returnDepartureAirportColumn" prefWidth="100" text="Departure Airport" />
                                     <TableColumn fx:id="returnArrivalColumn" prefWidth="100" text="To" />
+                                    <TableColumn fx:id="returnArrivalAirportColumn" prefWidth="100" text="Arrival Airport" />
                                     <TableColumn fx:id="returnDepartureTimeColumn" prefWidth="150" text="Departure Time" />
                                     <TableColumn fx:id="returnArrivalTimeColumn" prefWidth="150" text="Arrival Time" />
                                     <TableColumn fx:id="returnPriceColumn" prefWidth="100" text="Price" />

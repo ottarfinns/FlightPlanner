@@ -45,8 +45,6 @@ public class FlightControllerUI {
     @FXML
     private CheckBox oneWayBox;
     @FXML
-    private CheckBox directBox;
-    @FXML
     private CheckBox maxPriceBox;
     @FXML
     private TableView<Flight> flightTableView;
@@ -62,7 +60,11 @@ public class FlightControllerUI {
     @FXML
     private TableColumn<Flight, String> departureColumn;
     @FXML
+    private TableColumn<Flight, String> departureAirportColumn;
+    @FXML
     private TableColumn<Flight, String> arrivalColumn;
+    @FXML
+    private TableColumn<Flight, String> arrivalAirportColumn;
     @FXML
     private TableColumn<Flight, String> departureTimeColumn;
     @FXML
@@ -77,7 +79,11 @@ public class FlightControllerUI {
     @FXML
     private TableColumn<Flight, String> returnDepartureColumn;
     @FXML
+    private TableColumn<Flight, String> returnDepartureAirportColumn;
+    @FXML
     private TableColumn<Flight, String> returnArrivalColumn;
+    @FXML
+    private TableColumn<Flight, String> returnArrivalAirportColumn;
     @FXML
     private TableColumn<Flight, String> returnDepartureTimeColumn;
     @FXML
@@ -115,7 +121,6 @@ public class FlightControllerUI {
 
         // Binda checkboxin
         flightModel.oneWayProperty().bind(oneWayBox.selectedProperty());
-        flightModel.directFlightProperty().bind(directBox.selectedProperty());
 
         // Binda fjölda farþega
         flightModel.numberOfPassengersProperty().bind(passengerSpinner.valueProperty());
@@ -168,7 +173,9 @@ public class FlightControllerUI {
         flightNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFlightNumber()));
         airlineColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAirline()));
         departureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureCountry()));
+        departureAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureAirport()));
         arrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalCountry()));
+        arrivalAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalAirport()));
 
         // Format dates and times for display
         departureTimeColumn.setCellValueFactory(cellData -> {
@@ -191,6 +198,34 @@ public class FlightControllerUI {
 
         priceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
 
+        // Set up return flight columns
+        returnFlightNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFlightNumber()));
+        returnAirlineColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAirline()));
+        returnDepartureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureCountry()));
+        returnDepartureAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureAirport()));
+        returnArrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalCountry()));
+        returnArrivalAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalAirport()));
+
+        returnDepartureTimeColumn.setCellValueFactory(cellData -> {
+            Date departureDate = cellData.getValue().getDepartureDate();
+            String departureTime = cellData.getValue().getDepartureTime();
+            if (departureDate != null && departureTime != null) {
+                return new SimpleStringProperty(dateFormat.format(departureDate) + " " + departureTime);
+            }
+            return new SimpleStringProperty("");
+        });
+
+        returnArrivalTimeColumn.setCellValueFactory(cellData -> {
+            Date arrivalDate = cellData.getValue().getArrivalDate();
+            String arrivalTime = cellData.getValue().getArrivalTime();
+            if (arrivalDate != null && arrivalTime != null) {
+                return new SimpleStringProperty(dateFormat.format(arrivalDate) + " " + arrivalTime);
+            }
+            return new SimpleStringProperty("");
+        });
+
+        returnPriceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
+
         // Initially disable the book button
         bookFlightButton.setDisable(true);
     }
@@ -200,7 +235,9 @@ public class FlightControllerUI {
         returnFlightNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFlightNumber()));
         returnAirlineColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAirline()));
         returnDepartureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureCountry()));
+        returnDepartureAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureAirport()));
         returnArrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalCountry()));
+        returnArrivalAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalAirport()));
 
         // Format dates and times for display
         returnDepartureTimeColumn.setCellValueFactory(cellData -> {
