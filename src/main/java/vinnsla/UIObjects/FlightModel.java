@@ -159,4 +159,33 @@ public class FlightModel {
 
         return flightController.searchFlights(searchCriteria);
     }
+
+    public List<Flight> searchReturnFlights() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String departureDateStr = "";
+        String arrivalDateStr = "";
+
+        try {
+            if (getDepartureDate() != null) {
+                departureDateStr = getDepartureDate().format(formatter);
+            }
+            if (getArrivalDate() != null) {
+                arrivalDateStr = getArrivalDate().format(formatter);
+            }
+        } catch (Exception e) {
+            System.out.println("Error formatting dates: " + e.getMessage());
+        }
+
+        String searchCriteria = String.format("%s,%s,%s,%s,%d,%d,%b,%b",
+                getDepartureCountry() != null ? getDepartureCountry() : "",
+                getArrivalCountry() != null ? getArrivalCountry() : "",
+                departureDateStr,
+                arrivalDateStr,
+                getNumberOfPassengers(),
+                getMaxPrice(),
+                isOneWay(),
+                isDirectFlight());
+
+        return flightController.searchReturnFlights(searchCriteria);
+    }
 }

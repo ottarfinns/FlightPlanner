@@ -33,8 +33,12 @@ public class FlightService implements FlightServiceInterface {
 
     @Override
     public List<Flight> searchFlights(String args) {
-        System.out.println("Search flights in Service " + args);
         return flightRepository.searchFlights(args);
+    }
+
+    @Override
+    public List<Flight> searchReturnFlights(String args) {
+        return flightRepository.searchReturnFlights(args);
     }
 
     @Override

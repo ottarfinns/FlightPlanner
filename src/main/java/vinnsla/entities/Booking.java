@@ -5,12 +5,26 @@ public class Booking {
     private int bookingId;
 
     private Flight flight;
-    private Customer customer;
+    //private Customer customer;
+    private Passenger passenger;
+    private String seat;
 
-    private double price;
+    private int totalPrice;
 
     private boolean carryon;
-    private boolean firstClass;
+    private String className;
+    private int baggage;
+
+    public Booking(Flight flight, Passenger passenger, String seat, int totalPrice,
+                   boolean carryon, String className, int baggage) {
+        this.flight = flight;
+        this.passenger = passenger;
+        this.seat = seat;
+        this.totalPrice = totalPrice;
+        this.carryon = carryon;
+        this.className = className;
+        this.baggage = baggage;
+    }
 
     // Getters and setters
     public int getBookingId() {
@@ -29,32 +43,56 @@ public class Booking {
         this.flight = flight;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Passenger getPassenger() {
+        return passenger;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setPassenger(Passenger passenger) {
+        this.passenger = passenger;
     }
 
-    public boolean isCarryon() {
-        return carryon;
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public void setPrice(int price) {
+        this.totalPrice = price;
+    }
+
+    public void setSeat(String seat) {
+        this.seat = seat;
+    }
+
+    public String getSeat() {
+        return seat;
     }
 
     public void setCarryon(boolean carryon) {
         this.carryon = carryon;
     }
-
-    public boolean isFirstClass() {
-        return firstClass;
+    public boolean getCarryOn() {
+        return carryon;
     }
 
-    public void setFirstClass(boolean firstClass) {
-        this.firstClass = firstClass;
+    public void setBaggage(int baggage) {
+        this.baggage = baggage;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
+    public int getBaggage() {
+        return baggage;
+    }
+
+    public void setTotalPrice(int totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public int getTotalPrice() {
+        return totalPrice;
     }
 
     public static void main(String[] args) {

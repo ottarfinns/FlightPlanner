@@ -28,21 +28,22 @@ public class SeatSelectionControllerUI extends Dialog<String> {
 
         // Load the FXML
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("SeatSelection-Dialog.fxml"));
+        fxmlLoader.setController(this);
 
         try {
-            fxmlLoader.setController(this);
             DialogPane dialogPane = fxmlLoader.load();
             setDialogPane(dialogPane);
 
             createSeatLayout();
 
             // Handle the confirm and cancel
-            setResultConverter(b -> {
-                if (b.getButtonData() == ButtonBar.ButtonData.OK_DONE && selectedSeat != null) {
-                    SeatNumber seatNumber = SeatNumber.fromString(selectedSeat.getUserData().toString());
-                    seating.bookSeat(seatNumber);
-                    seating.printSeating();
-                    return (String) selectedSeat.getUserData();
+            setResultConverter(buttonType -> {
+                if (buttonType.getButtonData() == ButtonBar.ButtonData.OK_DONE && selectedSeat != null) {
+                    String seatNumber = selectedSeat.getUserData().toString();
+                    SeatNumber seatNum = SeatNumber.fromString(seatNumber);
+                    if (seating.bookSeat(seatNum)) {
+                        return seatNumber;
+                    }
                 }
                 return null;
             });

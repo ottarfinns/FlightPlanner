@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="89d104fe-a4ca-4a59-afa6-288d6d54b565" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/flights.db" beforeDir="false" afterPath="$PROJECT_DIR$/data/flights.db" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/BookingControllerUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/BookingControllerUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/FlightControllerUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/FlightControllerUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/vidmot/flightplanner/FlightPlanner-View.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vidmot/flightplanner/FlightPlanner-View.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,6 +29,7 @@
   <component name="FindBugs-IDEA-Workspace">
     <analyzeAfterCompile>true</analyzeAfterCompile>
     <toolWindowToFront>false</toolWindowToFront>
+    <toolWindowEditorPreview>false</toolWindowEditorPreview>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -61,12 +62,13 @@
     &quot;Application.SeatNumber.executor&quot;: &quot;Run&quot;,
     &quot;Application.SeatingArrangement.executor&quot;: &quot;Run&quot;,
     &quot;JUnit.FlightControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.FlightPlanner [org.apache.maven.plugins:maven-clean-plugin:2.5:clean].executor&quot;: &quot;Run&quot;,
     &quot;Maven.FlightPlanner [org.apache.maven.plugins:maven-compiler-plugin:3.13.0:compile].executor&quot;: &quot;Run&quot;,
     &quot;Maven.FlightPlanner [org.openjfx:javafx-maven-plugin:0.0.8:run].executor&quot;: &quot;Run&quot;,
     &quot;Maven.FlightPlanner [test].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;ottar&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;seating&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,

@@ -40,3 +40,7 @@ build/
 #Database
 BookingDatabase.java
 BookingDatabase.db
+
+# Flight database
+data/flights.db
+data/*.db

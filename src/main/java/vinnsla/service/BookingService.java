@@ -1,17 +1,34 @@
 package vinnsla.service;
 
 import vinnsla.entities.Booking;
+import vinnsla.entities.SeatingArrangement;
+import vinnsla.repository.BookingRepository;
 import vinnsla.repository.BookingRepositoryInterface;
-import java.util.List;
 
 public class BookingService implements BookingServiceInterface {
     private final BookingRepositoryInterface bookingRepository;
 
-    public BookingService(BookingRepositoryInterface bookingRepository) {
-        this.bookingRepository = bookingRepository;
+    public BookingService() {
+        this.bookingRepository = BookingRepository.getInstance();
+    }
+
+
+    @Override
+    public boolean addBooking(Booking booking) {
+        return bookingRepository.addBooking(booking);
     }
 
     @Override
+    public boolean bookSeat(String flightNumber, String seatNumber) {
+       return bookingRepository.bookSeat(flightNumber, seatNumber);
+    }
+
+    @Override
+    public SeatingArrangement getBookedSeats(String flightNumber) {
+        return bookingRepository.getBookedSeats(flightNumber);
+    }
+
+    /*@Override
     public boolean createBooking(Booking booking) {
         if (booking == null || booking.getFlight() == null || booking.getCustomer() == null) {
             return false;
@@ -100,5 +117,5 @@ public class BookingService implements BookingServiceInterface {
         }
 
         return true;
-    }
+    }*/
 }

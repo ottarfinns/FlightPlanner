@@ -1,8 +1,8 @@
 package vinnsla.controller;
 
 import vinnsla.entities.Booking;
+import vinnsla.entities.SeatingArrangement;
 import vinnsla.service.BookingServiceInterface;
-import java.util.List;
 
 public class BookingController {
     private final BookingServiceInterface bookingService;
@@ -11,6 +11,19 @@ public class BookingController {
         this.bookingService = bookingService;
     }
 
+    public boolean addBooking(Booking booking) {
+        return bookingService.addBooking(booking);
+    }
+
+    public boolean bookSeat(String flightNumber, String seatNumber) {
+        return bookingService.bookSeat(flightNumber, seatNumber);
+    }
+
+    public SeatingArrangement getBookedSeats(String flightNumber) {
+        return bookingService.getBookedSeats(flightNumber);
+    }
+
+/*
     public boolean createBooking(Booking booking) {
         return bookingService.createBooking(booking);
     }
@@ -38,4 +51,5 @@ public class BookingController {
     public double calculateTotalPrice(Booking booking) {
         return bookingService.calculateTotalPrice(booking);
     }
+*/
 }

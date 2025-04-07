@@ -10,9 +10,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import vinnsla.UIObjects.FlightModel;
 import vinnsla.entities.Flight;
+import vinnsla.repository.BookingRepository;
 import vinnsla.service.FlightServiceInterface;
 
 import java.io.IOException;
@@ -48,6 +50,10 @@ public class FlightControllerUI {
     private CheckBox maxPriceBox;
     @FXML
     private TableView<Flight> flightTableView;
+    @FXML
+    private TableView<Flight> returnFlightsTableView;
+    @FXML
+    private VBox returnFlightsSection;
 
     @FXML
     private TableColumn<Flight, String> flightNumberColumn;
@@ -65,6 +71,21 @@ public class FlightControllerUI {
     private TableColumn<Flight, Double> priceColumn;
 
     @FXML
+    private TableColumn<Flight, String> returnFlightNumberColumn;
+    @FXML
+    private TableColumn<Flight, String> returnAirlineColumn;
+    @FXML
+    private TableColumn<Flight, String> returnDepartureColumn;
+    @FXML
+    private TableColumn<Flight, String> returnArrivalColumn;
+    @FXML
+    private TableColumn<Flight, String> returnDepartureTimeColumn;
+    @FXML
+    private TableColumn<Flight, String> returnArrivalTimeColumn;
+    @FXML
+    private TableColumn<Flight, Double> returnPriceColumn;
+
+    @FXML
     private Button bookFlightButton;
 
     private Flight selectedFlight;
@@ -74,6 +95,7 @@ public class FlightControllerUI {
         this.flightModel = new FlightModel(flightService);
         initializeBindings();
         setupTableView();
+        setupReturnTableView();
         setupSelectionListener();
         setupBoxListeners();
     }
@@ -103,33 +125,30 @@ public class FlightControllerUI {
             selectedFlight = newSelection;
             bookFlightButton.setDisable(newSelection == null);
         });
-
-
     }
 
     private void setupBoxListeners() {
         oneWayBox.selectedProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection) {
                 rDatePicker.setDisable(true);
-            }
-            else {
+                returnFlightsSection.setVisible(false);
+            } else {
                 rDatePicker.setDisable(false);
+                returnFlightsSection.setVisible(true);
             }
         });
 
         maxPriceBox.selectedProperty().addListener((obs, oldSelection, newSelection) -> {
             if (newSelection) {
                 maxPriceSlider.setDisable(false);
-                // Initialize the binding when slider is enabled
                 flightModel.maxPriceProperty().bind(maxPriceSlider.valueProperty());
                 priceLabel.textProperty().bind(flightModel.maxPriceProperty().asString().concat(" kr."));
-            }
-            else {
+            } else {
                 maxPriceSlider.setDisable(true);
-                // Unbind when slider is disabled
                 flightModel.maxPriceProperty().unbind();
+                flightModel.setMaxPrice(0);
                 priceLabel.textProperty().unbind();
-                priceLabel.setText("0 kr."); // Reset price label
+                priceLabel.setText("0 kr.");
             }
         });
     }
@@ -166,30 +185,62 @@ public class FlightControllerUI {
         bookFlightButton.setDisable(true);
     }
 
-    public void onSearch(ActionEvent actionEvent) {
-        System.out.println("Departure country: " + flightModel.getDepartureCountry());
-        System.out.println("Arrival country: " + flightModel.getArrivalCountry());
-        System.out.println("Departure date: " + flightModel.getDepartureDate());
-        System.out.println("Arrival date: " + flightModel.getArrivalDate());
-        System.out.println("One way: " + flightModel.isOneWay());
-        System.out.println("Direct: " + flightModel.isDirectFlight());
-        System.out.println("Number of passengers: " + flightModel.getNumberOfPassengers());
+    private void setupReturnTableView() {
+        // Set up the columns
+        returnFlightNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFlightNumber()));
+        returnAirlineColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAirline()));
+        returnDepartureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureCountry()));
+        returnArrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalCountry()));
 
-        List<Flight> results = flightModel.search();
+        // Format dates and times for display
+        returnDepartureTimeColumn.setCellValueFactory(cellData -> {
+            Date departureDate = cellData.getValue().getDepartureDate();
+            String departureTime = cellData.getValue().getDepartureTime();
+            if (departureDate != null && departureTime != null) {
+                return new SimpleStringProperty(dateFormat.format(departureDate) + " " + departureTime);
+            }
+            return new SimpleStringProperty("");
+        });
 
-        // Update the TableView with the search results
-        ObservableList<Flight> flightData = FXCollections.observableArrayList(results);
-        flightTableView.setItems(flightData);
+        returnArrivalTimeColumn.setCellValueFactory(cellData -> {
+            Date arrivalDate = cellData.getValue().getArrivalDate();
+            String arrivalTime = cellData.getValue().getArrivalTime();
+            if (arrivalDate != null && arrivalTime != null) {
+                return new SimpleStringProperty(dateFormat.format(arrivalDate) + " " + arrivalTime);
+            }
+            return new SimpleStringProperty("");
+        });
+
+        returnPriceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
     }
 
-    @FXML
-    private void onBookFlight(ActionEvent event) {
+    public void onSearch(ActionEvent actionEvent) {
+        List<Flight> departureFlights = flightModel.search();
+        List<Flight> returnFlights = flightModel.searchReturnFlights();
+
+        // Update the TableView with the search results
+        ObservableList<Flight> departureFlightData = FXCollections.observableArrayList(departureFlights);
+        flightTableView.setItems(departureFlightData);
+
+        // Update the return flights table if it's not a one-way trip
+        if (!flightModel.isOneWay()) {
+            ObservableList<Flight> returnFlightData = FXCollections.observableArrayList(returnFlights);
+            returnFlightsTableView.setItems(returnFlightData);
+            returnFlightsSection.setVisible(true);
+        } else {
+            returnFlightsSection.setVisible(false);
+        }
+    }
+
+
+    public void onBookFlight(ActionEvent event) {
         if (selectedFlight != null) {
             try {
                 // Load the booking view
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("Booking-View.fxml"));
 
                 // Create the controller with the selected flight
+                selectedFlight.setSeatingArrangement(BookingRepository.getInstance().getBookedSeats(selectedFlight.getFlightNumber()));
                 BookingControllerUI bookingController = new BookingControllerUI(selectedFlight);
                 loader.setController(bookingController);
 
@@ -206,9 +257,5 @@ public class FlightControllerUI {
                 e.printStackTrace();
             }
         }
-    }
-
-    public void onSelectSeat() {
-
     }
 }

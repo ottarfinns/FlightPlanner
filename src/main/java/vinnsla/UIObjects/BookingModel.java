@@ -4,10 +4,16 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
+import vidmot.flightplanner.FlightApplication;
+import vinnsla.controller.BookingController;
 import vinnsla.entities.Booking;
-import vinnsla.entities.Customer;
+import vinnsla.entities.Flight;
+import vinnsla.entities.Passenger;
+import vinnsla.entities.SeatingArrangement;
 
 public class BookingModel {
+    private BookingController bookingController;
+    private Flight flight;
     private Booking booking;
     private SimpleStringProperty name;
     private SimpleStringProperty nationalID;
@@ -21,8 +27,10 @@ public class BookingModel {
     private SimpleBooleanProperty carryOn;
     private SimpleStringProperty classType;
 
-    public BookingModel() {
-        this.booking = new Booking();
+    public BookingModel(Flight flight) {
+        this.flight = flight;
+        this.bookingController = new BookingController(FlightApplication.getBookingService());
+        this.booking = new Booking(null, null, null, 0, false, "", 0);
         this.name = new SimpleStringProperty("");
         this.nationalID = new SimpleStringProperty("");
         this.passportNumber = new SimpleStringProperty("");
@@ -40,29 +48,52 @@ public class BookingModel {
         System.out.println("Booking saved");
     }
 
-    public void confirmBooking(double totalPrice) {
+    public void confirmBooking(double totalPrice, String seat) {
         // If none of the fields are empty or null we can confirm the booking
         if (name.get().isEmpty() || nationalID.get().isEmpty() || passportNumber.get().isEmpty() || phoneNumber.get().isEmpty()
-                || country.get().isEmpty() || city.get().isEmpty() || address.get().isEmpty() || classType.get() == null || classType.get().isEmpty()) {
+                || country.get().isEmpty() || city.get().isEmpty() || address.get().isEmpty() || classType.get() == null
+                || classType.get().isEmpty() || seat.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Please fill in all fields");
             alert.setContentText("Please fill in all fields before confirming the booking");
             alert.showAndWait();
         } else {
-            Customer customer = new Customer();
+            Passenger passenger = new Passenger(nationalID.get(), passportNumber.get(), name.get(), "ottarfinns@gmail.com", phoneNumber.get(), country.get(), address.get(), city.get());
 
             // TODO: Bæta við eigindum í customer þegar búið er að setja upp customer klasana
 
-            booking.setCustomer(customer);
-            booking.setPrice(totalPrice);
+            booking.setFlight(flight);
+            booking.setPassenger(passenger);
+            booking.setSeat(seat);
+            booking.setTotalPrice((int) totalPrice);
+            booking.setCarryon(carryOn.get());
+            booking.setClassName(classType.get());
+            booking.setBaggage(luggage.get());
 
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Booking confirmed");
-            alert.setHeaderText("Booking confirmed");
-            alert.setContentText("Your booking has been confirmed");
-            alert.showAndWait();
+            boolean result1 = bookingController.addBooking(booking);
+            boolean result2 = bookingController.bookSeat(flight.getFlightNumber(), seat);
+
+            if (result1 && result2) {
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Booking confirmed");
+                alert.setHeaderText("Booking confirmed");
+                alert.setContentText("Your booking has been confirmed");
+                alert.showAndWait();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Booking failed");
+                alert.setContentText("Booking failed");
+                alert.showAndWait();
+            }
+
         }
+    }
+
+    public SeatingArrangement getBookedSeats() {
+        return bookingController.getBookedSeats(flight.getFlightNumber());
     }
 
     public SimpleStringProperty nameProperty() {

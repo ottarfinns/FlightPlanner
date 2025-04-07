@@ -6,6 +6,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TableColumn?>
@@ -19,76 +20,100 @@
 
 <AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vidmot.flightplanner.FlightControllerUI">
     <children>
-        <VBox spacing="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
-            <children>
-                <Label text="Flight Planner" />
-                <Label text="Search Flights" />
+        <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <content>
+                <VBox spacing="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
+                    <children>
+                        <Label text="Flight Planner" />
+                        <Label text="Search Flights" />
 
-                <GridPane hgap="10" vgap="10">
-                    <padding>
-                        <Insets bottom="10" left="10" right="10" top="10" />
-                    </padding>
+                        <GridPane hgap="10" vgap="10">
+                            <padding>
+                                <Insets bottom="10" left="10" right="10" top="10" />
+                            </padding>
 
-                    <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <ComboBox fx:id="dCountryCBox" prefWidth="150.0" GridPane.columnIndex="1" />
+                            <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <ComboBox fx:id="dCountryCBox" prefWidth="150.0" GridPane.columnIndex="1" />
 
-                    <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <ComboBox fx:id="aCountryCBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <ComboBox fx:id="aCountryCBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                    <Label text="Departure Date:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <DatePicker fx:id="dDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <Label text="Departure Date:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <DatePicker fx:id="dDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                    <Label text="Return Date:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <DatePicker fx:id="rDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            <Label text="Return Date:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                            <DatePicker fx:id="rDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                    <Label text="Passengers:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <Spinner fx:id="passengerSpinner" initialValue="1" max="10" min="1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                            <Label text="Passengers:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                            <Spinner fx:id="passengerSpinner" initialValue="1" max="10" min="1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                    <Label text="Max Price:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                    <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
-                        <children>
-                            <Slider fx:id="maxPriceSlider" majorTickUnit="1000" max="5000" min="0" prefWidth="200" showTickLabels="true" showTickMarks="true" value="2500" disable="true"  />
-                            <Label fx:id="priceLabel" text="\$2500" />
-                        </children>
-                    </HBox>
+                            <Label text="Max Price:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                            <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                                <children>
+                                    <Slider fx:id="maxPriceSlider" disable="true" majorTickUnit="1000" max="5000" min="0" prefWidth="200" showTickLabels="true" showTickMarks="true" value="2500" />
+                                    <Label fx:id="priceLabel" text="\$2500" />
+                                </children>
+                            </HBox>
 
-                    <CheckBox fx:id="oneWayBox" text="One-way flight" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                    <CheckBox fx:id="directBox" text="Direct flights only" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                    <CheckBox fx:id="maxPriceBox" text="Set max price" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                            <CheckBox fx:id="oneWayBox" text="One-way flight" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                            <CheckBox fx:id="directBox" text="Direct flights only" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                            <CheckBox fx:id="maxPriceBox" text="Set max price" GridPane.columnIndex="2" GridPane.rowIndex="4" />
 
-                    <columnConstraints>
-                        <ColumnConstraints />
-                        <ColumnConstraints />
-                        <ColumnConstraints />
-                    </columnConstraints>
-                    <rowConstraints>
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                        <RowConstraints />
-                    </rowConstraints>
-                </GridPane>
+                            <columnConstraints>
+                                <ColumnConstraints />
+                                <ColumnConstraints />
+                                <ColumnConstraints />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                        </GridPane>
 
-                <Button onAction="#onSearch" text="Search" />
+                        <Button onAction="#onSearch" text="Search" />
 
-                <TableView fx:id="flightTableView" VBox.vgrow="ALWAYS">
-                    <columns>
-                        <TableColumn fx:id="flightNumberColumn" text="Flight Number" />
-                        <TableColumn fx:id="airlineColumn" text="Airline" />
-                        <TableColumn fx:id="departureColumn" text="Departure" />
-                        <TableColumn fx:id="arrivalColumn" text="Arrival" />
-                        <TableColumn fx:id="departureTimeColumn" text="Departure Time" />
-                        <TableColumn fx:id="arrivalTimeColumn" text="Arrival Time" />
-                        <TableColumn fx:id="priceColumn" text="Price" />
-                    </columns>
-                </TableView>
+                        <VBox spacing="10">
+                            <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Departure flights" />
+                            <TableView fx:id="flightTableView" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="flightNumberColumn" prefWidth="100" text="Flight Number" />
+                                    <TableColumn fx:id="airlineColumn" prefWidth="100" text="Airline" />
+                                    <TableColumn fx:id="departureColumn" prefWidth="100" text="From" />
+                                    <TableColumn fx:id="arrivalColumn" prefWidth="100" text="To" />
+                                    <TableColumn fx:id="departureTimeColumn" prefWidth="150" text="Departure Time" />
+                                    <TableColumn fx:id="arrivalTimeColumn" prefWidth="150" text="Arrival Time" />
+                                    <TableColumn fx:id="priceColumn" prefWidth="100" text="Price" />
+                                </columns>
+                            </TableView>
+                        </VBox>
+                        <VBox fx:id="returnFlightsSection" spacing="10">
+                            <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Return Flights" />
+                            <TableView fx:id="returnFlightsTableView" VBox.vgrow="ALWAYS">
+                                <columns>
+                                    <TableColumn fx:id="returnFlightNumberColumn" prefWidth="100" text="Flight Number" />
+                                    <TableColumn fx:id="returnAirlineColumn" prefWidth="100" text="Airline" />
+                                    <TableColumn fx:id="returnDepartureColumn" prefWidth="100" text="From" />
+                                    <TableColumn fx:id="returnArrivalColumn" prefWidth="100" text="To" />
+                                    <TableColumn fx:id="returnDepartureTimeColumn" prefWidth="150" text="Departure Time" />
+                                    <TableColumn fx:id="returnArrivalTimeColumn" prefWidth="150" text="Arrival Time" />
+                                    <TableColumn fx:id="returnPriceColumn" prefWidth="100" text="Price" />
+                                </columns>
+                            </TableView>
+                        </VBox>
 
-                <HBox alignment="CENTER_RIGHT" spacing="10" VBox.vgrow="NEVER">
-                    <Button fx:id="bookFlightButton" disable="true" onAction="#onBookFlight" text="Book Flight" />
-                </HBox>
-            </children>
-        </VBox>
+                        <HBox alignment="CENTER" spacing="10" VBox.vgrow="NEVER">
+                            <Button fx:id="bookFlightButton" disable="true" onAction="#onBookFlight" text="Book Flight" />
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                        </HBox>
+                    </children>
+                </VBox>
+            </content>
+        </ScrollPane>
     </children>
 </AnchorPane>

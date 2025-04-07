@@ -3,22 +3,22 @@ package vinnsla.entities;
 public class Passenger {
     private String nationalId;
     private String passportNr;
-    private String firstName;
-    private String lastName;
+    private String name;
     private String email;
     private String phoneNr;
+    private String country;
     private String address;
     private String city;
 
     // Constructor
-    public Passenger(String nationalId, String passportNr, String firstName, String lastName,
-                    String email, String phoneNr, String address, String city) {
+    public Passenger(String nationalId, String passportNr, String name,
+                    String email, String phoneNr, String country, String address, String city) {
         this.nationalId = nationalId;
         this.passportNr = passportNr;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.email = email;
         this.phoneNr = phoneNr;
+        this.country = country;
         this.address = address;
         this.city = city;
     }
@@ -40,20 +40,12 @@ public class Passenger {
         this.passportNr = passportNr;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void name(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -72,6 +64,14 @@ public class Passenger {
         this.phoneNr = phoneNr;
     }
 
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -87,4 +87,4 @@ public class Passenger {
     public void setCity(String city) {
         this.city = city;
     }
-} 
+}
