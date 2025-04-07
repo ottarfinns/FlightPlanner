@@ -102,8 +102,6 @@ public class BookingControllerUI {
     private Button backButton;
     @FXML
     private Button confirmButton;
-    @FXML
-    private Button payButton;
 
     private double basePrice;
     private double totalPrice;
@@ -226,7 +224,10 @@ public class BookingControllerUI {
     }
 
     public void confirmBooking() {
-        bookingModel.confirmBooking(totalPrice, selectedSeat);
+        boolean confirmed = bookingModel.confirmBooking(totalPrice, selectedSeat);
+        if (confirmed) {
+            onBack();
+        }
     }
 
     public void onPickSeats() {

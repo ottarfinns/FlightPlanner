@@ -57,6 +57,7 @@ public class BookingRepository implements BookingRepositoryInterface {
                 class TEXT NOT NULL,
                 baggage INTEGER NOT NULL,
                 totalPrice INTEGER NOT NULL,
+                isPaid boolean NOT NULL,
                 PRIMARY KEY (flight_number, nationalId),
                 FOREIGN KEY (flight_number) REFERENCES flights(flight_number),
                 FOREIGN KEY (return_flight_number) REFERENCES flights(flight_number)

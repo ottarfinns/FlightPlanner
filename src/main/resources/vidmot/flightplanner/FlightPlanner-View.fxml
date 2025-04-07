@@ -50,7 +50,7 @@
                             <Label text="Max Price:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
                             <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
                                 <children>
-                                    <Slider fx:id="maxPriceSlider" disable="true" majorTickUnit="1000" max="5000" min="0" prefWidth="200" showTickLabels="true" showTickMarks="true" value="2500" />
+                                    <Slider fx:id="maxPriceSlider" disable="true" majorTickUnit="1000" max="5000" min="0" prefWidth="200" showTickLabels="true" showTickMarks="true" />
                                     <Label fx:id="priceLabel" text="\$2500" />
                                 </children>
                             </HBox>

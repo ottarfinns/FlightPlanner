@@ -55,7 +55,7 @@ public class BookingModel {
         return result.orElse(false);
     }
 
-    public void confirmBooking(double totalPrice, String seat) {
+    public boolean confirmBooking(double totalPrice, String seat) {
         // If none of the fields are empty or null we can confirm the booking
         if (name.get().isEmpty() || nationalID.get().isEmpty() || passportNumber.get().isEmpty() || phoneNumber.get().isEmpty()
                 || country.get().isEmpty() || city.get().isEmpty() || address.get().isEmpty() || classType.get() == null
@@ -65,6 +65,7 @@ public class BookingModel {
             alert.setHeaderText("Please fill in all fields");
             alert.setContentText("Please fill in all fields before confirming the booking");
             alert.showAndWait();
+            return false;
         } else {
             Passenger passenger = new Passenger(nationalID.get(), passportNumber.get(), name.get(), "ottarfinns@gmail.com", phoneNumber.get(), country.get(), address.get(), city.get());
 
@@ -79,28 +80,33 @@ public class BookingModel {
 
             boolean paid = paymentDialog((int) totalPrice);
 
-            boolean result1 = bookingController.addBooking(booking);
-            boolean result2 = bookingController.bookSeat(flight.getFlightNumber(), seat);
-            if (returnFlight != null) {
-                boolean result3 = bookingController.bookSeat(returnFlight.getFlightNumber(), seat);
-            }
+            if (paid) {
+                boolean result1 = bookingController.addBooking(booking);
+                boolean result2 = bookingController.bookSeat(flight.getFlightNumber(), seat);
 
-            if (result1 && result2) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Booking confirmed");
-                alert.setHeaderText("Booking confirmed");
-                alert.setContentText("Your booking has been confirmed");
-                alert.showAndWait();
-            }
-            else {
+                if (returnFlight != null) {
+                    boolean result3 = bookingController.bookSeat(returnFlight.getFlightNumber(), seat);
+                }
+
+                if (result1 && result2) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Booking confirmed");
+                    alert.setHeaderText("Booking confirmed");
+                    alert.setContentText("Your booking has been confirmed");
+                    alert.showAndWait();
+                    return true;
+                }
+            } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Booking failed");
                 alert.setContentText("Booking failed");
                 alert.showAndWait();
+                return false;
             }
 
         }
+        return false;
     }
 
     public SeatingArrangement getBookedSeats() {
