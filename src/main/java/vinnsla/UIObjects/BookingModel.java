@@ -5,11 +5,14 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 import vidmot.flightplanner.FlightApplication;
+import vidmot.flightplanner.PaymentControllerUI;
 import vinnsla.controller.BookingController;
 import vinnsla.entities.Booking;
 import vinnsla.entities.Flight;
 import vinnsla.entities.Passenger;
 import vinnsla.entities.SeatingArrangement;
+
+import java.util.Optional;
 
 public class BookingModel {
     private BookingController bookingController;
@@ -46,8 +49,10 @@ public class BookingModel {
         this.classType = new SimpleStringProperty("");
     }
 
-    public void saveBooking() {
-        System.out.println("Booking saved");
+    private boolean paymentDialog(int totalPrice) {
+        PaymentControllerUI payBookingDialog = new PaymentControllerUI(totalPrice);
+        Optional<Boolean> result = payBookingDialog.showAndWait();
+        return result.orElse(false);
     }
 
     public void confirmBooking(double totalPrice, String seat) {
@@ -71,6 +76,8 @@ public class BookingModel {
             booking.setCarryon(carryOn.get());
             booking.setClassName(classType.get());
             booking.setBaggage(luggage.get());
+
+            boolean paid = paymentDialog((int) totalPrice);
 
             boolean result1 = bookingController.addBooking(booking);
             boolean result2 = bookingController.bookSeat(flight.getFlightNumber(), seat);
