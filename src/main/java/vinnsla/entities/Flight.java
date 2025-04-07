@@ -14,8 +14,11 @@ public class Flight {
     private String departureAirport;
     private String arrivalAirport;
 
-    private Date departureTime;
-    private Date arrivalTime;
+    private Date departureDate;
+    private Date arrivalDate;
+
+    private String departureTime;
+    private String arrivalTime;
 
     private int totalSeats;
 
@@ -27,9 +30,8 @@ public class Flight {
     private Double price;
 
     public Flight(String flightNumber, String airline, String departureCountry, String arrivalCountry,
-     String departureAirport, String arrivalAirport, Date arrivalTime,
-     Date departureTime, int totalRows, int totalCols, double price) {
-
+                 String departureAirport, String arrivalAirport, Date departureDate, Date arrivalDate,
+                 String departureTime, String arrivalTime, int totalRows, int totalCols, double price) {
         this.flightNumber = flightNumber;
         this.airline = airline;
         //flightNumber = FlightList.generateFlightNumber(airline);
@@ -40,16 +42,19 @@ public class Flight {
         this.departureAirport = departureAirport;
         this.arrivalAirport = arrivalAirport;
 
-        this.arrivalTime = arrivalTime;
+        this.departureDate = departureDate;
+        this.arrivalDate = arrivalDate;
+
         this.departureTime = departureTime;
+        this.arrivalTime = arrivalTime;
 
         this.price = price;
 
         this.totalRows = totalRows;
         this.totalCols = totalCols;
 
-        totalSeats = totalRows * totalCols;
-        seating = new SeatingArrangement(totalRows, totalCols);
+        this.totalSeats = totalRows * totalCols;
+        this.seating = new SeatingArrangement(totalRows, totalCols);
     }
 
     public boolean isFull() {
@@ -88,12 +93,36 @@ public class Flight {
         return arrivalAirport;
     }
 
-    public Date getDepartureTime() {
+    public Date getDepartureDate() {
+        return departureDate;
+    }
+
+    public void setDepartureDate(Date departureDate) {
+        this.departureDate = departureDate;
+    }
+
+    public Date getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(Date arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+    public String getDepartureTime() {
         return departureTime;
     }
 
-    public Date getArrivalTime() {
+    public void setDepartureTime(String departureTime) {
+        this.departureTime = departureTime;
+    }
+
+    public String getArrivalTime() {
         return arrivalTime;
+    }
+
+    public void setArrivalTime(String arrivalTime) {
+        this.arrivalTime = arrivalTime;
     }
 
     public int getTotalRows() {
@@ -108,12 +137,18 @@ public class Flight {
         return price;
     }
 
+    public SeatingArrangement getSeatingArrangement() {
+        return seating;
+    }
+
+    public void setSeatingArrangement(SeatingArrangement seatingArrangement) {
+        this.seating = seatingArrangement;
+    }
+
     @Override
     public boolean equals(Object obj) {
-
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-
         Flight flight = (Flight) obj;
         return Objects.equals(this.flightNumber, flight.flightNumber);
     }

@@ -29,14 +29,12 @@ public class SeatingArrangement {
         }
     }
 
-    private Seat getSeat(String seatNum) {
+    public Seat getSeat(String seatNum) {
         SeatNumber seatNumber = SeatNumber.fromString(seatNum);
-        int r = seatNumber.getRow();
-        int c = seatNumber.getCol();
-        return seats[r][c];
+        return getSeat(seatNumber);
     }
 
-    private Seat getSeat(SeatNumber seatNumber) {
+    public Seat getSeat(SeatNumber seatNumber) {
         int r = seatNumber.getRow();
         int c = seatNumber.getCol();
         return seats[r][c];
@@ -51,17 +49,14 @@ public class SeatingArrangement {
         }
     }
 
-
     public boolean cancelSeat(SeatNumber seatNumber) {
         Seat seat = getSeat(seatNumber);
         availableSeats++;
         return seat.cancelSeat();
     }
 
-
     public boolean bookSeat(SeatNumber seatNumber) {
         Seat seat = getSeat(seatNumber);
-
         availableSeats--;
         return seat.bookSeat();
     }
@@ -75,7 +70,7 @@ public class SeatingArrangement {
         SeatNumber seatNumber1 = SeatNumber.fromString("20A");
         System.out.println(seatNumber1.getCol());
         System.out.println(seatNumber1.getRow());
-        System.out.println(seating.bookSeat(seatNumber1));
+        System.out.println(seating.bookSeat(SeatNumber.fromString("20A")));
         System.out.println(seating.bookSeat(SeatNumber.fromString("16F")));
         seating.printSeating();
         System.out.println(seating.cancelSeat(SeatNumber.fromString("20A")));
