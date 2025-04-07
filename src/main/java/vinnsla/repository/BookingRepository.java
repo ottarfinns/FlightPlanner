@@ -43,8 +43,8 @@ public class BookingRepository implements BookingRepositoryInterface {
     private void createTables() throws SQLException {
         String createBookingsTable = """
                 CREATE TABLE IF NOT EXISTS bookings (
-                flight_number TEXT,
-                return_flight_number TEXT NOT NULL,
+                flight_number TEXT NOT NULL,
+                return_flight_number TEXT,
                 name TEXT NOT NULL,
                 nationalId TEXT NOT NULL,
                 passportNr TEXT NOT NULL,
@@ -106,7 +106,11 @@ public class BookingRepository implements BookingRepositoryInterface {
             pstmt.setString(11, booking.getClassName());
             pstmt.setInt(12, booking.getBaggage());
             pstmt.setInt(13, booking.getTotalPrice());
-            pstmt.setString(14, booking.getReturnFlight().getFlightNumber());
+            if (booking.getReturnFlight() != null) {
+                pstmt.setString(14, booking.getReturnFlight().getFlightNumber());
+            } else {
+                pstmt.setNull(14, Types.VARCHAR);
+            }
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
            e.printStackTrace();

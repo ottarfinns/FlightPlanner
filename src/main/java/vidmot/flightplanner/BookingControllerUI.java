@@ -26,6 +26,7 @@ public class BookingControllerUI {
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private String selectedSeat;
     private SeatingArrangement seating;
+    private String selectedReturnSeat;
 
     // Flight Information Labels
     @FXML
@@ -72,6 +73,8 @@ public class BookingControllerUI {
     private CheckBox carryOnCheckBox;
     @FXML
     private Button pickSeatsButton;
+    @FXML
+    private Button pickReturnSeatsButton;
 
     // Customer Information
     @FXML
@@ -122,6 +125,7 @@ public class BookingControllerUI {
         }
         this.totalPrice = basePrice;
         this.selectedSeat = "";
+        this.selectedReturnSeat = "";
         this.seating = flight.getSeatingArrangement();
     }
 
@@ -200,6 +204,7 @@ public class BookingControllerUI {
         // Set up return flight information if it exists
         if (selectedReturnFlight != null) {
             returnFlightSection.setVisible(true);
+            pickReturnSeatsButton.setVisible(true);
             returnFlightNumberLabel.setText(selectedReturnFlight.getFlightNumber());
             returnAirlineLabel.setText(selectedReturnFlight.getAirline());
             returnDepartureLabel.setText(selectedReturnFlight.getDepartureCountry());
@@ -209,6 +214,7 @@ public class BookingControllerUI {
             returnPriceLabel.setText(String.format("%.2f kr.", selectedReturnFlight.getPrice()));
         } else {
             returnFlightSection.setVisible(false);
+            pickReturnSeatsButton.setVisible(false);
         }
     }
 
@@ -242,6 +248,34 @@ public class BookingControllerUI {
             // Update the selected seat
             selectedSeat = seatNumber;
             System.out.println("Selected seat: " + seatNumber);
+        });
+    }
+
+    public void onPickReturnSeats() {
+        if (!selectedReturnSeat.isEmpty()) {
+            // Seat already selected, alert
+            Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDialog.setTitle("Change Return Seat");
+            confirmDialog.setHeaderText("You have already selected a return seat");
+            confirmDialog.setContentText("Do you want to change your return seat from " + selectedReturnSeat + "?");
+
+            Optional<ButtonType> result = confirmDialog.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                SeatNumber oldSeatNumber = SeatNumber.fromString(selectedReturnSeat);
+                selectedReturnFlight.getSeatingArrangement().cancelSeat(oldSeatNumber);
+            } else {
+                return;
+            }
+        }
+
+        // Open seat selection dialog
+        SeatSelectionControllerUI dialog = new SeatSelectionControllerUI(selectedReturnFlight);
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(seatNumber -> {
+            // Update the selected seat
+            selectedReturnSeat = seatNumber;
+            System.out.println("Selected return seat: " + seatNumber);
         });
     }
 
