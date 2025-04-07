@@ -21,6 +21,7 @@ public class BookingControllerUI {
     private BookingModel bookingModel;
     private BookingServiceInterface bookingService;
     private Flight selectedFlight;
+    private Flight selectedReturnFlight;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private String selectedSeat;
     private SeatingArrangement seating;
@@ -85,13 +86,20 @@ public class BookingControllerUI {
 
     private FlightServiceInterface flightService;
 
-    public BookingControllerUI(Flight flight) {
+    public BookingControllerUI(Flight flight, Flight returnFlight) {
         this.selectedFlight = flight;
+        this.selectedReturnFlight = returnFlight;
+        System.out.println("Return flight " + selectedReturnFlight.getFlightNumber());
         //BookingRepositoryInterface bookingRepository = new BookingRepository();
         //bookingService = new BookingService(bookingRepository);
         bookingModel = new BookingModel(selectedFlight);
         this.basePrice = flight.getPrice();
-        this.totalPrice = flight.getPrice();
+        if (selectedFlight != null) {
+            this.basePrice = this.selectedFlight.getPrice() + this.selectedReturnFlight.getPrice();
+        } else {
+            this.basePrice = flight.getPrice();
+        }
+        this.totalPrice = basePrice;
         this.selectedSeat = "";
         this.seating = flight.getSeatingArrangement();
     }

@@ -44,6 +44,7 @@ public class BookingRepository implements BookingRepositoryInterface {
         String createBookingsTable = """
                 CREATE TABLE IF NOT EXISTS bookings (
                 flight_number TEXT NOT NULL,
+                return_flight_number TEXT NOT NULL,
                 name TEXT NOT NULL,
                 nationalId TEXT NOT NULL,
                 passportNr TEXT NOT NULL,
@@ -57,7 +58,8 @@ public class BookingRepository implements BookingRepositoryInterface {
                 baggage INTEGER NOT NULL,
                 totalPrice INTEGER NOT NULL,
                 PRIMARY KEY (flight_number, nationalId),
-                FOREIGN KEY (flight_number) REFERENCES flights(flight_number)
+                FOREIGN KEY (flight_number) REFERENCES flights(flight_number),
+                FOREIGN KEY (return_flight_number) REFERENCES flights(flight_number)
                 )
                 """; // flight_number + nationalid er lykillinn
 
