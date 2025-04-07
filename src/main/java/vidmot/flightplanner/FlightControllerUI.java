@@ -89,6 +89,7 @@ public class FlightControllerUI {
     private Button bookFlightButton;
 
     private Flight selectedFlight;
+    private Flight selectedReturnFlight;
 
     public void setFlightService(FlightServiceInterface flightService) {
         this.flightService = flightService;
@@ -123,7 +124,16 @@ public class FlightControllerUI {
     private void setupSelectionListener() {
         flightTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             selectedFlight = newSelection;
-            bookFlightButton.setDisable(newSelection == null);
+            if (oneWayBox.isSelected()) {
+                bookFlightButton.setDisable(newSelection == null);
+            }
+        });
+
+        returnFlightsTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            selectedReturnFlight = newSelection;
+            if (!oneWayBox.isSelected()) {
+                bookFlightButton.setDisable(newSelection == null);
+            }
         });
     }
 
@@ -241,7 +251,13 @@ public class FlightControllerUI {
 
                 // Create the controller with the selected flight
                 selectedFlight.setSeatingArrangement(BookingRepository.getInstance().getBookedSeats(selectedFlight.getFlightNumber()));
-                BookingControllerUI bookingController = new BookingControllerUI(selectedFlight);
+                
+                // Only set return flight seating if a return flight is selected
+                if (selectedReturnFlight != null) {
+                    selectedReturnFlight.setSeatingArrangement(BookingRepository.getInstance().getBookedSeats(selectedReturnFlight.getFlightNumber()));
+                }
+
+                BookingControllerUI bookingController = new BookingControllerUI(selectedFlight, selectedReturnFlight);
                 loader.setController(bookingController);
 
                 // Load the scene

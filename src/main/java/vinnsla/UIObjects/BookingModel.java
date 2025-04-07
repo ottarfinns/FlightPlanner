@@ -14,6 +14,7 @@ import vinnsla.entities.SeatingArrangement;
 public class BookingModel {
     private BookingController bookingController;
     private Flight flight;
+    private Flight returnFlight;
     private Booking booking;
     private SimpleStringProperty name;
     private SimpleStringProperty nationalID;
@@ -27,8 +28,9 @@ public class BookingModel {
     private SimpleBooleanProperty carryOn;
     private SimpleStringProperty classType;
 
-    public BookingModel(Flight flight) {
+    public BookingModel(Flight flight, Flight returnFlight) {
         this.flight = flight;
+        this.returnFlight = returnFlight;
         this.bookingController = new BookingController(FlightApplication.getBookingService());
         this.booking = new Booking(null, null, null, 0, false, "", 0);
         this.name = new SimpleStringProperty("");
@@ -61,9 +63,8 @@ public class BookingModel {
         } else {
             Passenger passenger = new Passenger(nationalID.get(), passportNumber.get(), name.get(), "ottarfinns@gmail.com", phoneNumber.get(), country.get(), address.get(), city.get());
 
-            // TODO: Bæta við eigindum í customer þegar búið er að setja upp customer klasana
-
             booking.setFlight(flight);
+            booking.setReturnFlight(returnFlight);
             booking.setPassenger(passenger);
             booking.setSeat(seat);
             booking.setTotalPrice((int) totalPrice);
@@ -73,6 +74,9 @@ public class BookingModel {
 
             boolean result1 = bookingController.addBooking(booking);
             boolean result2 = bookingController.bookSeat(flight.getFlightNumber(), seat);
+            if (returnFlight != null) {
+                boolean result3 = bookingController.bookSeat(returnFlight.getFlightNumber(), seat);
+            }
 
             if (result1 && result2) {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
