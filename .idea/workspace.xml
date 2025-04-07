@@ -8,8 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/BookingControllerUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/BookingControllerUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/FlightControllerUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vidmot/flightplanner/FlightControllerUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vinnsla/entities/Booking.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vinnsla/entities/Booking.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/vinnsla/repository/BookingRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/vinnsla/repository/BookingRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/vidmot/flightplanner/Booking-View.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/vidmot/flightplanner/Booking-View.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

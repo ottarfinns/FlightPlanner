@@ -251,7 +251,11 @@ public class FlightControllerUI {
 
                 // Create the controller with the selected flight
                 selectedFlight.setSeatingArrangement(BookingRepository.getInstance().getBookedSeats(selectedFlight.getFlightNumber()));
-                selectedReturnFlight.setSeatingArrangement(BookingRepository.getInstance().getBookedSeats(selectedReturnFlight.getFlightNumber()));
+                
+                // Only set return flight seating if a return flight is selected
+                if (selectedReturnFlight != null) {
+                    selectedReturnFlight.setSeatingArrangement(BookingRepository.getInstance().getBookedSeats(selectedReturnFlight.getFlightNumber()));
+                }
 
                 BookingControllerUI bookingController = new BookingControllerUI(selectedFlight, selectedReturnFlight);
                 loader.setController(bookingController);

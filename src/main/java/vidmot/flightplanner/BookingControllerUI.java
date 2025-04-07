@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import vinnsla.UIObjects.BookingModel;
 import vinnsla.entities.Flight;
@@ -43,6 +44,24 @@ public class BookingControllerUI {
     private Label priceLabel;
     @FXML
     private Label totalPriceLabel;
+
+    // Return flight information labels
+    @FXML
+    private Label returnFlightNumberLabel;
+    @FXML
+    private Label returnAirlineLabel;
+    @FXML
+    private Label returnDepartureLabel;
+    @FXML
+    private Label returnArrivalLabel;
+    @FXML
+    private Label returnDepartureTimeLabel;
+    @FXML
+    private Label returnArrivalTimeLabel;
+    @FXML
+    private Label returnPriceLabel;
+    @FXML
+    private VBox returnFlightSection;
 
     // Flight Add-ons
     @FXML
@@ -89,15 +108,17 @@ public class BookingControllerUI {
     public BookingControllerUI(Flight flight, Flight returnFlight) {
         this.selectedFlight = flight;
         this.selectedReturnFlight = returnFlight;
-        System.out.println("Return flight " + selectedReturnFlight.getFlightNumber());
+        if (selectedReturnFlight != null) {
+            System.out.println("Return flight " + selectedReturnFlight.getFlightNumber());
+        }
         //BookingRepositoryInterface bookingRepository = new BookingRepository();
         //bookingService = new BookingService(bookingRepository);
         bookingModel = new BookingModel(selectedFlight);
         this.basePrice = flight.getPrice();
-        if (selectedFlight != null) {
+        if (selectedReturnFlight != null) {
             this.basePrice = this.selectedFlight.getPrice() + this.selectedReturnFlight.getPrice();
         } else {
-            this.basePrice = flight.getPrice();
+            this.basePrice = this.selectedFlight.getPrice();
         }
         this.totalPrice = basePrice;
         this.selectedSeat = "";
@@ -174,6 +195,20 @@ public class BookingControllerUI {
             departureTimeLabel.setText(dateFormat.format(selectedFlight.getDepartureDate()) + " " + selectedFlight.getDepartureTime());
             arrivalTimeLabel.setText(dateFormat.format(selectedFlight.getArrivalDate()) + " " + selectedFlight.getArrivalTime());
             priceLabel.setText(String.format("%.2f kr.", selectedFlight.getPrice()));
+        }
+
+        // Set up return flight information if it exists
+        if (selectedReturnFlight != null) {
+            returnFlightSection.setVisible(true);
+            returnFlightNumberLabel.setText(selectedReturnFlight.getFlightNumber());
+            returnAirlineLabel.setText(selectedReturnFlight.getAirline());
+            returnDepartureLabel.setText(selectedReturnFlight.getDepartureCountry());
+            returnArrivalLabel.setText(selectedReturnFlight.getArrivalCountry());
+            returnDepartureTimeLabel.setText(dateFormat.format(selectedReturnFlight.getDepartureDate()) + " " + selectedReturnFlight.getDepartureTime());
+            returnArrivalTimeLabel.setText(dateFormat.format(selectedReturnFlight.getArrivalDate()) + " " + selectedReturnFlight.getArrivalTime());
+            returnPriceLabel.setText(String.format("%.2f kr.", selectedReturnFlight.getPrice()));
+        } else {
+            returnFlightSection.setVisible(false);
         }
     }
 
