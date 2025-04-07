@@ -14,6 +14,7 @@ import vinnsla.entities.SeatingArrangement;
 public class BookingModel {
     private BookingController bookingController;
     private Flight flight;
+    private Flight returnFlight;
     private Booking booking;
     private SimpleStringProperty name;
     private SimpleStringProperty nationalID;
@@ -27,8 +28,9 @@ public class BookingModel {
     private SimpleBooleanProperty carryOn;
     private SimpleStringProperty classType;
 
-    public BookingModel(Flight flight) {
+    public BookingModel(Flight flight, Flight returnFlight) {
         this.flight = flight;
+        this.returnFlight = returnFlight;
         this.bookingController = new BookingController(FlightApplication.getBookingService());
         this.booking = new Booking(null, null, null, 0, false, "", 0);
         this.name = new SimpleStringProperty("");
@@ -64,6 +66,7 @@ public class BookingModel {
             // TODO: Bæta við eigindum í customer þegar búið er að setja upp customer klasana
 
             booking.setFlight(flight);
+            booking.setReturnFlight(returnFlight);
             booking.setPassenger(passenger);
             booking.setSeat(seat);
             booking.setTotalPrice((int) totalPrice);

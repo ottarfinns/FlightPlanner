@@ -113,7 +113,7 @@ public class BookingControllerUI {
         }
         //BookingRepositoryInterface bookingRepository = new BookingRepository();
         //bookingService = new BookingService(bookingRepository);
-        bookingModel = new BookingModel(selectedFlight);
+        bookingModel = new BookingModel(selectedFlight, selectedReturnFlight);
         this.basePrice = flight.getPrice();
         if (selectedReturnFlight != null) {
             this.basePrice = this.selectedFlight.getPrice() + this.selectedReturnFlight.getPrice();
