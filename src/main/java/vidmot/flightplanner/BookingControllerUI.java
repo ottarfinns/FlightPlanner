@@ -229,10 +229,6 @@ public class BookingControllerUI {
         }
     }
 
-    public void onConfirmBooking() {
-        // TODO: Update the seating in the database such that the selected seat is now booked
-    }
-
     public void setFlightService(FlightServiceInterface flightService) {
         this.flightService = flightService;
     }
