@@ -37,7 +37,11 @@ public class BookingControllerUI {
     @FXML
     private Label departureLabel;
     @FXML
+    private Label departureAirportLabel;
+    @FXML
     private Label arrivalLabel;
+    @FXML
+    private Label arrivalAirportLabel;
     @FXML
     private Label departureTimeLabel;
     @FXML
@@ -55,7 +59,11 @@ public class BookingControllerUI {
     @FXML
     private Label returnDepartureLabel;
     @FXML
+    private Label returnDepartureAirportLabel;
+    @FXML
     private Label returnArrivalLabel;
+    @FXML
+    private Label returnArrivalAirportLabel;
     @FXML
     private Label returnDepartureTimeLabel;
     @FXML
@@ -200,7 +208,9 @@ public class BookingControllerUI {
             flightNumberLabel.setText(selectedFlight.getFlightNumber());
             airlineLabel.setText(selectedFlight.getAirline());
             departureLabel.setText(selectedFlight.getDepartureCountry());
+            departureAirportLabel.setText(selectedFlight.getDepartureAirport());
             arrivalLabel.setText(selectedFlight.getArrivalCountry());
+            arrivalAirportLabel.setText(selectedFlight.getArrivalAirport());
             departureTimeLabel.setText(dateFormat.format(selectedFlight.getDepartureDate()) + " " + selectedFlight.getDepartureTime());
             arrivalTimeLabel.setText(dateFormat.format(selectedFlight.getArrivalDate()) + " " + selectedFlight.getArrivalTime());
             priceLabel.setText(String.format("%.2f kr.", selectedFlight.getPrice()));
@@ -213,7 +223,9 @@ public class BookingControllerUI {
             returnFlightNumberLabel.setText(selectedReturnFlight.getFlightNumber());
             returnAirlineLabel.setText(selectedReturnFlight.getAirline());
             returnDepartureLabel.setText(selectedReturnFlight.getDepartureCountry());
+            returnDepartureAirportLabel.setText(selectedReturnFlight.getDepartureAirport());
             returnArrivalLabel.setText(selectedReturnFlight.getArrivalCountry());
+            returnArrivalAirportLabel.setText(selectedReturnFlight.getArrivalAirport());
             returnDepartureTimeLabel.setText(dateFormat.format(selectedReturnFlight.getDepartureDate()) + " " + selectedReturnFlight.getDepartureTime());
             returnArrivalTimeLabel.setText(dateFormat.format(selectedReturnFlight.getArrivalDate()) + " " + selectedReturnFlight.getArrivalTime());
             returnPriceLabel.setText(String.format("%.2f kr.", selectedReturnFlight.getPrice()));

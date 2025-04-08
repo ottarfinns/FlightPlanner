@@ -35,17 +35,23 @@
                     <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                     <Label fx:id="departureLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                    <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <Label fx:id="arrivalLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label text="From Airport:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label fx:id="departureAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                    <Label text="Departure:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <Label fx:id="departureTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label fx:id="arrivalLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                    <Label text="Arrival:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                    <Label fx:id="arrivalTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <Label text="To Airport:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <Label fx:id="arrivalAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-                    <Label text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                    <Label fx:id="priceLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <Label text="Departure:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <Label fx:id="departureTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                    <Label text="Arrival:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                    <Label fx:id="arrivalTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                    <Label text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                    <Label fx:id="priceLabel" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                 </GridPane>
                 <Button fx:id="pickSeatsButton" prefWidth="200" text="Pick Seats" onAction="#onPickSeats" />
             </VBox>
@@ -63,17 +69,23 @@
                     <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                     <Label fx:id="returnDepartureLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                    <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <Label fx:id="returnArrivalLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label text="From Airport:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <Label fx:id="returnDepartureAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                    <Label text="Departure:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <Label fx:id="returnDepartureTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Label fx:id="returnArrivalLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                    <Label text="Arrival:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                    <Label fx:id="returnArrivalTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <Label text="To Airport:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <Label fx:id="returnArrivalAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-                    <Label text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                    <Label fx:id="returnPriceLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <Label text="Departure:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <Label fx:id="returnDepartureTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                    <Label text="Arrival:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                    <Label fx:id="returnArrivalTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                    <Label text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                    <Label fx:id="returnPriceLabel" GridPane.columnIndex="1" GridPane.rowIndex="8" />
                 </GridPane>
                 <Button fx:id="pickReturnSeatsButton" prefWidth="200" text="Pick Return Seats" onAction="#onPickReturnSeats" />
             </VBox>
