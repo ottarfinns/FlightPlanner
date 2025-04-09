@@ -7,12 +7,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
-import javafx.geometry.Rectangle2D;
 import javafx.stage.Stage;
 import vinnsla.UIObjects.FlightModel;
 import vinnsla.entities.Flight;
@@ -114,6 +114,42 @@ public class FlightControllerUI {
         dCountryCBox.getItems().setAll("Iceland", "United States", "Canada", "United Kingdom", "France", "Germany");
         aCountryCBox.getItems().addAll("Iceland", "United States", "Canada", "United Kingdom", "France", "Germany");
 
+        // Add listeners to handle clearing selection when clicking the same country
+        dCountryCBox.setOnMouseClicked(event -> {
+            String selected = dCountryCBox.getValue();
+            if (selected != null && selected.equals(flightModel.getDepartureCountry())) {
+                // Unbind before clearing
+                flightModel.departureCountryProperty().unbind();
+                dCountryCBox.getSelectionModel().clearSelection();
+                flightModel.setDepartureCountry("");
+                // Rebind after clearing
+                flightModel.departureCountryProperty().bind(dCountryCBox.getSelectionModel().selectedItemProperty());
+                
+                flightTableView.getSelectionModel().clearSelection();
+                selectedFlight = null;
+                bookFlightButton.setDisable(true);
+            }
+        });
+
+        aCountryCBox.setOnMouseClicked(event -> {
+            String selected = aCountryCBox.getValue();
+            if (selected != null && selected.equals(flightModel.getArrivalCountry())) {
+                // Unbind before clearing
+                flightModel.arrivalCountryProperty().unbind();
+                aCountryCBox.getSelectionModel().clearSelection();
+                flightModel.setArrivalCountry("");
+                // Rebind after clearing
+                flightModel.arrivalCountryProperty().bind(aCountryCBox.getSelectionModel().selectedItemProperty());
+                
+                flightTableView.getSelectionModel().clearSelection();
+                returnFlightsTableView.getSelectionModel().clearSelection();
+                selectedFlight = null;
+                selectedReturnFlight = null;
+                bookFlightButton.setDisable(true);
+            }
+        });
+
+        // Initial bindings
         flightModel.departureCountryProperty().bind(dCountryCBox.getSelectionModel().selectedItemProperty());
         flightModel.arrivalCountryProperty().bind(aCountryCBox.getSelectionModel().selectedItemProperty());
 
@@ -272,6 +308,32 @@ public class FlightControllerUI {
     }
 
     public void onSearch(ActionEvent actionEvent) {
+        // Check if any search parameters are filled
+        boolean hasSearchParameters = false;
+
+        // Check departure and arrival countries
+        if (dCountryCBox.getValue() != null && !dCountryCBox.getValue().isEmpty() ||
+            aCountryCBox.getValue() != null && !aCountryCBox.getValue().isEmpty()) {
+            hasSearchParameters = true;
+        }
+
+        // Check dates
+        if (dDatePicker.getValue() != null || rDatePicker.getValue() != null) {
+            hasSearchParameters = true;
+        }
+
+        // Check max price if enabled
+        if (maxPriceBox.isSelected() && maxPriceSlider.getValue() > 0) {
+            hasSearchParameters = true;
+        }
+
+        if (!hasSearchParameters) {
+            // Clear the tables if no search parameters are filled
+            flightTableView.setItems(FXCollections.observableArrayList());
+            returnFlightsTableView.setItems(FXCollections.observableArrayList());
+            return;
+        }
+
         List<Flight> departureFlights = flightModel.search();
         List<Flight> returnFlights = flightModel.searchReturnFlights();
 
@@ -309,12 +371,12 @@ public class FlightControllerUI {
 
                 // Load the scene
                 Parent bookingRoot = loader.load();
-                
+
                 // Get screen dimensions
                 Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
                 double screenWidth = screenBounds.getWidth();
                 double screenHeight = screenBounds.getHeight();
-                
+
                 Scene bookingScene = new Scene(bookingRoot, screenWidth, screenHeight);
 
                 // Get the current stage and set the new scene

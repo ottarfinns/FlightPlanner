@@ -32,42 +32,45 @@
                                 <Insets bottom="10" left="10" right="10" top="10" />
                             </padding>
 
+                            <!-- First Row -->
                             <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                            <ComboBox fx:id="dCountryCBox" prefWidth="150.0" GridPane.columnIndex="1" />
+                            <ComboBox fx:id="dCountryCBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                            <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                            <ComboBox fx:id="aCountryCBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <Label text="To:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <ComboBox fx:id="aCountryCBox" prefWidth="150.0" GridPane.columnIndex="3" GridPane.rowIndex="0" />
 
-                            <Label text="Departure Date:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                            <DatePicker fx:id="dDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <Label text="Passengers:" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+                            <Spinner fx:id="passengerSpinner" initialValue="1" max="10" min="1" GridPane.columnIndex="5" GridPane.rowIndex="0" />
 
-                            <Label text="Return Date:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                            <DatePicker fx:id="rDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                            <!-- Second Row -->
+                            <Label text="Departure Date:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <DatePicker fx:id="dDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                            <Label text="Passengers:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                            <Spinner fx:id="passengerSpinner" initialValue="1" max="10" min="1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                            <Label text="Return Date:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                            <DatePicker fx:id="rDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="1" />
 
-                            <Label text="Max Price:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                            <HBox spacing="10" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                            <Label text="Max Price:" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+                            <HBox spacing="10" GridPane.columnIndex="5" GridPane.rowIndex="1">
                                 <children>
                                     <Slider fx:id="maxPriceSlider" disable="true" majorTickUnit="1000" max="5000" prefWidth="200" showTickLabels="true" showTickMarks="true" />
                                     <Label fx:id="priceLabel" text="0 kr." />
                                 </children>
                             </HBox>
 
-                            <CheckBox fx:id="oneWayBox" text="One-way flight" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                            <CheckBox fx:id="maxPriceBox" text="Set max price" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                            <!-- Checkboxes -->
+                            <CheckBox fx:id="oneWayBox" text="One-way flight" GridPane.columnIndex="6" GridPane.rowIndex="0" />
+                            <CheckBox fx:id="maxPriceBox" text="Set max price" GridPane.columnIndex="6" GridPane.rowIndex="1" />
 
                             <columnConstraints>
                                 <ColumnConstraints />
                                 <ColumnConstraints />
                                 <ColumnConstraints />
+                                <ColumnConstraints />
+                                <ColumnConstraints />
+                                <ColumnConstraints />
+                                <ColumnConstraints />
                             </columnConstraints>
                             <rowConstraints>
-                                <RowConstraints />
-                                <RowConstraints />
-                                <RowConstraints />
-                                <RowConstraints />
                                 <RowConstraints />
                                 <RowConstraints />
                             </rowConstraints>
