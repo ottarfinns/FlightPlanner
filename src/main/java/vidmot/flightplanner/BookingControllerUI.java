@@ -2,10 +2,12 @@ package vidmot.flightplanner;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import vinnsla.UIObjects.BookingModel;
 import vinnsla.entities.Flight;
@@ -311,7 +313,10 @@ public class BookingControllerUI {
 
             // Get the current stage and set the new scene
             Stage currentStage = (Stage) backButton.getScene().getWindow();
-            Scene scene = new Scene(root, 900, 900);
+            Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+            double screenWidth = screenBounds.getWidth();
+            double screenHeight = screenBounds.getHeight();
+            Scene scene = new Scene(root, screenWidth, screenHeight);
             currentStage.setScene(scene);
             currentStage.setTitle("Flight Search");
 

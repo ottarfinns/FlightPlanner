@@ -2,7 +2,9 @@ package vidmot.flightplanner;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import vinnsla.service.BookingService;
 import vinnsla.service.BookingServiceInterface;
@@ -20,6 +22,11 @@ public class FlightApplication extends Application {
         flightService = new FlightService();
         bookingService = new BookingService();
 
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        double screenWidth = screenBounds.getWidth();
+        double screenHeight = screenBounds.getHeight();
+
+
         // Create the FXML loader
         FXMLLoader fxmlLoader = new FXMLLoader(FlightApplication.class.getResource("FlightPlanner-View.fxml"));
 
@@ -31,7 +38,7 @@ public class FlightApplication extends Application {
         controller.setFlightService(flightService);
 
         // Create the scene with the loaded FXML
-        Scene scene = new Scene(fxmlLoader.getRoot(), 1000, 800);
+        Scene scene = new Scene(fxmlLoader.getRoot(), screenWidth, screenHeight);
         stage.setTitle("Flight Planner - 3F");
         stage.setScene(scene);
         stage.show();
