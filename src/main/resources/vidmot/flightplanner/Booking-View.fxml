@@ -22,7 +22,7 @@
     <!-- Main Content Area -->
     <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
         <HBox spacing="20">
-            <!-- Left Column -->
+            <!-- Left Column - Departure Flight Information -->
             <VBox spacing="20" HBox.hgrow="ALWAYS">
                 <!-- Departure Flight Information Section -->
                 <VBox spacing="10">
@@ -121,7 +121,10 @@
                     </GridPane>
                     <Button fx:id="pickReturnSeatsButton" onAction="#onPickReturnSeats" prefWidth="200" text="Pick Return Seats" />
                 </VBox>
+            </VBox>
 
+            <!-- Middle Column - Flight Add-ons -->
+            <VBox spacing="20" HBox.hgrow="ALWAYS">
                 <!-- Add-ons Section -->
                 <VBox spacing="10">
                     <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Flight Add-ons" />
@@ -155,7 +158,7 @@
                 </VBox>
             </VBox>
 
-            <!-- Right Column -->
+            <!-- Right Column - Customer Information -->
             <VBox spacing="10" HBox.hgrow="ALWAYS">
                 <!-- Customer Information Section -->
                 <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Customer Information" />
