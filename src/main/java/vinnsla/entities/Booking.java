@@ -5,6 +5,7 @@ public class Booking {
     private int bookingId;
 
     private Flight flight;
+    private Flight returnFlight;
     //private Customer customer;
     private Passenger passenger;
     private String seat;
@@ -18,6 +19,7 @@ public class Booking {
     public Booking(Flight flight, Passenger passenger, String seat, int totalPrice,
                    boolean carryon, String className, int baggage) {
         this.flight = flight;
+        this.returnFlight = null;
         this.passenger = passenger;
         this.seat = seat;
         this.totalPrice = totalPrice;
@@ -95,7 +97,10 @@ public class Booking {
         return totalPrice;
     }
 
-    public static void main(String[] args) {
-
+    public void setReturnFlight(Flight returnFlight) {
+        this.returnFlight = returnFlight;
+    }
+    public Flight getReturnFlight() {
+        return returnFlight;
     }
 }

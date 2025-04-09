@@ -5,11 +5,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import vinnsla.UIObjects.BookingModel;
 import vinnsla.entities.Flight;
 import vinnsla.entities.SeatNumber;
 import vinnsla.entities.SeatingArrangement;
+import vinnsla.repository.BookingRepository;
 import vinnsla.service.BookingServiceInterface;
 import vinnsla.service.FlightServiceInterface;
 
@@ -21,9 +23,11 @@ public class BookingControllerUI {
     private BookingModel bookingModel;
     private BookingServiceInterface bookingService;
     private Flight selectedFlight;
+    private Flight selectedReturnFlight;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     private String selectedSeat;
     private SeatingArrangement seating;
+    private String selectedReturnSeat;
 
     // Flight Information Labels
     @FXML
@@ -33,7 +37,11 @@ public class BookingControllerUI {
     @FXML
     private Label departureLabel;
     @FXML
+    private Label departureAirportLabel;
+    @FXML
     private Label arrivalLabel;
+    @FXML
+    private Label arrivalAirportLabel;
     @FXML
     private Label departureTimeLabel;
     @FXML
@@ -42,6 +50,28 @@ public class BookingControllerUI {
     private Label priceLabel;
     @FXML
     private Label totalPriceLabel;
+
+    // Return flight information labels
+    @FXML
+    private Label returnFlightNumberLabel;
+    @FXML
+    private Label returnAirlineLabel;
+    @FXML
+    private Label returnDepartureLabel;
+    @FXML
+    private Label returnDepartureAirportLabel;
+    @FXML
+    private Label returnArrivalLabel;
+    @FXML
+    private Label returnArrivalAirportLabel;
+    @FXML
+    private Label returnDepartureTimeLabel;
+    @FXML
+    private Label returnArrivalTimeLabel;
+    @FXML
+    private Label returnPriceLabel;
+    @FXML
+    private VBox returnFlightSection;
 
     // Flight Add-ons
     @FXML
@@ -52,6 +82,12 @@ public class BookingControllerUI {
     private CheckBox carryOnCheckBox;
     @FXML
     private Button pickSeatsButton;
+    @FXML
+    private Button pickReturnSeatsButton;
+    @FXML
+    private TextField promoCodeField;
+    @FXML
+    private Button applyPromoButton;
 
     // Customer Information
     @FXML
@@ -74,25 +110,35 @@ public class BookingControllerUI {
     private Button backButton;
     @FXML
     private Button confirmButton;
-    @FXML
-    private Button payButton;
 
     private double basePrice;
     private double totalPrice;
     private static final double LUGGAGE_PRICE = 20.0;
     private static final double FIRST_CLASS_MULTIPLIER = 1.5;
     private static final double BUSINESS_CLASS_MULTIPLIER = 1.2;
+    private static final double PROMO_CODE_DISCOUNT = 0.3;
+    private boolean promoApplied = false;
 
     private FlightServiceInterface flightService;
 
-    public BookingControllerUI(Flight flight) {
+    public BookingControllerUI(Flight flight, Flight returnFlight) {
         this.selectedFlight = flight;
+        this.selectedReturnFlight = returnFlight;
+        if (selectedReturnFlight != null) {
+            System.out.println("Return flight " + selectedReturnFlight.getFlightNumber());
+        }
         //BookingRepositoryInterface bookingRepository = new BookingRepository();
         //bookingService = new BookingService(bookingRepository);
-        bookingModel = new BookingModel(selectedFlight);
+        bookingModel = new BookingModel(selectedFlight, selectedReturnFlight);
         this.basePrice = flight.getPrice();
-        this.totalPrice = flight.getPrice();
+        if (selectedReturnFlight != null) {
+            this.basePrice = this.selectedFlight.getPrice() + this.selectedReturnFlight.getPrice();
+        } else {
+            this.basePrice = this.selectedFlight.getPrice();
+        }
+        this.totalPrice = basePrice;
         this.selectedSeat = "";
+        this.selectedReturnSeat = "";
         this.seating = flight.getSeatingArrangement();
     }
 
@@ -137,7 +183,7 @@ public class BookingControllerUI {
 
         // Update the total price and label
         this.totalPrice = total;
-        totalPriceLabel.setText(String.format("%.2f kr.", total));
+        updateTotalPriceLabel();
     }
 
     private void initializeBindings() {
@@ -162,15 +208,38 @@ public class BookingControllerUI {
             flightNumberLabel.setText(selectedFlight.getFlightNumber());
             airlineLabel.setText(selectedFlight.getAirline());
             departureLabel.setText(selectedFlight.getDepartureCountry());
+            departureAirportLabel.setText(selectedFlight.getDepartureAirport());
             arrivalLabel.setText(selectedFlight.getArrivalCountry());
+            arrivalAirportLabel.setText(selectedFlight.getArrivalAirport());
             departureTimeLabel.setText(dateFormat.format(selectedFlight.getDepartureDate()) + " " + selectedFlight.getDepartureTime());
             arrivalTimeLabel.setText(dateFormat.format(selectedFlight.getArrivalDate()) + " " + selectedFlight.getArrivalTime());
             priceLabel.setText(String.format("%.2f kr.", selectedFlight.getPrice()));
         }
+
+        // Set up return flight information if it exists
+        if (selectedReturnFlight != null) {
+            returnFlightSection.setVisible(true);
+            pickReturnSeatsButton.setVisible(true);
+            returnFlightNumberLabel.setText(selectedReturnFlight.getFlightNumber());
+            returnAirlineLabel.setText(selectedReturnFlight.getAirline());
+            returnDepartureLabel.setText(selectedReturnFlight.getDepartureCountry());
+            returnDepartureAirportLabel.setText(selectedReturnFlight.getDepartureAirport());
+            returnArrivalLabel.setText(selectedReturnFlight.getArrivalCountry());
+            returnArrivalAirportLabel.setText(selectedReturnFlight.getArrivalAirport());
+            returnDepartureTimeLabel.setText(dateFormat.format(selectedReturnFlight.getDepartureDate()) + " " + selectedReturnFlight.getDepartureTime());
+            returnArrivalTimeLabel.setText(dateFormat.format(selectedReturnFlight.getArrivalDate()) + " " + selectedReturnFlight.getArrivalTime());
+            returnPriceLabel.setText(String.format("%.2f kr.", selectedReturnFlight.getPrice()));
+        } else {
+            returnFlightSection.setVisible(false);
+            pickReturnSeatsButton.setVisible(false);
+        }
     }
 
     public void confirmBooking() {
-        bookingModel.confirmBooking(totalPrice, selectedSeat);
+        boolean confirmed = bookingModel.confirmBooking(totalPrice, selectedSeat);
+        if (confirmed) {
+            onBack();
+        }
     }
 
     public void onPickSeats() {
@@ -199,6 +268,34 @@ public class BookingControllerUI {
             // Update the selected seat
             selectedSeat = seatNumber;
             System.out.println("Selected seat: " + seatNumber);
+        });
+    }
+
+    public void onPickReturnSeats() {
+        if (!selectedReturnSeat.isEmpty()) {
+            // Seat already selected, alert
+            Alert confirmDialog = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmDialog.setTitle("Change Return Seat");
+            confirmDialog.setHeaderText("You have already selected a return seat");
+            confirmDialog.setContentText("Do you want to change your return seat from " + selectedReturnSeat + "?");
+
+            Optional<ButtonType> result = confirmDialog.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                SeatNumber oldSeatNumber = SeatNumber.fromString(selectedReturnSeat);
+                selectedReturnFlight.getSeatingArrangement().cancelSeat(oldSeatNumber);
+            } else {
+                return;
+            }
+        }
+
+        // Open seat selection dialog
+        SeatSelectionControllerUI dialog = new SeatSelectionControllerUI(selectedReturnFlight);
+        Optional<String> result = dialog.showAndWait();
+
+        result.ifPresent(seatNumber -> {
+            // Update the selected seat
+            selectedReturnSeat = seatNumber;
+            System.out.println("Selected return seat: " + seatNumber);
         });
     }
 
@@ -231,5 +328,39 @@ public class BookingControllerUI {
 
     public void setFlightService(FlightServiceInterface flightService) {
         this.flightService = flightService;
+    }
+
+    public void onApplyPromo() {
+        String promoCode = promoCodeField.getText().trim();
+        if (promoCode.isEmpty()) {
+            showAlert("Error", "Please enter a promo code");
+            return;
+        }
+
+        if (BookingRepository.getInstance().inPromoCodes(promoCode)) {
+            if (!promoApplied) {
+                totalPrice *= (1 - PROMO_CODE_DISCOUNT);
+                promoApplied = true;
+                updateTotalPriceLabel();
+                applyPromoButton.setDisable(true);
+                promoCodeField.setDisable(true);
+            } else {
+                showAlert("Info", "A promo code has already been applied");
+            }
+        } else {
+            showAlert("Error", "Invalid promo code");
+        }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+    private void updateTotalPriceLabel() {
+        totalPriceLabel.setText(String.format("%.2f kr.", totalPrice));
     }
 }

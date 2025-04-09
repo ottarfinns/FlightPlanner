@@ -5,15 +5,19 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.control.Alert;
 import vidmot.flightplanner.FlightApplication;
+import vidmot.flightplanner.PaymentControllerUI;
 import vinnsla.controller.BookingController;
 import vinnsla.entities.Booking;
 import vinnsla.entities.Flight;
 import vinnsla.entities.Passenger;
 import vinnsla.entities.SeatingArrangement;
 
+import java.util.Optional;
+
 public class BookingModel {
     private BookingController bookingController;
     private Flight flight;
+    private Flight returnFlight;
     private Booking booking;
     private SimpleStringProperty name;
     private SimpleStringProperty nationalID;
@@ -27,8 +31,9 @@ public class BookingModel {
     private SimpleBooleanProperty carryOn;
     private SimpleStringProperty classType;
 
-    public BookingModel(Flight flight) {
+    public BookingModel(Flight flight, Flight returnFlight) {
         this.flight = flight;
+        this.returnFlight = returnFlight;
         this.bookingController = new BookingController(FlightApplication.getBookingService());
         this.booking = new Booking(null, null, null, 0, false, "", 0);
         this.name = new SimpleStringProperty("");
@@ -44,11 +49,13 @@ public class BookingModel {
         this.classType = new SimpleStringProperty("");
     }
 
-    public void saveBooking() {
-        System.out.println("Booking saved");
+    private boolean paymentDialog(int totalPrice) {
+        PaymentControllerUI payBookingDialog = new PaymentControllerUI(totalPrice);
+        Optional<Boolean> result = payBookingDialog.showAndWait();
+        return result.orElse(false);
     }
 
-    public void confirmBooking(double totalPrice, String seat) {
+    public boolean confirmBooking(double totalPrice, String seat) {
         // If none of the fields are empty or null we can confirm the booking
         if (name.get().isEmpty() || nationalID.get().isEmpty() || passportNumber.get().isEmpty() || phoneNumber.get().isEmpty()
                 || country.get().isEmpty() || city.get().isEmpty() || address.get().isEmpty() || classType.get() == null
@@ -58,12 +65,12 @@ public class BookingModel {
             alert.setHeaderText("Please fill in all fields");
             alert.setContentText("Please fill in all fields before confirming the booking");
             alert.showAndWait();
+            return false;
         } else {
             Passenger passenger = new Passenger(nationalID.get(), passportNumber.get(), name.get(), "ottarfinns@gmail.com", phoneNumber.get(), country.get(), address.get(), city.get());
 
-            // TODO: Bæta við eigindum í customer þegar búið er að setja upp customer klasana
-
             booking.setFlight(flight);
+            booking.setReturnFlight(returnFlight);
             booking.setPassenger(passenger);
             booking.setSeat(seat);
             booking.setTotalPrice((int) totalPrice);
@@ -71,25 +78,35 @@ public class BookingModel {
             booking.setClassName(classType.get());
             booking.setBaggage(luggage.get());
 
-            boolean result1 = bookingController.addBooking(booking);
-            boolean result2 = bookingController.bookSeat(flight.getFlightNumber(), seat);
+            boolean paid = paymentDialog((int) totalPrice);
 
-            if (result1 && result2) {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Booking confirmed");
-                alert.setHeaderText("Booking confirmed");
-                alert.setContentText("Your booking has been confirmed");
-                alert.showAndWait();
-            }
-            else {
+            if (paid) {
+                boolean result1 = bookingController.addBooking(booking);
+                boolean result2 = bookingController.bookSeat(flight.getFlightNumber(), seat);
+
+                if (returnFlight != null) {
+                    boolean result3 = bookingController.bookSeat(returnFlight.getFlightNumber(), seat);
+                }
+
+                if (result1 && result2) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Booking confirmed");
+                    alert.setHeaderText("Booking confirmed");
+                    alert.setContentText("Your booking has been confirmed");
+                    alert.showAndWait();
+                    return true;
+                }
+            } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("Booking failed");
                 alert.setContentText("Booking failed");
                 alert.showAndWait();
+                return false;
             }
 
         }
+        return false;
     }
 
     public SeatingArrangement getBookedSeats() {

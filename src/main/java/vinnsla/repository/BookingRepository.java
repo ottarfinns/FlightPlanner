@@ -44,6 +44,7 @@ public class BookingRepository implements BookingRepositoryInterface {
         String createBookingsTable = """
                 CREATE TABLE IF NOT EXISTS bookings (
                 flight_number TEXT NOT NULL,
+                return_flight_number TEXT,
                 name TEXT NOT NULL,
                 nationalId TEXT NOT NULL,
                 passportNr TEXT NOT NULL,
@@ -56,8 +57,10 @@ public class BookingRepository implements BookingRepositoryInterface {
                 class TEXT NOT NULL,
                 baggage INTEGER NOT NULL,
                 totalPrice INTEGER NOT NULL,
+                isPaid boolean NOT NULL,
                 PRIMARY KEY (flight_number, nationalId),
-                FOREIGN KEY (flight_number) REFERENCES flights(flight_number)
+                FOREIGN KEY (flight_number) REFERENCES flights(flight_number),
+                FOREIGN KEY (return_flight_number) REFERENCES flights(flight_number)
                 )
                 """; // flight_number + nationalid er lykillinn
 
@@ -70,9 +73,57 @@ public class BookingRepository implements BookingRepositoryInterface {
                 )
                 """; // flight_number + seat_number er lykillinn
 
+        String createPromoCodeTable = """
+                CREATE TABLE IF NOT EXISTS promo_codes (
+                promo_code TEXT NOT NULL PRIMARY KEY
+                )
+                """;
+
+
         try (Statement stmt = connection.createStatement()) {
             stmt.execute(createBookingsTable);
             stmt.execute(createBookedSeatsTable);
+            stmt.execute(createPromoCodeTable);
+            populatePromoCodes();
+        }
+    }
+
+    private void populatePromoCodes () {
+        try {
+            String checkEmpty = "SELECT COUNT(*) FROM promo_codes";
+            try (Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery(checkEmpty)) {
+                if (rs.next() && rs.getInt(1) > 0) {
+                    return;
+                }
+            }
+
+            String[] promoCodes = {"promo1", "promo2", "promo3", "promo4", "promo5"};
+            String insertPromo = "INSERT INTO promo_codes (promo_code) VALUES (?)";
+
+            try (PreparedStatement pstmt = connection.prepareStatement(insertPromo)) {
+                for (String promoCode : promoCodes) {
+                    pstmt.setString(1, promoCode);
+                    pstmt.executeUpdate();
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to populate promo codes: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public boolean inPromoCodes(String promoCode) {
+        String sql = "SELECT promo_code FROM promo_codes WHERE promo_code = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, promoCode);
+            ResultSet rs = pstmt.executeQuery();
+            return rs.next();
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 
@@ -86,8 +137,8 @@ public class BookingRepository implements BookingRepositoryInterface {
                 INSERT INTO bookings (
                 flight_number, name, nationalId, passportNr, phoneNr,
                 country, city, address, seat, carryOn, class,
-                baggage, totalPrice
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                baggage, totalPrice, return_flight_number, isPaid
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true)
                 """;
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
@@ -104,6 +155,11 @@ public class BookingRepository implements BookingRepositoryInterface {
             pstmt.setString(11, booking.getClassName());
             pstmt.setInt(12, booking.getBaggage());
             pstmt.setInt(13, booking.getTotalPrice());
+            if (booking.getReturnFlight() != null) {
+                pstmt.setString(14, booking.getReturnFlight().getFlightNumber());
+            } else {
+                pstmt.setNull(14, Types.VARCHAR);
+            }
             return pstmt.executeUpdate() > 0;
         } catch (SQLException e) {
            e.printStackTrace();

@@ -45,8 +45,6 @@ public class FlightControllerUI {
     @FXML
     private CheckBox oneWayBox;
     @FXML
-    private CheckBox directBox;
-    @FXML
     private CheckBox maxPriceBox;
     @FXML
     private TableView<Flight> flightTableView;
@@ -62,7 +60,11 @@ public class FlightControllerUI {
     @FXML
     private TableColumn<Flight, String> departureColumn;
     @FXML
+    private TableColumn<Flight, String> departureAirportColumn;
+    @FXML
     private TableColumn<Flight, String> arrivalColumn;
+    @FXML
+    private TableColumn<Flight, String> arrivalAirportColumn;
     @FXML
     private TableColumn<Flight, String> departureTimeColumn;
     @FXML
@@ -77,7 +79,11 @@ public class FlightControllerUI {
     @FXML
     private TableColumn<Flight, String> returnDepartureColumn;
     @FXML
+    private TableColumn<Flight, String> returnDepartureAirportColumn;
+    @FXML
     private TableColumn<Flight, String> returnArrivalColumn;
+    @FXML
+    private TableColumn<Flight, String> returnArrivalAirportColumn;
     @FXML
     private TableColumn<Flight, String> returnDepartureTimeColumn;
     @FXML
@@ -89,6 +95,7 @@ public class FlightControllerUI {
     private Button bookFlightButton;
 
     private Flight selectedFlight;
+    private Flight selectedReturnFlight;
 
     public void setFlightService(FlightServiceInterface flightService) {
         this.flightService = flightService;
@@ -114,7 +121,6 @@ public class FlightControllerUI {
 
         // Binda checkboxin
         flightModel.oneWayProperty().bind(oneWayBox.selectedProperty());
-        flightModel.directFlightProperty().bind(directBox.selectedProperty());
 
         // Binda fjölda farþega
         flightModel.numberOfPassengersProperty().bind(passengerSpinner.valueProperty());
@@ -123,7 +129,16 @@ public class FlightControllerUI {
     private void setupSelectionListener() {
         flightTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             selectedFlight = newSelection;
-            bookFlightButton.setDisable(newSelection == null);
+            if (oneWayBox.isSelected()) {
+                bookFlightButton.setDisable(newSelection == null);
+            }
+        });
+
+        returnFlightsTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            selectedReturnFlight = newSelection;
+            if (!oneWayBox.isSelected()) {
+                bookFlightButton.setDisable(newSelection == null);
+            }
         });
     }
 
@@ -132,9 +147,17 @@ public class FlightControllerUI {
             if (newSelection) {
                 rDatePicker.setDisable(true);
                 returnFlightsSection.setVisible(false);
+                // Enable book button if a departure flight is selected
+                if (selectedFlight != null) {
+                    bookFlightButton.setDisable(false);
+                }
             } else {
                 rDatePicker.setDisable(false);
                 returnFlightsSection.setVisible(true);
+                // Disable book button if no return flight is selected
+                if (selectedReturnFlight == null) {
+                    bookFlightButton.setDisable(true);
+                }
             }
         });
 
@@ -158,7 +181,9 @@ public class FlightControllerUI {
         flightNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFlightNumber()));
         airlineColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAirline()));
         departureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureCountry()));
+        departureAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureAirport()));
         arrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalCountry()));
+        arrivalAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalAirport()));
 
         // Format dates and times for display
         departureTimeColumn.setCellValueFactory(cellData -> {
@@ -181,6 +206,34 @@ public class FlightControllerUI {
 
         priceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
 
+        // Set up return flight columns
+        returnFlightNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFlightNumber()));
+        returnAirlineColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAirline()));
+        returnDepartureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureCountry()));
+        returnDepartureAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureAirport()));
+        returnArrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalCountry()));
+        returnArrivalAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalAirport()));
+
+        returnDepartureTimeColumn.setCellValueFactory(cellData -> {
+            Date departureDate = cellData.getValue().getDepartureDate();
+            String departureTime = cellData.getValue().getDepartureTime();
+            if (departureDate != null && departureTime != null) {
+                return new SimpleStringProperty(dateFormat.format(departureDate) + " " + departureTime);
+            }
+            return new SimpleStringProperty("");
+        });
+
+        returnArrivalTimeColumn.setCellValueFactory(cellData -> {
+            Date arrivalDate = cellData.getValue().getArrivalDate();
+            String arrivalTime = cellData.getValue().getArrivalTime();
+            if (arrivalDate != null && arrivalTime != null) {
+                return new SimpleStringProperty(dateFormat.format(arrivalDate) + " " + arrivalTime);
+            }
+            return new SimpleStringProperty("");
+        });
+
+        returnPriceColumn.setCellValueFactory(cellData -> new SimpleDoubleProperty(cellData.getValue().getPrice()).asObject());
+
         // Initially disable the book button
         bookFlightButton.setDisable(true);
     }
@@ -190,7 +243,9 @@ public class FlightControllerUI {
         returnFlightNumberColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getFlightNumber()));
         returnAirlineColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getAirline()));
         returnDepartureColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureCountry()));
+        returnDepartureAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getDepartureAirport()));
         returnArrivalColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalCountry()));
+        returnArrivalAirportColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArrivalAirport()));
 
         // Format dates and times for display
         returnDepartureTimeColumn.setCellValueFactory(cellData -> {
@@ -241,7 +296,13 @@ public class FlightControllerUI {
 
                 // Create the controller with the selected flight
                 selectedFlight.setSeatingArrangement(BookingRepository.getInstance().getBookedSeats(selectedFlight.getFlightNumber()));
-                BookingControllerUI bookingController = new BookingControllerUI(selectedFlight);
+
+                // Only set return flight seating if a return flight is selected
+                if (selectedReturnFlight != null) {
+                    selectedReturnFlight.setSeatingArrangement(BookingRepository.getInstance().getBookedSeats(selectedReturnFlight.getFlightNumber()));
+                }
+
+                BookingControllerUI bookingController = new BookingControllerUI(selectedFlight, selectedReturnFlight);
                 loader.setController(bookingController);
 
                 // Load the scene

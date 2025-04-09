@@ -34,6 +34,10 @@ public class SeatSelectionControllerUI extends Dialog<String> {
             DialogPane dialogPane = fxmlLoader.load();
             setDialogPane(dialogPane);
 
+            // Set dialog size
+            dialogPane.setPrefWidth(500);
+            dialogPane.setPrefHeight(400);
+
             createSeatLayout();
 
             // Handle the confirm and cancel
