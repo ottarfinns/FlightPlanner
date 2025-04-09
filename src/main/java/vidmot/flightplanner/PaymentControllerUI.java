@@ -41,6 +41,10 @@ public class PaymentControllerUI extends Dialog<Boolean> {
             // Set the total price
             totalPriceLabel.setText(totalPrice + " kr.");
 
+            // Set dialog size
+            dialogPane.setPrefWidth(400);
+            dialogPane.setPrefHeight(300);
+
             // Set up the result converter
             setResultConverter(buttonType -> {
                 if (buttonType == confirmButton) {

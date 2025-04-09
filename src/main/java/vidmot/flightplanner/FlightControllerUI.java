@@ -147,9 +147,17 @@ public class FlightControllerUI {
             if (newSelection) {
                 rDatePicker.setDisable(true);
                 returnFlightsSection.setVisible(false);
+                // Enable book button if a departure flight is selected
+                if (selectedFlight != null) {
+                    bookFlightButton.setDisable(false);
+                }
             } else {
                 rDatePicker.setDisable(false);
                 returnFlightsSection.setVisible(true);
+                // Disable book button if no return flight is selected
+                if (selectedReturnFlight == null) {
+                    bookFlightButton.setDisable(true);
+                }
             }
         });
 
@@ -288,7 +296,7 @@ public class FlightControllerUI {
 
                 // Create the controller with the selected flight
                 selectedFlight.setSeatingArrangement(BookingRepository.getInstance().getBookedSeats(selectedFlight.getFlightNumber()));
-                
+
                 // Only set return flight seating if a return flight is selected
                 if (selectedReturnFlight != null) {
                     selectedReturnFlight.setSeatingArrangement(BookingRepository.getInstance().getBookedSeats(selectedReturnFlight.getFlightNumber()));

@@ -137,8 +137,8 @@ public class BookingRepository implements BookingRepositoryInterface {
                 INSERT INTO bookings (
                 flight_number, name, nationalId, passportNr, phoneNr,
                 country, city, address, seat, carryOn, class,
-                baggage, totalPrice, return_flight_number
-                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+                baggage, totalPrice, return_flight_number, isPaid
+                ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, true)
                 """;
 
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
