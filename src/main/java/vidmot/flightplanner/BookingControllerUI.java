@@ -115,6 +115,7 @@ public class BookingControllerUI {
 
     private double basePrice;
     private double totalPrice;
+    private double priceBeforePromo;
     private static final double LUGGAGE_PRICE = 20.0;
     private static final double FIRST_CLASS_MULTIPLIER = 1.5;
     private static final double BUSINESS_CLASS_MULTIPLIER = 1.2;
@@ -129,8 +130,6 @@ public class BookingControllerUI {
         if (selectedReturnFlight != null) {
             System.out.println("Return flight " + selectedReturnFlight.getFlightNumber());
         }
-        //BookingRepositoryInterface bookingRepository = new BookingRepository();
-        //bookingService = new BookingService(bookingRepository);
         bookingModel = new BookingModel(selectedFlight, selectedReturnFlight);
         this.basePrice = flight.getPrice();
         if (selectedReturnFlight != null) {
@@ -139,6 +138,7 @@ public class BookingControllerUI {
             this.basePrice = this.selectedFlight.getPrice();
         }
         this.totalPrice = basePrice;
+        this.priceBeforePromo = basePrice;
         this.selectedSeat = "";
         this.selectedReturnSeat = "";
         this.seating = flight.getSeatingArrangement();
@@ -181,6 +181,14 @@ public class BookingControllerUI {
                     break;
                 // Economy class has no multiplier
             }
+        }
+
+        // Store the price before promo discount
+        priceBeforePromo = total;
+
+        // Apply promo discount if it was previously applied
+        if (promoApplied) {
+            total *= (1 - PROMO_CODE_DISCOUNT);
         }
 
         // Update the total price and label
