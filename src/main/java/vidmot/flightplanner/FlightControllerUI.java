@@ -11,6 +11,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
+import javafx.stage.Screen;
+import javafx.geometry.Rectangle2D;
 import javafx.stage.Stage;
 import vinnsla.UIObjects.FlightModel;
 import vinnsla.entities.Flight;
@@ -307,7 +309,13 @@ public class FlightControllerUI {
 
                 // Load the scene
                 Parent bookingRoot = loader.load();
-                Scene bookingScene = new Scene(bookingRoot);
+                
+                // Get screen dimensions
+                Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+                double screenWidth = screenBounds.getWidth();
+                double screenHeight = screenBounds.getHeight();
+                
+                Scene bookingScene = new Scene(bookingRoot, screenWidth, screenHeight);
 
                 // Get the current stage and set the new scene
                 Stage currentStage = (Stage) bookFlightButton.getScene().getWindow();

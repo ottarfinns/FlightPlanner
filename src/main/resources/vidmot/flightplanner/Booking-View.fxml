@@ -52,8 +52,23 @@
 
                     <Label text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
                     <Label fx:id="priceLabel" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
                 </GridPane>
-                <Button fx:id="pickSeatsButton" prefWidth="200" text="Pick Seats" onAction="#onPickSeats" />
+                <Button fx:id="pickSeatsButton" onAction="#onPickSeats" prefWidth="200" text="Pick Seats" />
             </VBox>
 
             <!-- Return Flight Information Section -->
@@ -86,8 +101,23 @@
 
                     <Label text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
                     <Label fx:id="returnPriceLabel" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
                 </GridPane>
-                <Button fx:id="pickReturnSeatsButton" prefWidth="200" text="Pick Return Seats" onAction="#onPickReturnSeats" />
+                <Button fx:id="pickReturnSeatsButton" onAction="#onPickReturnSeats" prefWidth="200" text="Pick Return Seats" />
             </VBox>
 
             <!-- Add-ons Section -->
@@ -107,8 +137,18 @@
                     <Label text="Promo Code:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
                     <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
                         <TextField fx:id="promoCodeField" prefWidth="150" />
-                        <Button fx:id="applyPromoButton" text="Apply" onAction="#onApplyPromo" />
+                        <Button fx:id="applyPromoButton" onAction="#onApplyPromo" text="Apply" />
                     </HBox>
+               <columnConstraints>
+                  <ColumnConstraints />
+                  <ColumnConstraints />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
                 </GridPane>
             </VBox>
         </VBox>
@@ -138,6 +178,19 @@
 
                 <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
                 <TextField fx:id="addressField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <columnConstraints>
+               <ColumnConstraints />
+               <ColumnConstraints />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+               <RowConstraints />
+            </rowConstraints>
             </GridPane>
         </VBox>
     </HBox>
@@ -150,7 +203,10 @@
 
     <!-- Buttons Section -->
     <HBox alignment="CENTER_RIGHT" spacing="10">
-        <Button fx:id="backButton" text="Back" onAction="#onBack" />
-        <Button fx:id="confirmButton" text="Confirm and Pay Booking" onAction="#confirmBooking" />
+        <Button fx:id="backButton" onAction="#onBack" text="Back" />
+        <Button fx:id="confirmButton" onAction="#confirmBooking" text="Confirm and Pay Booking" />
+      <VBox.margin>
+         <Insets bottom="10.0" top="10.0" />
+      </VBox.margin>
     </HBox>
 </VBox>
