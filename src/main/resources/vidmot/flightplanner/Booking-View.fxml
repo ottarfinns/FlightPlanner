@@ -5,6 +5,7 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.ColumnConstraints?>
@@ -19,181 +20,183 @@
     </padding>
 
     <!-- Main Content Area -->
-    <HBox spacing="20" VBox.vgrow="ALWAYS">
-        <!-- Left Column -->
-        <VBox spacing="20" HBox.hgrow="ALWAYS">
-            <!-- Departure Flight Information Section -->
-            <VBox spacing="10">
-                <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Departure Flight Information" />
-                <GridPane hgap="10" vgap="10">
-                    <Label text="Flight Number:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label fx:id="flightNumberLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+        <HBox spacing="20">
+            <!-- Left Column -->
+            <VBox spacing="20" HBox.hgrow="ALWAYS">
+                <!-- Departure Flight Information Section -->
+                <VBox spacing="10">
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Departure Flight Information" />
+                    <GridPane hgap="10" vgap="10">
+                        <Label text="Flight Number:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label fx:id="flightNumberLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                    <Label text="Airline:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <Label fx:id="airlineLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Airline:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label fx:id="airlineLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                    <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <Label fx:id="departureLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Label fx:id="departureLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                    <Label text="From Airport:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <Label fx:id="departureAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <Label text="From Airport:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label fx:id="departureAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                    <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <Label fx:id="arrivalLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                        <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <Label fx:id="arrivalLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                    <Label text="To Airport:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                    <Label fx:id="arrivalAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <Label text="To Airport:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <Label fx:id="arrivalAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-                    <Label text="Departure:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                    <Label fx:id="departureTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <Label text="Departure:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <Label fx:id="departureTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
-                    <Label text="Arrival:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-                    <Label fx:id="arrivalTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                        <Label text="Arrival:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <Label fx:id="arrivalTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="7" />
 
-                    <Label text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-                    <Label fx:id="priceLabel" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-               <columnConstraints>
-                  <ColumnConstraints />
-                  <ColumnConstraints />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
-                </GridPane>
-                <Button fx:id="pickSeatsButton" onAction="#onPickSeats" prefWidth="200" text="Pick Seats" />
+                        <Label text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                        <Label fx:id="priceLabel" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                    <Button fx:id="pickSeatsButton" onAction="#onPickSeats" prefWidth="200" text="Pick Seats" />
+                </VBox>
+
+                <!-- Return Flight Information Section -->
+                <VBox fx:id="returnFlightSection" spacing="10">
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Return Flight Information" />
+                    <GridPane hgap="10" vgap="10">
+                        <Label text="Flight Number:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Label fx:id="returnFlightNumberLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="Airline:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <Label fx:id="returnAirlineLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                        <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                        <Label fx:id="returnDepartureLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                        <Label text="From Airport:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <Label fx:id="returnDepartureAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                        <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                        <Label fx:id="returnArrivalLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+
+                        <Label text="To Airport:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                        <Label fx:id="returnArrivalAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+
+                        <Label text="Departure:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                        <Label fx:id="returnDepartureTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
+                        <Label text="Arrival:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                        <Label fx:id="returnArrivalTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+
+                        <Label text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+                        <Label fx:id="returnPriceLabel" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                    <Button fx:id="pickReturnSeatsButton" onAction="#onPickReturnSeats" prefWidth="200" text="Pick Return Seats" />
+                </VBox>
+
+                <!-- Add-ons Section -->
+                <VBox spacing="10">
+                    <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Flight Add-ons" />
+                    <GridPane hgap="10" vgap="10">
+                        <Label text="Class:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="classComboBox" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                        <Label text="Luggage:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                            <Spinner fx:id="luggageSpinner" initialValue="0" max="5" min="0" />
+                        </HBox>
+
+                        <CheckBox fx:id="carryOnCheckBox" text="Carry-on Baggage" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+
+                        <Label text="Promo Code:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                        <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                            <TextField fx:id="promoCodeField" prefWidth="150" />
+                            <Button fx:id="applyPromoButton" onAction="#onApplyPromo" text="Apply" />
+                        </HBox>
+                        <columnConstraints>
+                            <ColumnConstraints />
+                            <ColumnConstraints />
+                        </columnConstraints>
+                        <rowConstraints>
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                            <RowConstraints />
+                        </rowConstraints>
+                    </GridPane>
+                </VBox>
             </VBox>
 
-            <!-- Return Flight Information Section -->
-            <VBox fx:id="returnFlightSection" spacing="10">
-                <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Return Flight Information" />
+            <!-- Right Column -->
+            <VBox spacing="10" HBox.hgrow="ALWAYS">
+                <!-- Customer Information Section -->
+                <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Customer Information" />
                 <GridPane hgap="10" vgap="10">
-                    <Label text="Flight Number:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <Label fx:id="returnFlightNumberLabel" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label text="Full Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <TextField fx:id="nameField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                    <Label text="Airline:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <Label fx:id="returnAirlineLabel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <Label text="National ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="nationalIdField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-                    <Label text="From:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <Label fx:id="returnDepartureLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <Label text="Passport Number:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <TextField fx:id="passportField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 
-                    <Label text="From Airport:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <Label fx:id="returnDepartureAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <Label text="Phone Number:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <TextField fx:id="phoneField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 
-                    <Label text="To:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <Label fx:id="returnArrivalLabel" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Label text="Country:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <TextField fx:id="countryField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="4" />
 
-                    <Label text="To Airport:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                    <Label fx:id="returnArrivalAirportLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <Label text="City:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <TextField fx:id="cityField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="5" />
 
-                    <Label text="Departure:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                    <Label fx:id="returnDepartureTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-
-                    <Label text="Arrival:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
-                    <Label fx:id="returnArrivalTimeLabel" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-
-                    <Label text="Price:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
-                    <Label fx:id="returnPriceLabel" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-               <columnConstraints>
-                  <ColumnConstraints />
-                  <ColumnConstraints />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
-                </GridPane>
-                <Button fx:id="pickReturnSeatsButton" onAction="#onPickReturnSeats" prefWidth="200" text="Pick Return Seats" />
-            </VBox>
-
-            <!-- Add-ons Section -->
-            <VBox spacing="10">
-                <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Flight Add-ons" />
-                <GridPane hgap="10" vgap="10">
-                    <Label text="Class:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                    <ComboBox fx:id="classComboBox" prefWidth="200" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-                    <Label text="Luggage:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                    <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Spinner fx:id="luggageSpinner" initialValue="0" max="5" min="0" />
-                    </HBox>
-
-                    <CheckBox fx:id="carryOnCheckBox" text="Carry-on Baggage" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2" />
-
-                    <Label text="Promo Code:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                    <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                        <TextField fx:id="promoCodeField" prefWidth="150" />
-                        <Button fx:id="applyPromoButton" onAction="#onApplyPromo" text="Apply" />
-                    </HBox>
-               <columnConstraints>
-                  <ColumnConstraints />
-                  <ColumnConstraints />
-               </columnConstraints>
-               <rowConstraints>
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-                  <RowConstraints />
-               </rowConstraints>
+                    <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <TextField fx:id="addressField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <columnConstraints>
+                        <ColumnConstraints />
+                        <ColumnConstraints />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                        <RowConstraints />
+                    </rowConstraints>
                 </GridPane>
             </VBox>
-        </VBox>
-
-        <!-- Right Column -->
-        <VBox spacing="10" HBox.hgrow="ALWAYS">
-            <!-- Customer Information Section -->
-            <Label style="-fx-font-weight: bold; -fx-font-size: 16px;" text="Customer Information" />
-            <GridPane hgap="10" vgap="10">
-                <Label text="Full Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                <TextField fx:id="nameField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-
-                <Label text="National ID:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                <TextField fx:id="nationalIdField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-
-                <Label text="Passport Number:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                <TextField fx:id="passportField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-
-                <Label text="Phone Number:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <TextField fx:id="phoneField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-
-                <Label text="Country:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                <TextField fx:id="countryField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-
-                <Label text="City:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-                <TextField fx:id="cityField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-
-                <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-                <TextField fx:id="addressField" prefWidth="250" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <columnConstraints>
-               <ColumnConstraints />
-               <ColumnConstraints />
-            </columnConstraints>
-            <rowConstraints>
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-               <RowConstraints />
-            </rowConstraints>
-            </GridPane>
-        </VBox>
-    </HBox>
+        </HBox>
+    </ScrollPane>
 
     <!-- Total Price Section -->
     <HBox alignment="CENTER_RIGHT" spacing="10">
@@ -205,8 +208,8 @@
     <HBox alignment="CENTER_RIGHT" spacing="10">
         <Button fx:id="backButton" onAction="#onBack" text="Back" />
         <Button fx:id="confirmButton" onAction="#confirmBooking" text="Confirm and Pay Booking" />
-      <VBox.margin>
-         <Insets bottom="10.0" top="10.0" />
-      </VBox.margin>
+        <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+        </VBox.margin>
     </HBox>
 </VBox>
